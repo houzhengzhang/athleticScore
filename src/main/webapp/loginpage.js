@@ -35,11 +35,14 @@ var InputNumber=antd.InputNumber;
 class LoginForm extends React.Component {
     constructor(props) {
         super(props);
+        this.state={
+            codeUrl: 'http://localhost:8080/athletic/ValidateCodeServlet?method=getValidateCode'
+        };
         this.handleSubmit = (e) => {
             e.preventDefault();
             this.props.form.validateFields((err, values) => {
                 if (!err) {
-                    fetch('/athletic/UserServlet?method=login&email=' + values.username + "&password="+
+                    fetch('/athletic/UserServlet?method=login&email=' + values.email + "&password="+
                          values.password + "&code=" + values.code + "&authority=" +values.role)
                          .then(
                             (res) => {
@@ -49,25 +52,43 @@ class LoginForm extends React.Component {
                         (data) => {
                             
                             console.log(this.data);
-                            localStorage.setItem("token", JSON.stringify(data.result));
-                            window.location=data.url;
+                            if(data.status==1){
+                                message.success('登陆成功');
+                                localStorage.setItem("token", JSON.stringify(data.result));
+                                window.location=data.url;
+
+                            }else{
+                                message.error('用户名或密码错误');
+                            }
+                            
                         });
                 }
 
             });
         }
+        this.updateCode = (e) =>{
+            e.preventDefault();
+            console.log('sss0');
+            this.setState({
+                codeUrl: 'http://localhost:8080/athletic/ValidateCodeServlet?method=getValidateCode'+'?'+Math.random(),
+              });
+        }
     }
-  
+    
     render() {
       const { getFieldDecorator } = this.props.form;
       return (
         <Form onSubmit={this.handleSubmit} className="login-form">
                     <FormItem>
-                        {getFieldDecorator('username', {
-                            rules: [{required: true, message: 'Please input your username!'}],
+                        {getFieldDecorator('email', {
+                            rules: [{
+                                type: 'email', message: 'The input is not valid E-mail!',
+                                },{
+                                    required: true, message: 'Please input your username!'
+                                }],
                         })(
                             <Input size="large" prefix={<Icon type="user" style={{color: '#000',fontSize: '17px'}}/>}
-                                   placeholder=" 用户名"/>
+                                   placeholder=" 邮箱"/>
                         )}
                     </FormItem>
                     <FormItem>
@@ -102,7 +123,7 @@ class LoginForm extends React.Component {
                                 )}
                             </Col>
                             <Col span={8}>
-                            <img src = "http://localhost:8080/athletic/ValidateCodeServlet?method=getValidateCode" height="39" width="90"/>
+                            <img onClick={this.updateCode} src = {this.state.codeUrl} height="39" width="90"/>
                             </Col>
                         </Row>
                         
