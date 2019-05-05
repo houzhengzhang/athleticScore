@@ -39,8 +39,19 @@ class LoginForm extends React.Component {
             e.preventDefault();
             this.props.form.validateFields((err, values) => {
                 if (!err) {
-                    fetch('/athletic/UserServlet?method=login&authority=1&email=' + values.username + "&password="+
-                         values.password + "&code=" + values.code,{redirect:'follow'})
+                    fetch('/athletic/UserServlet?method=login&email=' + values.username + "&password="+
+                         values.password + "&code=" + values.code + "&authority=" +values.role)
+                         .then(
+                            (res) => {
+                                return res.json()
+                            }
+                        ).then(
+                        (data) => {
+                            
+                            console.log(this.data);
+                            localStorage.setItem("token", JSON.stringify(data.result));
+                            window.location=data.url;
+                        });
                 }
 
             });
@@ -65,6 +76,20 @@ class LoginForm extends React.Component {
                         })(
                             <Input size="large" prefix={<Icon type="lock" style={{color: '#000',fontSize: '17px'}}/>} type="password"
                                    placeholder=" 密码"/>
+                        )}
+                    </FormItem>
+                    <FormItem
+                    hasFeedback>
+                    {getFieldDecorator('role',{
+                        rules: [
+                            { required: true, message: '请选择登入权限!' },]
+                    })(
+                          <Select size='large'  placeholder="请选择登入权限!">
+                            <Option value="1"><Icon type="meh" style={{color:'#F68657'}} theme="filled"/> &nbsp;&nbsp;管理员</Option>
+                            <Option value="2"><Icon type="meh" style={{color:'#a5dff9'}} theme="filled"/> &nbsp;&nbsp;计分员</Option>
+                            <Option value="3"><Icon type="meh" style={{color:'#FFBC42'}} theme="filled"/> &nbsp;&nbsp;裁判员</Option>
+                            <Option value="4"><Icon type="meh" style={{color:'#4F86C6'}} theme="filled"/> &nbsp;&nbsp;运动员</Option>
+                         </Select>
                         )}
                     </FormItem>
                     <FormItem>
