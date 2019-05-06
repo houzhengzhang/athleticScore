@@ -43,6 +43,7 @@ public class AdminServlet extends BaseServlet {
                 msg.put("status", 1);
                 msg.put("msg", "登录成功！");
                 msg.put("result", new JSONObject(adminstrator));
+                msg.put("url", "http://localhost:8080/athletic/administratorPage.html");
             }
 
         } catch (SQLException e) {

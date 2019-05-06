@@ -70,7 +70,7 @@ class LoginForm extends React.Component {
             e.preventDefault();
             console.log('sss0');
             this.setState({
-                codeUrl: 'http://localhost:8080/athletic/ValidateCodeServlet?method=getValidateCode'+'?'+Math.random(),
+                codeUrl: 'http://localhost:8080/athletic/ValidateCodeServlet?method=getValidateCode'+'&date='+Math.random(),
               });
         }
     }
