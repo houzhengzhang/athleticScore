@@ -36,7 +36,7 @@ class LoginForm extends React.Component {
     constructor(props) {
         super(props);
         this.state={
-            codeUrl: 'http://localhost:8080/athletic/ValidateCodeServlet?method=getValidateCode'
+            codeUrl: 'http://127.0.0.1:8080/athletic/ValidateCodeServlet?method=getValidateCode'
         };
         this.handleSubmit = (e) => {
             e.preventDefault();
@@ -70,7 +70,7 @@ class LoginForm extends React.Component {
             e.preventDefault();
             console.log('sss0');
             this.setState({
-                codeUrl: 'http://localhost:8080/athletic/ValidateCodeServlet?method=getValidateCode'+'&date='+Math.random(),
+                codeUrl: 'http://127.0.0.1:8080/athletic/ValidateCodeServlet?method=getValidateCode'+'&date='+Math.random(),
               });
         }
     }

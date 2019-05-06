@@ -30,6 +30,7 @@ public class AdminServlet extends BaseServlet {
         // 获取用户数据
         MyBeanUtils.populate(adminstrator, request.getParameterMap());
         AdminServiceImp adminServiceImp = new AdminServiceImp();
+        System.out.println("admin" + adminstrator);
         try {
             adminstrator = adminServiceImp.adminstratorLogin(adminstrator);
             if (null == adminstrator) {
