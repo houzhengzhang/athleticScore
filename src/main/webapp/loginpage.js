@@ -53,12 +53,12 @@ class LoginForm extends React.Component {
                             
                             console.log(this.data);
                             if(data.status==1){
-                                message.success('登陆成功');
+                                message.success(data.msg);
                                 localStorage.setItem("token", JSON.stringify(data.result));
                                 window.location=data.url;
 
                             }else{
-                                message.error('用户名或密码错误');
+                                message.error(data.msg);
                             }
                             
                         });
