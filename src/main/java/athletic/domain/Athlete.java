@@ -1,19 +1,20 @@
 package athletic.domain;
-import java.sql.*;
+
+import org.json.JSONObject;
 
 /**
  * athlete 实体类
- */ 
+ */
 
 
 public class Athlete {
-	private String athleteId;
-	private String email;
-	private String password;
-	private String name;
-	private int sex;
-	private String roleId;
-	private String athleteTeamId;
+    private String athleteId;
+    private String email;
+    private String password;
+    private String name;
+    private int sex;
+    private String roleId;
+    private String athleteTeamId;
 
     public void setAthleteId(String athleteId) {
         this.athleteId = athleteId;
@@ -71,5 +72,9 @@ public class Athlete {
         return athleteTeamId;
     }
 
+    @Override
+    public String toString() {
+        return new JSONObject(this).toString();
+    }
 }
 

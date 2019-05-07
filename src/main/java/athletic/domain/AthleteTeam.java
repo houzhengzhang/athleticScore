@@ -1,15 +1,16 @@
 package athletic.domain;
-import java.sql.*;
+
+import org.json.JSONObject;
 
 /**
  * athleteTeam 实体类
- */ 
+ */
 
 
 public class AthleteTeam {
-	private String athleteTeamId;
-	private String name;
-	private int totalPoint;
+    private String athleteTeamId;
+    private String name;
+    private int totalPoint;
 
     public void setAthleteTeamId(String athleteTeamId) {
         this.athleteTeamId = athleteTeamId;
@@ -35,5 +36,9 @@ public class AthleteTeam {
         return totalPoint;
     }
 
+    @Override
+    public String toString() {
+        return new JSONObject(this).toString();
+    }
 }
 

@@ -1,17 +1,16 @@
 package athletic.domain;
-import org.json.JSONObject;
 
-import java.sql.*;
+import org.json.JSONObject;
 
 /**
  * role 实体类
- */ 
+ */
 
 
 public class Role {
-	private String roleId;
-	private String roleName;
-	private int authority;
+    private String roleId;
+    private String roleName;
+    private int authority;
 
     public void setRoleId(String roleId) {
         this.roleId = roleId;

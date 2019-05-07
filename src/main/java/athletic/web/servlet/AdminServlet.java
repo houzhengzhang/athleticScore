@@ -25,12 +25,11 @@ public class AdminServlet extends BaseServlet {
     public void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         JSONObject msg = new JSONObject();
         Adminstrator adminstrator = new Adminstrator();
-//        adminstrator.setPassword(request.getParameter("password"));
-//        adminstrator.setEmail(request.getParameter("email"));
+
         // 获取用户数据
         MyBeanUtils.populate(adminstrator, request.getParameterMap());
         AdminServiceImp adminServiceImp = new AdminServiceImp();
-        System.out.println("admin" + adminstrator);
+
         try {
             adminstrator = adminServiceImp.adminstratorLogin(adminstrator);
             if (null == adminstrator) {

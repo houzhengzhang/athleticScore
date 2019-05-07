@@ -17,4 +17,10 @@ public class CompetitionFieldServiceImp implements CompetitionFieldService {
         CompetitionFieldDaoImp competitionFieldDaoImp = new CompetitionFieldDaoImp();
         competitionFieldDaoImp.insert(competitionField);
     }
+
+    @Override
+    public void update(CompetitionField competitionField) throws SQLException {
+        CompetitionFieldDaoImp competitionFieldDaoImp = new CompetitionFieldDaoImp();
+        competitionFieldDaoImp.update(competitionField);
+    }
 }

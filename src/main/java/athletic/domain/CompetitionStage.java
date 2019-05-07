@@ -1,14 +1,15 @@
 package athletic.domain;
-import java.sql.*;
+
+import org.json.JSONObject;
 
 /**
  * competitionStage 实体类
- */ 
+ */
 
 
 public class CompetitionStage {
-	private String competitionStageId;
-	private String state;
+    private String competitionStageId;
+    private String state;
 
     public void setCompetitionStageId(String competitionStageId) {
         this.competitionStageId = competitionStageId;
@@ -26,5 +27,9 @@ public class CompetitionStage {
         return state;
     }
 
+    @Override
+    public String toString() {
+        return new JSONObject(this).toString();
+    }
 }
 

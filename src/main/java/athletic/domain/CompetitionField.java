@@ -1,16 +1,17 @@
 package athletic.domain;
-import java.sql.*;
+
+import org.json.JSONObject;
 
 /**
  * competitionField 实体类
- */ 
+ */
 
 
 public class CompetitionField {
-	private String fieldId;
-	private String name;
-	private String address;
-	private String state;
+    private String fieldId;
+    private String name;
+    private String address;
+    private String state;
 
     public void setFieldId(String fieldId) {
         this.fieldId = fieldId;
@@ -44,5 +45,9 @@ public class CompetitionField {
         return state;
     }
 
+    @Override
+    public String toString() {
+        return new JSONObject(this).toString();
+    }
 }
 

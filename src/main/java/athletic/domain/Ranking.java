@@ -1,15 +1,16 @@
 package athletic.domain;
-import java.sql.*;
+
+import org.json.JSONObject;
 
 /**
  * ranking 实体类
- */ 
+ */
 
 
 public class Ranking {
-	private String rankingId;
-	private String competitonId;
-	private String athleteId;
+    private String rankingId;
+    private String competitonId;
+    private String athleteId;
 
     public void setRankingId(String rankingId) {
         this.rankingId = rankingId;
@@ -35,5 +36,9 @@ public class Ranking {
         return athleteId;
     }
 
+    @Override
+    public String toString() {
+        return new JSONObject(this).toString();
+    }
 }
 

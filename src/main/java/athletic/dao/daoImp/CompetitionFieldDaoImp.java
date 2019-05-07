@@ -19,4 +19,13 @@ public class CompetitionFieldDaoImp implements CompetitionFieldDao {
         Object[] params={competitionField.getFieldId(), competitionField.getName(), competitionField.getAddress(), competitionField.getState()};
         queryRunner.update(sql, params);
     }
+
+    @Override
+    public void update(CompetitionField competitionField) throws SQLException {
+        String sql = "update competitionfield set name=?,address=?,state=? where fieldId=?";
+        QueryRunner queryRunner=new QueryRunner(JDBCUtils.getDataSource());
+        Object[] params={ competitionField.getName(), competitionField.getAddress(), competitionField.getState(),competitionField.getFieldId()};
+        queryRunner.update(sql, params);
+
+    }
 }

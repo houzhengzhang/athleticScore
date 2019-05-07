@@ -10,4 +10,5 @@ import java.sql.SQLException;
  */
 public interface CompetitionFieldService {
     void insert(CompetitionField competitionField) throws SQLException;
+    void update(CompetitionField competitionField) throws SQLException;
 }

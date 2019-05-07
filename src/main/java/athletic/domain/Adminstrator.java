@@ -1,19 +1,18 @@
 package athletic.domain;
-import org.json.JSONObject;
 
-import java.sql.*;
+import org.json.JSONObject;
 
 /**
  * adminstrator 实体类
- */ 
+ */
 
 
 public class Adminstrator {
-	private String adminstratorId;
-	private String email;
-	private String password;
-	private String name;
-	private int sex;
+    private String adminstratorId;
+    private String email;
+    private String password;
+    private String name;
+    private int sex;
 
     public String getRoleId() {
         return roleId;
@@ -25,7 +24,7 @@ public class Adminstrator {
 
     private String roleId;
 
-	private Role role;
+    private Role role;
 
     public Role getRole() {
         return role;
@@ -74,14 +73,6 @@ public class Adminstrator {
     public int getSex() {
         return sex;
     }
-
-//    public void setRoleId(String roleId) {
-//        this.roleId = roleId;
-//    }
-//
-//    public String getRoleId() {
-//        return roleId;
-//    }
 
     @Override
     public String toString() {

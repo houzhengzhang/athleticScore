@@ -1,18 +1,19 @@
 package athletic.domain;
-import java.sql.*;
+
+import org.json.JSONObject;
 
 /**
  * referee 实体类
- */ 
+ */
 
 
 public class Referee {
-	private String refereeId;
-	private String email;
-	private String password;
-	private String name;
-	private int sex;
-	private String roleId;
+    private String refereeId;
+    private String email;
+    private String password;
+    private String name;
+    private int sex;
+    private String roleId;
 
     public void setRefereeId(String refereeId) {
         this.refereeId = refereeId;
@@ -60,6 +61,11 @@ public class Referee {
 
     public String getRoleId() {
         return roleId;
+    }
+
+    @Override
+    public String toString() {
+        return new JSONObject(this).toString();
     }
 
 }

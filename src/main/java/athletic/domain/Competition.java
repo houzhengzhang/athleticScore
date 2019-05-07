@@ -1,19 +1,21 @@
 package athletic.domain;
+
+import org.json.JSONObject;
+
 import java.util.Date;
-import java.sql.*;
 
 /**
  * competition 实体类
- */ 
+ */
 
 
 public class Competition {
-	private String competitionId;
-	private String competitionStageId;
-	private String name;
-	private String fieldId;
-	private Date startTime;
-	private Date endTime;
+    private String competitionId;
+    private String competitionStageId;
+    private String name;
+    private String fieldId;
+    private Date startTime;
+    private Date endTime;
 
     public void setCompetitionId(String competitionId) {
         this.competitionId = competitionId;
@@ -61,6 +63,11 @@ public class Competition {
 
     public Date getEndTime() {
         return endTime;
+    }
+
+    @Override
+    public String toString() {
+        return new JSONObject(this).toString();
     }
 
 }
