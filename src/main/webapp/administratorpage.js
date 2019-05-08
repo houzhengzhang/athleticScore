@@ -424,6 +424,7 @@ class ChangeCom extends React.Component{
     this.state = {
       data: data,
     };
+    this.initDate();
   }
   initDate(){
     fetch('/athletic/Servlet?method=')
@@ -915,7 +916,7 @@ class SiderDemo extends React.Component {
               <Avatar style={{marginLeft:'17%'}} size={45} icon="user" />
               </Col>
               <Col span={3} >
-                  <div style={{fontSize:'16px'}}>yangdongce<antd.Divider type="vertical" />
+                  <div style={{fontSize:'16px'}}>{token.name}<antd.Divider type="vertical" />
                       <span style={{fontSize:'15px',color:'#6AAFE6'}}>administor</span>
                   </div>  
               </Col>
