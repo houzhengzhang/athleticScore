@@ -853,90 +853,100 @@ class AddPlace extends React.Component {
   }
 }
 class SiderDemo extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            current: '1',
-          }
-        this.handleClick = (e) => {
-            console.log('click ', e.key);
-            this.setState({
-              current: e.key,
-            });
-          }
-    }
-    render() {
-        const { current } = this.state;
-      return (
-        <Layout style={{height:'100%'}}>
-          <Sider
-            trigger={null}
-            collapsible
-            style={{}}
-          >
-            <div style={{marginLeft:'10%',marginRight:'10%'}}>
-                <img src = 'static/score.png' style={{ height: '100px',margin: '16px'}}/>
-            </div>
-            <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']} 
-            onClick={this.handleClick}
-            selectedKeys={[this.state.current]}
-            >
-              <Menu.Item key="1">
-                <Icon type="plus-square" />
-                <span>录入场地信息</span>
-              </Menu.Item>
-              <Menu.Item key="2">
-                <Icon type="edit" />
-                <span>修改场地信息</span>
-              </Menu.Item>
-              <Menu.Item key="3">
-                <Icon type="to-top" />
-                <span>创建项目</span>
-              </Menu.Item>
-              <Menu.Item key="4">
-                <Icon type="highlight" />  
-                <span>修改项目信息</span>
-              </Menu.Item>
-              <Menu.Item key="5">
-                <Icon type="team" />
-                <span>录入运动队</span>
-              </Menu.Item>
-              <Menu.Item key="6">
-                <Icon type="user" />
-                <span>录入运动员</span>
-              </Menu.Item>
-            </Menu>
-          </Sider>
-          <Layout>
-            <Header style={{ background: '#fff', padding: 0 }}>
-            <Row gutter={16} style={{marginLeft:'1%',marginRight:'0%'}}>
-                <Col span={1} offset={20} >
-                <Avatar style={{marginLeft:'17%'}} size={45} icon="user" />
-                </Col>
-                <Col span={3} >
-                    <div style={{fontSize:'16px'}}>{token.name}<antd.Divider type="vertical" />
-                        <span style={{fontSize:'15px',color:'#6AAFE6'}}>administor</span>
-                    </div>  
-                </Col>
-                
-            </Row>
-            </Header>
-            <Breadcrumb style={{ marginTop:'40px',marginLeft:'16px' }}>
-              <Breadcrumb.Item>管理员</Breadcrumb.Item>
-              <Breadcrumb.Item>录入场地信息</Breadcrumb.Item>
-            </Breadcrumb>
-            {
-              current == '1' && <AddPlace />
-            }
-            {
-              current == '2' && <ChangePlace />
-            }
-            
-            
-          </Layout>
-        </Layout>
-      );
-    }
+  constructor() {
+      super();
+      this.state = {
+          current: '1',
+        }
+      this.handleClick = (e) => {
+          console.log('click ', e.key);
+          this.setState({
+            current: e.key,
+          });
+        }
   }
-  
+  render() {
+      const { current } = this.state;
+    return (
+      <Layout style={{height:'100%'}}>
+        <Sider
+          trigger={null}
+          collapsible
+          style={{}}
+        >
+          <div style={{marginLeft:'10%',marginRight:'10%'}}>
+              <img src = 'static/score.png' style={{ height: '100px',margin: '16px'}}/>
+          </div>
+          <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']} 
+          onClick={this.handleClick}
+          selectedKeys={[this.state.current]}
+          >
+            <Menu.Item key="1">
+              <Icon type="plus-square" />
+              <span>录入场地信息</span>
+            </Menu.Item>
+            <Menu.Item key="2">
+              <Icon type="edit" />
+              <span>修改场地信息</span>
+            </Menu.Item>
+            <Menu.Item key="3">
+              <Icon type="to-top" />
+              <span>创建项目</span>
+            </Menu.Item>
+            <Menu.Item key="4">
+              <Icon type="highlight" />  
+              <span>修改项目信息</span>
+            </Menu.Item>
+            <Menu.Item key="5">
+              <Icon type="team" />
+              <span>录入运动队</span>
+            </Menu.Item>
+            <Menu.Item key="6">
+              <Icon type="user" />
+              <span>录入运动员</span>
+            </Menu.Item>
+          </Menu>
+        </Sider>
+        <Layout>
+          <Header style={{ background: '#fff', padding: 0 }}>
+          <Row gutter={16} style={{marginLeft:'1%',marginRight:'0%'}}>
+              <Col span={1} offset={20} >
+              <Avatar style={{marginLeft:'17%'}} size={45} icon="user" />
+              </Col>
+              <Col span={3} >
+                  <div style={{fontSize:'16px'}}>yangdongce<antd.Divider type="vertical" />
+                      <span style={{fontSize:'15px',color:'#6AAFE6'}}>administor</span>
+                  </div>  
+              </Col>
+              
+          </Row>
+          </Header>
+          <Breadcrumb style={{ marginTop:'40px',marginLeft:'16px' }}>
+            <Breadcrumb.Item>管理员</Breadcrumb.Item>
+            <Breadcrumb.Item>录入场地信息</Breadcrumb.Item>
+          </Breadcrumb>
+          {
+            current == '1' && <AddPlace />
+          }
+          {
+            current == '2' && <ChangePlace />
+          }
+          {
+            current == '3' && <CreateCom />
+          }
+          {
+            current == '4' && <ChangeCom />
+          }
+          {
+            current == '5' && <AddAthleteTeam />
+          }
+          {
+            current == '6' && <AddAthlete />
+          }
+          
+        </Layout>
+      </Layout>
+    );
+  }
+}
   ReactDOM.render(<SiderDemo />, document.body);
