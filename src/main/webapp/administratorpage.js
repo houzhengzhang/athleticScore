@@ -38,7 +38,7 @@ const token = JSON.parse(localStorage.getItem("token"));
 const EditableContext = React.createContext();
 class EditableCell extends React.Component {
   getInput(){
-    if (this.props.title === "state") {
+    if (this.props.dataIndex === "state") {
       return <Select >
             <Option value="空闲">空闲</Option>
             <Option value="占有">占有</Option>
@@ -754,6 +754,22 @@ class ChangePlace extends React.Component{
   }
   update(row,key){
       console.log(row);
+      let url='/athletic/CompetitionFieldServlet?method=updateCompetitionField&fieldId='+key+'&address='+row.address+'&name='+row.name+'&state='+row.state;
+      fetch(encodeURI(encodeURI(url)))
+          .then(
+            (res) => {
+                return res.json()
+            }
+        ).then(
+        (data) => {
+            console.log(data.result);
+            if(data.status===1){
+                message.success(data.msg);
+            }else{
+                message.error(data.msg);
+
+            }
+        });
   }
   render(){
     const EditableFormTable = Form.create()(EditableTable);
