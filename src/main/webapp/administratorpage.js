@@ -277,8 +277,8 @@ class AddPlaceForm extends React.Component {
       this.props.form.validateFields((err, values) => {
         if (!err) {
           console.log('Received values of form: ', values);
-          fetch('/athletic/CompetitionFieldServlet?method=addCompetitionField&name=' + values.name+ "&address="+
-                         values.address )
+          fetch('/athletic/CompetitionFieldServlet?method=addCompetitionField&name=' + encodeURI(encodeURI(values.name)) + "&address="+
+          encodeURI(encodeURI(values.address)) )
                          .then(
                             (res) => {
                                 return res.json()
