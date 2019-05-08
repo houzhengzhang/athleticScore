@@ -721,6 +721,7 @@ class ChangePlace extends React.Component{
     this.state = {
       data: data,
     };
+    this.initDate();
   }
   initDate(){
     fetch('/athletic/CompetitionFieldServlet?method=getAllCompetitionField')
@@ -748,7 +749,7 @@ class ChangePlace extends React.Component{
     const EditableFormTable = Form.create()(EditableTable);
     return(
       <Content style={{
-        margin: '16px 16px', padding: '4%', background: '#fff',maxHeight: '60%',width:'60%'
+        margin: '16px 16px', padding: '4%', background: '#fff',maxHeight: '60%',width:'95%'
         }}
       >
       <EditableFormTable 
