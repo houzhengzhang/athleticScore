@@ -5,7 +5,6 @@ import athletic.domain.CompetitionStage;
 import athletic.service.CompetitionStageService;
 
 import java.sql.SQLException;
-import java.sql.SQLOutput;
 import java.util.List;
 
 /**
@@ -13,8 +12,15 @@ import java.util.List;
  * @ Description:
  */
 public class CompetitionStageServiceImp implements CompetitionStageService {
+    private CompetitionStageDaoImp competitionStageDaoImp = new CompetitionStageDaoImp();
+
     @Override
     public List<CompetitionStage> getAllStage() throws SQLException {
-        return new CompetitionStageDaoImp().getAllStage();
+        return competitionStageDaoImp.getAllStage();
+    }
+
+    @Override
+    public CompetitionStage getCompetitionStageById(String competitionId) throws SQLException {
+        return competitionStageDaoImp.getCompetitionStageById(competitionId);
     }
 }

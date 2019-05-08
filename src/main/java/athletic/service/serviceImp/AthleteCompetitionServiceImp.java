@@ -13,8 +13,14 @@ import java.util.List;
  */
 public class AthleteCompetitionServiceImp implements AthleteCompetitionService {
     private AthleteCompetitionDaoImp athleteCompetitionDaoImp = new AthleteCompetitionDaoImp();
+
     @Override
     public List<AthleteCompetition> queryAthleteScore(String athleteId) throws SQLException {
         return athleteCompetitionDaoImp.queryAthleteScore(athleteId);
+    }
+
+    @Override
+    public int insert(AthleteCompetition athleteCompetition) throws SQLException {
+        return athleteCompetitionDaoImp.insert(athleteCompetition);
     }
 }

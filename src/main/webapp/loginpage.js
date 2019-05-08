@@ -51,16 +51,15 @@ class LoginForm extends React.Component {
                         ).then(
                         (data) => {
                             
-                            console.log(this.data);
+                            console.log(data);
                             if(data.status==1){
                                 message.success(data.msg);
                                 localStorage.setItem("token", JSON.stringify(data.result));
                                 window.location=data.url;
-
                             }else{
                                 message.error(data.msg);
                             }
-                            
+
                         });
                 }
 

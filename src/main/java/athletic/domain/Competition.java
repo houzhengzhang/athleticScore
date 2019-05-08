@@ -17,6 +17,26 @@ public class Competition {
     private Date startTime;
     private Date endTime;
 
+    // 外键对象
+    private CompetitionField competitionField;
+    private CompetitionStage competitionStage;
+
+    public CompetitionField getCompetitionField() {
+        return competitionField;
+    }
+
+    public void setCompetitionField(CompetitionField competitionField) {
+        this.competitionField = competitionField;
+    }
+
+    public CompetitionStage getCompetitionStage() {
+        return competitionStage;
+    }
+
+    public void setCompetitionStage(CompetitionStage competitionStage) {
+        this.competitionStage = competitionStage;
+    }
+
     public void setCompetitionId(String competitionId) {
         this.competitionId = competitionId;
     }

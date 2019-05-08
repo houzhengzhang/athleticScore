@@ -10,6 +10,6 @@ import java.util.List;
  * @ Description:
  */
 public interface AthleteTeamService {
-    void insert(AthleteTeam athleteTeam) throws SQLException;
+    int insert(AthleteTeam athleteTeam) throws SQLException;
     List<AthleteTeam> getAllAthleteTeam() throws SQLException;
 }

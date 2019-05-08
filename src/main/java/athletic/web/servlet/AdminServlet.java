@@ -22,6 +22,14 @@ import java.sql.SQLException;
  */
 @WebServlet(name = "AdminServlet", urlPatterns = "/AdminServlet")
 public class AdminServlet extends BaseServlet {
+
+    /**
+     * 管理员登录
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     public void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         JSONObject msg = new JSONObject();
         Adminstrator adminstrator = new Adminstrator();
@@ -38,7 +46,7 @@ public class AdminServlet extends BaseServlet {
             } else {
                 // TODO 查询该用户的权限
 //                RoleDaoImp roleDaoImp = new RoleDaoImp();
-//                Role role = roleDaoImp.queryRole(adminstrator.getRoleId());
+//                Role role = roleDaoImp.getRoleById(adminstrator.getRoleId());
 //                System.out.println("rols:   " + role);
                 msg.put("status", 1);
                 msg.put("msg", "登录成功！");

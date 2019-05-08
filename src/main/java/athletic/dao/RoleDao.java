@@ -9,5 +9,5 @@ import java.sql.SQLException;
  * @ Description:
  */
 public interface RoleDao {
-    Role queryRole(String rid) throws SQLException;
+    Role getRoleById(String rid) throws SQLException;
 }

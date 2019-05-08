@@ -15,6 +15,7 @@ public class Referee {
     private int sex;
     private String roleId;
 
+
     public void setRefereeId(String refereeId) {
         this.refereeId = refereeId;
     }

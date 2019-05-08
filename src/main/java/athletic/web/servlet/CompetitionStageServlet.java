@@ -3,7 +3,7 @@ package athletic.web.servlet;
 import athletic.domain.CompetitionStage;
 import athletic.service.serviceImp.CompetitionStageServiceImp;
 import athletic.web.base.BaseServlet;
-import net.sf.json.JSONArray;
+import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,11 +18,18 @@ import java.util.List;
  * @ Date: 2019/5/6 13:21
  * @ Description:
  */
-@WebServlet(name = "ComStageServlet", urlPatterns = "/ComStageServlet")
-public class ComStageServlet extends BaseServlet {
-    public void getAllComStage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+@WebServlet(name = "CompetitionStageServlet", urlPatterns = "/CompetitionStageServlet")
+public class CompetitionStageServlet extends BaseServlet {
+    /**
+     * 查询所有项目状态
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
+    public void getAllCompetitionStage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         CompetitionStageServiceImp competitionStageServiceImp = new CompetitionStageServiceImp();
-        List<CompetitionStage> competitionStageList=null;
+        List<CompetitionStage> competitionStageList = null;
         try {
             competitionStageList = competitionStageServiceImp.getAllStage();
         } catch (SQLException e) {
@@ -30,11 +37,11 @@ public class ComStageServlet extends BaseServlet {
         }
 
         PrintWriter out = response.getWriter();
-        JSONArray jsonArray = new JSONArray();
-        jsonArray.addAll(competitionStageList);
+        JSONObject msg = new JSONObject();
+        msg.put("result", competitionStageList);
 
-        System.out.println("ComStageServlet:  " + jsonArray);
-        out.write(jsonArray.toString());
+        System.out.println("CompetitionStageServlet:  " + msg);
+        out.write(msg.toString());
     }
 
 }

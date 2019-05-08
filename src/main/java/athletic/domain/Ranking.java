@@ -12,6 +12,26 @@ public class Ranking {
     private String competitonId;
     private String athleteId;
 
+    // 外键
+    private Competition competition;
+    private Athlete athlete;
+
+    public Competition getCompetition() {
+        return competition;
+    }
+
+    public void setCompetition(Competition competition) {
+        this.competition = competition;
+    }
+
+    public Athlete getAthlete() {
+        return athlete;
+    }
+
+    public void setAthlete(Athlete athlete) {
+        this.athlete = athlete;
+    }
+
     public void setRankingId(String rankingId) {
         this.rankingId = rankingId;
     }

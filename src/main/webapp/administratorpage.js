@@ -285,7 +285,7 @@ class AddPlaceForm extends React.Component {
                             }
                         ).then(
                         (data) => {
-                              console.log(this.data);
+                              console.log(data);
                             if(data.status==1){
                                 message.success(data.msg);
                                 this.props.form.setFieldsValue({

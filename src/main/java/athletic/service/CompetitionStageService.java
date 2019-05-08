@@ -1,6 +1,5 @@
 package athletic.service;
 
-import athletic.domain.CompetitionField;
 import athletic.domain.CompetitionStage;
 
 import java.sql.SQLException;
@@ -12,4 +11,6 @@ import java.util.List;
  */
 public interface CompetitionStageService {
     List<CompetitionStage> getAllStage() throws SQLException;
+
+    CompetitionStage getCompetitionStageById(String competitionId) throws SQLException;
 }

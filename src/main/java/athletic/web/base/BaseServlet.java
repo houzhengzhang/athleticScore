@@ -15,7 +15,7 @@ public class BaseServlet extends HttpServlet {
 
     @Override
     public void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("text/html;charset=utf-8");
+        resp.setCharacterEncoding("UTF-8");
         String method = req.getParameter("method");
         if (null == method || "".equals(method) || method.trim().equals("")) {
             method = "execute";

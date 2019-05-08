@@ -14,12 +14,12 @@ public class CompetitionServiceImp implements CompetitionService {
     private CompetitionDaoImp competitionDaoImp = new CompetitionDaoImp();
 
     @Override
-    public void insert(Competition competition) throws SQLException {
-        competitionDaoImp.insert(competition);
+    public int insert(Competition competition) throws SQLException {
+        return competitionDaoImp.insert(competition);
     }
 
     @Override
-    public void update(Competition competition) throws SQLException {
-        competitionDaoImp.update(competition);
+    public int update(Competition competition) throws SQLException {
+        return competitionDaoImp.update(competition);
     }
 }

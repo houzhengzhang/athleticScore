@@ -14,8 +14,8 @@ import java.util.List;
 public class AthleteTeamServiceImp implements AthleteTeamService {
     private AthleteTeamDaoImp athleteTeamDaoImp = new AthleteTeamDaoImp();
     @Override
-    public void insert(AthleteTeam athleteTeam) throws SQLException {
-        athleteTeamDaoImp.insert(athleteTeam);
+    public int insert(AthleteTeam athleteTeam) throws SQLException {
+        return athleteTeamDaoImp.insert(athleteTeam);
     }
 
     @Override

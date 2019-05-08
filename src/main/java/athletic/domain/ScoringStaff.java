@@ -15,6 +15,25 @@ public class ScoringStaff {
     private int sex;
     private String roleId;
 
+    // 外键
+    private Role role;
+
+    public String getsId() {
+        return sId;
+    }
+
+    public void setsId(String sId) {
+        this.sId = sId;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
     public void setSId(String sId) {
         this.sId = sId;
     }

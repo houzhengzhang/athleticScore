@@ -16,6 +16,27 @@ public class Athlete {
     private String roleId;
     private String athleteTeamId;
 
+    // 外键
+    private Role role;
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public AthleteTeam getAthleteTeam() {
+        return athleteTeam;
+    }
+
+    public void setAthleteTeam(AthleteTeam athleteTeam) {
+        this.athleteTeam = athleteTeam;
+    }
+
+    private AthleteTeam athleteTeam;
+
     public void setAthleteId(String athleteId) {
         this.athleteId = athleteId;
     }

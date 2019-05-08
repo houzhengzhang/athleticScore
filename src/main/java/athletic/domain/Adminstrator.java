@@ -13,6 +13,10 @@ public class Adminstrator {
     private String password;
     private String name;
     private int sex;
+    private String roleId;
+
+    // 外键
+    private Role role;
 
     public String getRoleId() {
         return roleId;
@@ -21,10 +25,6 @@ public class Adminstrator {
     public void setRoleId(String roleId) {
         this.roleId = roleId;
     }
-
-    private String roleId;
-
-    private Role role;
 
     public Role getRole() {
         return role;

@@ -10,6 +10,9 @@ import java.util.List;
  * @ Description:
  */
 public interface AthleteTeamDao {
-    void insert(AthleteTeam athleteTeam) throws SQLException;
+    int insert(AthleteTeam athleteTeam) throws SQLException;
+
     List<AthleteTeam> getAllAthleteTeam() throws SQLException;
+
+    AthleteTeam getAthleteTeamById(String athleteTeamId) throws SQLException;
 }

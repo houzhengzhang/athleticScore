@@ -25,7 +25,7 @@ public class AthleteCompetitionDaoImp implements AthleteCompetitionDao {
         CompetitionStageDaoImp competitionStageDaoImp = new CompetitionStageDaoImp();
         // 查询运动员项目信息
         List<AthleteCompetition> athleteCompetitionList = queryRunner.query(sql, new BeanListHandler<>(AthleteCompetition.class), athleteId);
-        
+
         // 查询补充外键信息
         for (AthleteCompetition athleteCompetition : athleteCompetitionList) {
             // 查询对应的项目信息
@@ -36,6 +36,15 @@ public class AthleteCompetitionDaoImp implements AthleteCompetitionDao {
             athleteCompetition.setCompetitionStage(competitionStage);
         }
         return athleteCompetitionList;
+    }
+
+    @Override
+    public int insert(AthleteCompetition athleteCompetition) throws SQLException {
+        String sql = "insert into athletecompetition values (?,?,?,?)";
+        QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
+        Object[] params = {athleteCompetition.getAthleteId(), athleteCompetition.getCompetitonId(),
+                athleteCompetition.getCompetitionStageId(), athleteCompetition.getScore()};
+        return queryRunner.update(sql, params);
     }
 
 }

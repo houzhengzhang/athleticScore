@@ -11,4 +11,6 @@ import java.util.List;
  */
 public interface AthleteCompetitionService {
     List<AthleteCompetition> queryAthleteScore(String athleteId) throws SQLException;
+
+    int insert(AthleteCompetition athleteCompetition) throws SQLException;
 }

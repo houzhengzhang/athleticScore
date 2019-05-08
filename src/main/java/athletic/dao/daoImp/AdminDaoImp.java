@@ -18,8 +18,13 @@ public class AdminDaoImp implements AdminDao {
     public Adminstrator adminstratorLogin(Adminstrator adminstrator) throws SQLException {
         String sql = "select * from adminstrator where email=? and password=?";
         QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
-        return queryRunner.query(sql, new BeanHandler<>(Adminstrator.class), adminstrator.getEmail(), adminstrator.getPassword());
+        Adminstrator admin = queryRunner.query(sql, new BeanHandler<>(Adminstrator.class), adminstrator.getEmail(), adminstrator.getPassword());
 
+        // 填充角色外键信息
+        RoleDaoImp roleDaoImp = new RoleDaoImp();
+        Role role = roleDaoImp.getRoleById(admin.getRoleId());
+        admin.setRole(role);
+
+        return admin;
     }
-
 }

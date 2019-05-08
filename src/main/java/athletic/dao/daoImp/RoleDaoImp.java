@@ -14,7 +14,7 @@ import java.sql.SQLException;
  */
 public class RoleDaoImp implements RoleDao {
     @Override
-    public Role queryRole(String rid) throws SQLException {
+    public Role getRoleById(String rid) throws SQLException {
         String sql = "select * from role where roleId=?";
         QueryRunner queryRunner=new QueryRunner(JDBCUtils.getDataSource());
         Object[] params={rid};

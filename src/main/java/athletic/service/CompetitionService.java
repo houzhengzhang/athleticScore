@@ -9,6 +9,6 @@ import java.sql.SQLException;
  * @ Description:
  */
 public interface CompetitionService {
-    void insert(Competition competition)throws SQLException;
-    void update(Competition competition) throws SQLException;
+    int insert(Competition competition)throws SQLException;
+    int update(Competition competition) throws SQLException;
 }

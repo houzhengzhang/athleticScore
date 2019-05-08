@@ -1,6 +1,5 @@
 package athletic.dao;
 
-import athletic.domain.Athlete;
 import athletic.domain.AthleteCompetition;
 
 import java.sql.SQLException;
@@ -12,4 +11,6 @@ import java.util.List;
  */
 public interface AthleteCompetitionDao {
     List<AthleteCompetition> queryAthleteScore(String athleteId) throws SQLException;
+
+    int insert(AthleteCompetition athleteCompetition) throws SQLException;
 }

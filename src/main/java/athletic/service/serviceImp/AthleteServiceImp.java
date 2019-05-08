@@ -19,7 +19,7 @@ public class AthleteServiceImp implements AthleteService {
     }
 
     @Override
-    public void insert(Athlete athlete) throws SQLException {
-        athleteDaoImp.insert(athlete);
+    public int insert(Athlete athlete) throws SQLException {
+        return athleteDaoImp.insert(athlete);
     }
 }

@@ -6,6 +6,7 @@ import athletic.utils.MyBeanUtils;
 import athletic.utils.UUIDUtils;
 import athletic.web.base.BaseServlet;
 import net.sf.json.JSONArray;
+import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,6 +23,15 @@ import java.util.List;
  */
 @WebServlet(name = "AthleteTeamServlet", urlPatterns = "/AthleteTeamServlet")
 public class AthleteTeamServlet extends BaseServlet {
+
+    /**
+     * 添加运动队
+     *
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     public void addAthleteTeam(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // 获取运动队信息
         AthleteTeam athleteTeam = new AthleteTeam();
@@ -29,15 +39,28 @@ public class AthleteTeamServlet extends BaseServlet {
         // 设置运动队ID
         athleteTeam.setAthleteTeamId(UUIDUtils.getId());
 
+        int num = 0;
         // 调用业务层
         AthleteTeamServiceImp athleteTeamServiceImp = new AthleteTeamServiceImp();
         try {
-            athleteTeamServiceImp.insert(athleteTeam);
+            num = athleteTeamServiceImp.insert(athleteTeam);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        JSONObject msg = new JSONObject();
+        if (num > 0) {
+            msg.put("status", 1);
+            msg.put("msg", "插入运动队成功");
+        } else {
+            msg.put("status", 0);
+            msg.put("msg", "插入运动队失败");
+        }
+
+        PrintWriter out = response.getWriter();
+        out.write(msg.toString());
     }
 
+    // TODO 运动队排名
     public void getAllAthleteTeam(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<AthleteTeam> athleteTeamList = null;
         // 调用业务层
