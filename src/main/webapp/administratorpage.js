@@ -239,7 +239,7 @@ class EditableTable extends React.Component {
       if (error) {
         return;
       }
-      this.props.update(row);
+      this.props.update(row,key);
       const newData = [...this.state.data];
       const index = newData.findIndex(item => key === item.key);
       if (index > -1) {
@@ -739,6 +739,10 @@ class ChangePlace extends React.Component{
             console.log(data.result);
             if(data.status===1){
                 message.success(data.msg);
+                let datas=data.result;
+                for(let i=0;i<datas.length;i++){
+                  datas[i].key=datas[i].fieldId;
+                }
                 this.setState({
                   data:data.result
                 });
@@ -748,7 +752,7 @@ class ChangePlace extends React.Component{
             }
         });
   }
-  update(row){
+  update(row,key){
       console.log(row);
   }
   render(){
