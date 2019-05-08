@@ -88,6 +88,7 @@ class EditableCell extends React.Component {
 class EditableTable extends React.Component {
   constructor(props) {
     super(props);
+    console.log("dasdasda:",props.data);
     this.state = { data:this.props.data, editingKey: "" };
     if(this.props.columns==='place'){
     this.columns = [
@@ -226,6 +227,10 @@ class EditableTable extends React.Component {
     }
     this.isEditing = record => record.key === this.state.editingKey;
   }
+  componentWillReceiveProps() {
+      //this.setState({data:this.props.data});
+  }
+
   cancel () {
     this.setState({ editingKey: "" });
   };
@@ -718,13 +723,12 @@ class AddAthlete extends React.Component {
 class ChangePlace extends React.Component{
   constructor(props) {
     super(props);
-    var data = [];
     this.state = {
-      data: data,
+      data:[],
     };
-    this.initDate();
+
   }
-  initDate(){
+    componentWillMount(){
     fetch('/athletic/CompetitionFieldServlet?method=getAllCompetitionField')
           .then(
             (res) => {
@@ -732,14 +736,15 @@ class ChangePlace extends React.Component{
             }
         ).then(
         (data) => {
-            console.log(this.data);
-            if(data.status==1){
+            console.log(data.result);
+            if(data.status===1){
                 message.success(data.msg);
-                this.setState={
-                  data:data.result,
-                }
+                this.setState({
+                  data:data.result
+                });
             }else{
                 message.error(data.msg);
+
             }
         });
   }
@@ -753,8 +758,7 @@ class ChangePlace extends React.Component{
         margin: '16px 16px', padding: '4%', background: '#fff',maxHeight: '60%',width:'95%'
         }}
       >
-      <EditableFormTable 
-      {...this.props}
+      <EditableFormTable
       data={this.state.data}
       columns={'place'}
       update = { this.update.bind(this) }

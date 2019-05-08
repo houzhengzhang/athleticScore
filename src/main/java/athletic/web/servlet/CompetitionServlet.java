@@ -82,7 +82,7 @@ public class CompetitionServlet extends BaseServlet {
         } else {
             msg.put("status", 0);
             msg.put("msg", "更新项目失败");
-            
+
         }
 
         PrintWriter out = response.getWriter();

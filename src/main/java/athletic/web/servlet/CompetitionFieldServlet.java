@@ -95,7 +95,7 @@ public class CompetitionFieldServlet extends BaseServlet {
      * @throws ServletException
      * @throws IOException
      */
-    public void getCompetionFieldById(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void getCompetitionFieldById(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String competitionFieldId = request.getParameter("competitionFieldId");
         CompetitionField competitionField = null;
 
@@ -123,7 +123,7 @@ public class CompetitionFieldServlet extends BaseServlet {
      * @throws ServletException
      * @throws IOException
      */
-    public void getAllCompetionField(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void getAllCompetitionField(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<CompetitionField> competitionFieldList = null;
 
         // 调用业务层
@@ -136,6 +136,9 @@ public class CompetitionFieldServlet extends BaseServlet {
 
         JSONObject msg = new JSONObject();
         msg.put("result", competitionFieldList);
+        msg.put("status", 1);
+        msg.put("msg", "查询成功");
+        System.out.println(msg);
 
         // 返回json数据
         PrintWriter out = response.getWriter();
