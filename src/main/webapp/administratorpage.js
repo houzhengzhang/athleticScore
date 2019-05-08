@@ -762,7 +762,6 @@ class ChangePlace extends React.Component{
             }
         ).then(
         (data) => {
-            console.log(data.result);
             if(data.status===1){
                 message.success(data.msg);
             }else{

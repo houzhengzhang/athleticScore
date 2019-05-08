@@ -64,7 +64,7 @@ public class CompetitionFieldServlet extends BaseServlet {
      * @throws ServletException
      * @throws IOException
      */
-    public void updateCompetionField(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void updateCompetitionField(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         CompetitionField competitionField = new CompetitionField();
         MyBeanUtils.populate(competitionField, request.getParameterMap());
         CompetitionFieldServiceImp competitionFieldServiceImp = new CompetitionFieldServiceImp();
