@@ -17,14 +17,14 @@ import java.util.List;
 public class CompetitionStageDaoImp implements CompetitionStageDao {
     @Override
     public List<CompetitionStage> getAllStage() throws SQLException {
-        String sql = "select * from competitionStage";
+        String sql = "select * from competitionstage";
         QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
         return queryRunner.query(sql, new BeanListHandler<>(CompetitionStage.class));
     }
 
     @Override
     public CompetitionStage getCompetitionStageById(String competitionId) throws SQLException {
-        String sql = "select * from competitionStage where competitionStageId=?";
+        String sql = "select * from competitionstage where competitionStageId=?";
         QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
         return queryRunner.query(sql, new BeanHandler<>(CompetitionStage.class), competitionId);
     }

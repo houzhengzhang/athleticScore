@@ -62,7 +62,7 @@ public class CompetitionDaoImp implements CompetitionDao {
         // 查询外键对象
         CompetitionFieldDaoImp competitionFieldDaoImp = new CompetitionFieldDaoImp();
         CompetitionStageDaoImp competitionStageDaoImp = new CompetitionStageDaoImp();
-        for(Competition competition:competitionList){ 
+        for(Competition competition:competitionList){
             // 查询项目场地
             CompetitionField competitionField = competitionFieldDaoImp.getCompetitionFieldById(competition.getFieldId());
             competition.setCompetitionField(competitionField);
