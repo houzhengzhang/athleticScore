@@ -24,7 +24,7 @@ public class CompetitionStageDaoImp implements CompetitionStageDao {
 
     @Override
     public CompetitionStage getCompetitionStageById(String competitionId) throws SQLException {
-        String sql = "select * from competitionStage where competitionId=?";
+        String sql = "select * from competitionStage where competitionStageId=?";
         QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
         return queryRunner.query(sql, new BeanHandler<>(CompetitionStage.class), competitionId);
     }
