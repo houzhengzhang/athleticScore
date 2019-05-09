@@ -89,7 +89,7 @@ class EditableCell extends React.Component {
 class EditableTable extends React.Component {
   constructor(props) {
     super(props);
-    console.log("dasdasda:",props.data);
+    console.log("result:",this.props.data);
     this.state = { data:this.props.data, editingKey: "" };
     if(this.props.columns==='place'){
     this.columns = [
@@ -315,7 +315,6 @@ class CreateComForm extends React.Component {
                             }
                         ).then(
                         (data) => {
-                              console.log(this.data);
                             if(data.status==1){
                                 message.success(data.msg);
 
@@ -425,43 +424,52 @@ class CreateCom extends React.Component {
 class ChangeCom extends React.Component{
   constructor(props) {
     super(props);
-    var data = [];
-    for (let i = 0; i < 5; i++) {
-      data.push({
-        key: i.toString(),
-        name: `Edrward ${i}`,
-        address: `London Park no. ${i}`,
-        startTime:'2019-05-07 15:04:07',
-        endTime:'2019-05-17 15:04:07',
-        state:'未开始'
-      });
-    }
     this.state = {
-      data: data,
+      data: []
     };
-    this.initDate();
   }
-  initDate(){
-    fetch('/athletic/Servlet?method=')
-          .then(
-            (res) => {
-                return res.json()
-            }
-        ).then(
-        (data) => {
-            console.log(this.data);
-            if(data.status==1){
-                message.success(data.msg);
-                localStorage.setItem("token", JSON.stringify(data.result));
-                window.location=data.url;
+    componentWillMount(){
+        fetch('/athletic/CompetitionServlet?method=getAllCompetition')
+            .then(
+                (res) => {
+                    return res.json()
+                }
+            ).then(
+            (data) => {
+                console.log(data.result);
+                if(data.status===1){
+                    message.success(data.msg);
+                    let datas=data.result;
+                    for(let i=0;i<datas.length;i++){
+                        datas[i].key=datas[i].fieldId;
+                    }
+                    this.setState({
+                        data:datas
+                    });
+                }else{
+                    message.error(data.msg);
 
-            }else{
-                message.error(data.msg);
-            }
-        });
+                }
+            });
   }
-  update(row){
+
+  update(row,key){
       console.log(row);
+      let url='/athletic/CompetitionServlet?method=updateCompetition&fieldId='+key+'&address='+row.address+'&name='+row.name+'&state='+row.state;
+      fetch(encodeURI(encodeURI(url)))
+          .then(
+              (res) => {
+                  return res.json()
+              }
+          ).then(
+          (data) => {
+              if(data.status===1){
+                  message.success(data.msg);
+              }else{
+                  message.error(data.msg);
+
+              }
+          });
   }
   render(){
     const EditableFormTable = Form.create()(EditableTable);
@@ -754,7 +762,7 @@ class ChangePlace extends React.Component{
                   datas[i].key=datas[i].fieldId;
                 }
                 this.setState({
-                  data:data.result
+                  data:datas
                 });
             }else{
                 message.error(data.msg);
