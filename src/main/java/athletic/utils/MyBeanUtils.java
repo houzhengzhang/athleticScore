@@ -17,7 +17,7 @@ public class MyBeanUtils {
             // 1_创建时间类型的转换器
             DateConverter dt = new DateConverter();
             // 2_设置转换的格式
-            dt.setPattern("yyyy-MM-dd");
+            dt.setPattern("yyyy-mm-dd HH:mm:ss");
             // 3_注册转换器
             ConvertUtils.register(dt, java.util.Date.class);
 
