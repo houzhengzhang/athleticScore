@@ -34,6 +34,7 @@ var InputNumber=antd.InputNumber;
 var PageHeader=antd.PageHeader;
 var Table=antd.Table;
 var Popconfirm =antd.Popconfirm;
+var RangePicker = antd.DatePicker.RangePicker;
 const token = JSON.parse(localStorage.getItem("token"));
 const EditableContext = React.createContext();
 class EditableCell extends React.Component {
@@ -297,28 +298,17 @@ class EditableTable extends React.Component {
 class CreateComForm extends React.Component {
   constructor(props){
     super(props);
-    var data = [];
-    for (let i = 0; i < 5; i++) {
-      data.push({
-        id: i.toString(),
-        name: `Field ${i}`,
-        address: `London Park no. ${i}`,
-        state:'空闲'
-      });
-    }
-    this.state={
-      fieldData: data,
-    }
     this.handleSubmit = (e) => {
       e.preventDefault();
       this.props.form.validateFields((err, values) => {
         if (!err) {
           console.log('Received values of form: ', values);
           const rangeTimeValue = values['range-time-picker'];
-          console.log(rangeTimeValue[0].format('YYYY-MM-DD HH:mm:ss'))
-          console.log(rangeTimeValue[1].format('YYYY-MM-DD HH:mm:ss'))
-          /*fetch('/athletic/addFliedServlet?method=addFlied&name=' + values.name+ "&address="+
-                         values.address )
+          let startTime=rangeTimeValue[0].format('YYYY-MM-DD HH:mm:ss');
+          let endTime=rangeTimeValue[1].format('YYYY-MM-DD HH:mm:ss');
+          let url='/athletic/CompetitionServlet?method=addCompetition&name='
+           +values.name+'&fieldId='+values.address+'&startTime='+startTime+'&endTime='+endTime;
+          fetch(encodeURI(encodeURI(url)))
                          .then(
                             (res) => {
                                 return res.json()
@@ -328,16 +318,12 @@ class CreateComForm extends React.Component {
                               console.log(this.data);
                             if(data.status==1){
                                 message.success(data.msg);
-                                this.props.form.setFieldsValue({
-                                  name: '',
-                                  address:''
-                                });
 
                             }else{
                                 message.error(data.msg);
                             }
                             
-                        });*/
+                        });
         }
       });
     }
@@ -371,7 +357,7 @@ class CreateComForm extends React.Component {
             })(
               <Select
               >
-                {this.state.fieldData.map(field => <Option key={field.id}>{field.name}</Option>)}
+                {this.props.fieldData.map(field => <Option key={field.fieldId}>{field.name}</Option>)}
                </Select>
             )}
           </Form.Item>
@@ -397,6 +383,30 @@ class CreateComForm extends React.Component {
 class CreateCom extends React.Component {
   constructor(props){
     super(props);
+    this.state={
+      fieldData: [],
+    };
+
+  }
+  componentDidMount(){
+    fetch('/athletic/CompetitionFieldServlet?method=getAllCompetitionField')
+        .then(
+            (res) => {
+              return res.json()
+            }
+        ).then(
+        (data) => {
+          if(data.status===1){
+            message.success(data.msg);
+            this.datas=data.result;
+            this.setState({
+              fieldData:this.datas,
+            });
+          }else{
+            message.error(data.msg);
+            this.datas=[];
+          }
+        });
   }
   render() {
     const CreateComFormPage =Form.create()(CreateComForm);
@@ -405,7 +415,7 @@ class CreateCom extends React.Component {
         margin: '16px 16px', padding: '6%', background: '#fff',maxHeight: '50%',width:'50%'
         }}
       >
-         <CreateComFormPage />
+        <CreateComFormPage fieldData={this.state.fieldData}/>
       </Content>
      
     
