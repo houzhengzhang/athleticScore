@@ -35,6 +35,8 @@ public class CompetitionServlet extends BaseServlet {
         MyBeanUtils.populate(competition, request.getParameterMap());
         // 初始化ID
         competition.setCompetitionId(UUIDUtils.getId());
+        // 初始状态 初赛
+        competition.setCompetitionStageId("B47507AE6987430E98BBE646D17350A8");
         int num = 0;
 
         CompetitionServiceImp competitionServiceImp = new CompetitionServiceImp();
