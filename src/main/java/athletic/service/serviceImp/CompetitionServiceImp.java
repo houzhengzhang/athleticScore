@@ -5,6 +5,7 @@ import athletic.domain.Competition;
 import athletic.service.CompetitionService;
 
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * @ Date: 2019/5/6 22:02
@@ -21,5 +22,10 @@ public class CompetitionServiceImp implements CompetitionService {
     @Override
     public int update(Competition competition) throws SQLException {
         return competitionDaoImp.update(competition);
+    }
+
+    @Override
+    public List<Competition> getAllCompetion() throws SQLException {
+        return competitionDaoImp.getAllCompetion();
     }
 }

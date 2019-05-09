@@ -3,6 +3,7 @@ package athletic.dao;
 import athletic.domain.Competition;
 
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * @ Date: 2019/5/6 21:57
@@ -14,4 +15,6 @@ public interface CompetitionDao {
     int update(Competition competition) throws SQLException;
 
     Competition getCompetionById(String competionId) throws SQLException;
+
+    List<Competition> getAllCompetion() throws SQLException;
 }

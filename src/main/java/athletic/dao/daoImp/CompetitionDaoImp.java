@@ -7,8 +7,10 @@ import athletic.domain.CompetitionStage;
 import athletic.utils.JDBCUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
 
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * @ Date: 2019/5/6 21:58
@@ -50,5 +52,24 @@ public class CompetitionDaoImp implements CompetitionDao {
         CompetitionStage competitionStage = competitionStageDaoImp.getCompetitionStageById(competition.getCompetitionStageId());
         competition.setCompetitionStage(competitionStage);
         return competition;
+    }
+
+    @Override
+    public List<Competition> getAllCompetion() throws SQLException {
+        String sql = "select * from competition";
+        QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
+        List<Competition> competitionList = queryRunner.query(sql, new BeanListHandler<>(Competition.class));
+        // 查询外键对象
+        CompetitionFieldDaoImp competitionFieldDaoImp = new CompetitionFieldDaoImp();
+        CompetitionStageDaoImp competitionStageDaoImp = new CompetitionStageDaoImp();
+        for(Competition competition:competitionList){
+            // 查询项目场地
+            CompetitionField competitionField = competitionFieldDaoImp.getCompetitionFieldById(competition.getFieldId());
+            competition.setCompetitionField(competitionField);
+            // 查询项目阶段
+            CompetitionStage competitionStage = competitionStageDaoImp.getCompetitionStageById(competition.getCompetitionStageId());
+            competition.setCompetitionStage(competitionStage);
+        }
+        return competitionList;
     }
 }
