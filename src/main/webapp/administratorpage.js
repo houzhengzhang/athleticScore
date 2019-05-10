@@ -477,7 +477,7 @@ class ChangeCom extends React.Component{
   }
   update(row){
       console.log(row);
-      let url='/athletic/CompetitionServlet?method=updateCompetition&competitionId'+row.competitionId+
+      let url='/athletic/CompetitionServlet?method=updateCompetition&competitionId='+row.competitionId+
           '&competitionStageId='+row.competitionStageId+'&endTime='+row.endTime+'&fieldId='+row.fieldId+'&name='
           +row.name+'&startTime='+row.startTime;
       fetch(fetch_get(url))
