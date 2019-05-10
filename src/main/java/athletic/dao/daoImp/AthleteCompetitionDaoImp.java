@@ -7,6 +7,7 @@ import athletic.domain.CompetitionStage;
 import athletic.utils.JDBCUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -67,9 +68,42 @@ public class AthleteCompetitionDaoImp implements AthleteCompetitionDao {
     }
 
     @Override
-    public List<AthleteCompetition> queryAthleteScoreByCond(String competitionId) throws SQLException {
-        String sql = "select * from athletecompetition where competitionId=? and score!=0 order by score desc";
+    public List<AthleteCompetition> queryAthleteScoreByCond(String competitionId, String competitionStageId) throws SQLException {
+        String sql = "select * from athletecompetition where competitionId=? and competitionStageId=? and score!=0 order by score desc";
         QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
-        return queryRunner.query(sql, new BeanListHandler<>(AthleteCompetition.class), competitionId);
+        return queryRunner.query(sql, new BeanListHandler<>(AthleteCompetition.class), competitionId, competitionStageId);
+    }
+
+    @Override
+    public List<AthleteCompetition> getAllAthleteScore() throws SQLException {
+        String sql = "select * from athletecompetition where score!=0";
+        QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
+
+        CompetitionDaoImp competitionDaoImp = new CompetitionDaoImp();
+        CompetitionStageDaoImp competitionStageDaoImp = new CompetitionStageDaoImp();
+        // 查询运动员项目信息
+        List<AthleteCompetition> athleteCompetitionList = queryRunner.query(sql, new BeanListHandler<>(AthleteCompetition.class));
+
+        // 查询补充外键信息
+        for (AthleteCompetition athleteCompetition : athleteCompetitionList) {
+            // 查询对应的项目信息
+            Competition competition = competitionDaoImp.getCompetionById(athleteCompetition.getCompetitonId());
+            athleteCompetition.setCompetition(competition);
+            // 查询项目的阶段信息
+            CompetitionStage competitionStage = competitionStageDaoImp.getCompetitionStageById(athleteCompetition.getCompetitonId());
+            athleteCompetition.setCompetitionStage(competitionStage);
+        }
+        return athleteCompetitionList;
+    }
+
+    @Override
+    public boolean isAthleteScoredById(String competitionId, String competitionStageId) throws SQLException {
+        String sqlAll = "select count(*) from athletecompetition where competitionId=? and competitionStageId=?";
+        String sqlScored = "select count(*) from athletecompetition where competitionId=? and competitionStageId=? and score!=0";
+        QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
+
+        Long allNum = (Long) queryRunner.query(sqlAll, new ScalarHandler<>());
+        Long scoredNum = (Long) queryRunner.query(sqlScored, new ScalarHandler<>());
+        return allNum.intValue() == scoredNum.intValue();
     }
 }

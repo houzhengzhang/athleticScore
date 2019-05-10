@@ -19,5 +19,9 @@ public interface AthleteCompetitionDao {
 
     int insert(AthleteCompetition athleteCompetition) throws SQLException;
 
-    List<AthleteCompetition> queryAthleteScoreByCond(String competitionId) throws SQLException;
+    List<AthleteCompetition> queryAthleteScoreByCond(String competitionId, String competitionStageId) throws SQLException;
+
+    List<AthleteCompetition> getAllAthleteScore() throws SQLException;
+
+    boolean isAthleteScoredById(String competitionId, String competitionStageId) throws SQLException;
 }

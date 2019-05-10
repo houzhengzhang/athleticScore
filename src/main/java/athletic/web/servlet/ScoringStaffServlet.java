@@ -1,6 +1,7 @@
 package athletic.web.servlet;
 
 import athletic.domain.AthleteCompetition;
+import athletic.domain.AthleteTeam;
 import athletic.domain.ScoringStaff;
 import athletic.service.AthleteCompetitionService;
 import athletic.service.serviceImp.AthleteCompetitionServiceImp;
@@ -16,7 +17,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ Date: 2019/5/5 20:01
@@ -59,15 +63,43 @@ public class ScoringStaffServlet extends BaseServlet {
     }
 
     /**
-     * 录入运动员分数
-     *
+     * 获取所有未打分的运动员-项目信息
      * @param request
      * @param response
      * @throws ServletException
      * @throws IOException
      */
+    public void getAllAthleteScore(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List<AthleteCompetition> athleteCompetitionList = null;
+        AthleteCompetitionServiceImp athleteCompetitionServiceImp = new AthleteCompetitionServiceImp();
+
+        try {
+            athleteCompetitionList=athleteCompetitionServiceImp.getAllAthleteScore();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        // 返回JSON数据
+        JSONObject msg = new JSONObject();
+        if (null != athleteCompetitionList) {
+            msg.put("result", athleteCompetitionList);
+            msg.put("status", 1);
+            msg.put("msg", "查询成功");
+        } else {
+            msg.put("status", 0);
+            msg.put("msg", "查询失败");
+        }
+    }
+
+        /**
+         * 录入运动员分数
+         *
+         * @param request
+         * @param response
+         * @throws ServletException
+         * @throws IOException
+         */
     public void updateAthleteScore(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // 获取信息
+        // 获取运动员打分信息
         AthleteCompetition athleteCompetition = new AthleteCompetition();
         MyBeanUtils.populate(athleteCompetition, request.getParameterMap());
 
@@ -75,7 +107,7 @@ public class ScoringStaffServlet extends BaseServlet {
         // 调用业务层
         AthleteCompetitionServiceImp athleteCompetitionServiceImp = new AthleteCompetitionServiceImp();
         try {
-            num = athleteCompetitionServiceImp.insert(athleteCompetition);
+            num = athleteCompetitionServiceImp.updateAthleteScore(athleteCompetition);
         } catch (SQLException e) {
             e.printStackTrace();
         }

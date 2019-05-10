@@ -44,10 +44,6 @@ public class AdminServlet extends BaseServlet {
                 msg.put("status", 0);
                 msg.put("msg", "用户名或密码错误！");
             } else {
-                // TODO 查询该用户的权限
-//                RoleDaoImp roleDaoImp = new RoleDaoImp();
-//                Role role = roleDaoImp.getRoleById(adminstrator.getRoleId());
-//                System.out.println("rols:   " + role);
                 msg.put("status", 1);
                 msg.put("msg", "登录成功！");
                 msg.put("result", new JSONObject(adminstrator));

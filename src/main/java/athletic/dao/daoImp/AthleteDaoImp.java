@@ -22,6 +22,9 @@ public class AthleteDaoImp implements AthleteDao {
         String sql = "select * from athlete where email=? and password=?";
         QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
         Athlete ath = queryRunner.query(sql, new BeanHandler<>(Athlete.class), athlete.getEmail(), athlete.getPassword());
+
+        if(null==ath)
+            return null;
         // 填充角色外键信息
         RoleDaoImp roleDaoImp = new RoleDaoImp();
 

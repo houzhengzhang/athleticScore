@@ -85,7 +85,6 @@ public class CompetitionServlet extends BaseServlet {
             msg.put("status", 0);
             msg.put("msg", "查询失败");
         }
-        System.out.println(msg);
 
         PrintWriter out = response.getWriter();
         out.write(msg.toString());

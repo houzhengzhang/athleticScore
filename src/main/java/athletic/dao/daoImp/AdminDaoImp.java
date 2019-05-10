@@ -19,7 +19,8 @@ public class AdminDaoImp implements AdminDao {
         String sql = "select * from adminstrator where email=? and password=?";
         QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
         Adminstrator admin = queryRunner.query(sql, new BeanHandler<>(Adminstrator.class), adminstrator.getEmail(), adminstrator.getPassword());
-
+        if(null==admin)
+            return null;
         // 填充角色外键信息
         RoleDaoImp roleDaoImp = new RoleDaoImp();
         Role role = roleDaoImp.getRoleById(admin.getRoleId());

@@ -20,7 +20,8 @@ public class ScoringStaffDaoImp implements ScoringStaffDao {
         String sql = "select * from scoringstaff where email=? and password=?";
         QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
         ScoringStaff staff = queryRunner.query(sql, new BeanHandler<>(ScoringStaff.class), scoringStaff.getEmail(), scoringStaff.getPassword());
-
+        if(null==staff)
+            return null;
         // 填充角色外键信息
         RoleDaoImp roleDaoImp = new RoleDaoImp();
         Role role = roleDaoImp.getRoleById(staff.getRoleId());

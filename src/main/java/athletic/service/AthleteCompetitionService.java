@@ -13,7 +13,11 @@ import java.util.List;
 public interface AthleteCompetitionService {
     List<AthleteCompetition> queryAthleteScore(String athleteId) throws SQLException;
 
+    List<AthleteCompetition> getAllAthleteScore() throws SQLException;
+
     int insert(AthleteCompetition athleteCompetition, Connection connection) throws SQLException;
 
     int insert(AthleteCompetition athleteCompetition) throws SQLException;
+
+    int updateAthleteScore(AthleteCompetition athleteCompetition) throws SQLException;
 }
