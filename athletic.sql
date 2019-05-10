@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50640
 File Encoding         : 65001
 
-Date: 2019-05-10 14:02:14
+Date: 2019-05-10 20:59:03
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -65,15 +65,15 @@ CREATE TABLE `athlete` (
 DROP TABLE IF EXISTS `athletecompetition`;
 CREATE TABLE `athletecompetition` (
   `athleteId` varchar(32) NOT NULL,
-  `competitonId` varchar(32) DEFAULT NULL,
-  `competitionStageId` varchar(32) DEFAULT NULL,
+  `competitonId` varchar(32) NOT NULL,
+  `competitionStageId` varchar(32) NOT NULL,
   `score` double(32,0) DEFAULT NULL,
-  PRIMARY KEY (`athleteId`),
+  PRIMARY KEY (`athleteId`,`competitonId`,`competitionStageId`),
   KEY `competitonId` (`competitonId`),
   KEY `competitionStageId` (`competitionStageId`),
-  CONSTRAINT `athletecompetition_ibfk_1` FOREIGN KEY (`athleteId`) REFERENCES `athlete` (`athleteId`) ON DELETE CASCADE,
-  CONSTRAINT `athletecompetition_ibfk_2` FOREIGN KEY (`competitonId`) REFERENCES `competition` (`competitionId`) ON DELETE CASCADE,
-  CONSTRAINT `athletecompetition_ibfk_3` FOREIGN KEY (`competitionStageId`) REFERENCES `competitionstage` (`competitionStageId`) ON DELETE CASCADE
+  CONSTRAINT `athletecompetition_ibfk_1` FOREIGN KEY (`athleteId`) REFERENCES `athlete` (`athleteId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `athletecompetition_ibfk_2` FOREIGN KEY (`competitonId`) REFERENCES `competition` (`competitionId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `athletecompetition_ibfk_3` FOREIGN KEY (`competitionStageId`) REFERENCES `competitionstage` (`competitionStageId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -164,6 +164,7 @@ CREATE TABLE `ranking` (
   `rankingId` varchar(32) NOT NULL,
   `competitonId` varchar(32) DEFAULT NULL,
   `athleteId` varchar(32) NOT NULL,
+  `ranking` int(11) DEFAULT NULL,
   PRIMARY KEY (`rankingId`),
   KEY `competitonId` (`competitonId`),
   KEY `athleteId` (`athleteId`),
