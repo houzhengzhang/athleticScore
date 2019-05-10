@@ -86,6 +86,8 @@ public class AthleteCompetitionServiceImp implements AthleteCompetitionService {
                     // 插入数据
                     rankingDaoImp.insert(ranking, connection);
                 }
+
+                // TODO 更新运动队total Point
             }
             // 提交事务
             connection.commit();

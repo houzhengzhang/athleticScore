@@ -28,4 +28,11 @@ public class CompetitionStageDaoImp implements CompetitionStageDao {
         QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
         return queryRunner.query(sql, new BeanHandler<>(CompetitionStage.class), competitionId);
     }
+
+    @Override
+    public CompetitionStage getCompetitionStageByState(String state) throws SQLException {
+        String sql = "select * from competitionstage where state=?";
+        QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
+        return queryRunner.query(sql, new BeanHandler<>(CompetitionStage.class), state);
+    }
 }

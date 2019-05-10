@@ -2,6 +2,7 @@ package athletic.dao;
 
 import athletic.domain.Competition;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
 public interface CompetitionDao {
     int insert(Competition competition) throws SQLException;
 
-    int update(Competition competition) throws SQLException;
+    int update(Competition competition, Connection connection) throws SQLException;
 
     Competition getCompetionById(String competionId) throws SQLException;
 

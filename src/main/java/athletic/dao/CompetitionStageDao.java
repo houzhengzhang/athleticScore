@@ -14,4 +14,6 @@ public interface CompetitionStageDao {
 
     CompetitionStage getCompetitionStageById(String competitionId) throws SQLException;
 
+    CompetitionStage getCompetitionStageByState(String state) throws SQLException;
+
 }

@@ -9,6 +9,7 @@ import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -27,12 +28,12 @@ public class CompetitionDaoImp implements CompetitionDao {
     }
 
     @Override
-    public int update(Competition competition) throws SQLException {
+    public int update(Competition competition, Connection connection) throws SQLException {
         String sql = "update competition set competitionStageId=?,name=?,fieldId=?,startTime=?,endTime=? where competitionId=?";
         Object[] params = {competition.getCompetitionStageId(), competition.getName(),
                 competition.getFieldId(), competition.getStartTime(), competition.getEndTime(), competition.getCompetitionId()};
-        QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
-        return queryRunner.update(sql, params);
+        QueryRunner queryRunner = new QueryRunner();
+        return queryRunner.update(connection, sql, params);
     }
 
     @Override
@@ -62,7 +63,7 @@ public class CompetitionDaoImp implements CompetitionDao {
         // 查询外键对象
         CompetitionFieldDaoImp competitionFieldDaoImp = new CompetitionFieldDaoImp();
         CompetitionStageDaoImp competitionStageDaoImp = new CompetitionStageDaoImp();
-        for(Competition competition:competitionList){
+        for (Competition competition : competitionList) {
             // 查询项目场地
             CompetitionField competitionField = competitionFieldDaoImp.getCompetitionFieldById(competition.getFieldId());
             competition.setCompetitionField(competitionField);
