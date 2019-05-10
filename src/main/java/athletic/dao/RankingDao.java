@@ -2,6 +2,7 @@ package athletic.dao;
 
 import athletic.domain.Ranking;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -13,4 +14,6 @@ public interface RankingDao {
     List<Ranking> getRankingByAthleteId(String athleteId) throws SQLException;
 
     List<Ranking> getRankingByCompetitionId(String competitionId) throws SQLException;
+
+    int insert(Ranking ranking, Connection connection) throws SQLException;
 }

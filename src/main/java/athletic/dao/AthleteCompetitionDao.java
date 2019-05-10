@@ -15,5 +15,7 @@ public interface AthleteCompetitionDao {
 
     int insert(AthleteCompetition athleteCompetition, Connection connection) throws SQLException;
 
+    int update(AthleteCompetition athleteCompetition, Connection connection) throws SQLException;
+
     int insert(AthleteCompetition athleteCompetition) throws SQLException;
 }

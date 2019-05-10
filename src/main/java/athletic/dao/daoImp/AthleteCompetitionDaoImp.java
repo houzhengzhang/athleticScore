@@ -49,6 +49,15 @@ public class AthleteCompetitionDaoImp implements AthleteCompetitionDao {
     }
 
     @Override
+    public int update(AthleteCompetition athleteCompetition, Connection connection) throws SQLException {
+        String sql = "update athletecompetition set competitonId=?,competitionStageId=?,score=? where athleteId=?";
+        QueryRunner queryRunner = new QueryRunner();
+        Object[] params = {athleteCompetition.getCompetitonId(), athleteCompetition.getCompetitionStageId(),
+                athleteCompetition.getScore(), athleteCompetition.getAthleteId()};
+        return queryRunner.update(connection, sql, params);
+    }
+
+    @Override
     public int insert(AthleteCompetition athleteCompetition) throws SQLException {
         String sql = "insert into athletecompetition values (?,?,?,?)";
         QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());

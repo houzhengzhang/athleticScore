@@ -73,13 +73,21 @@ public class AthleteTeamServlet extends BaseServlet {
             e.printStackTrace();
         }
 
-        // 返回JSON数组
-        JSONArray jsonArray = new JSONArray();
-        jsonArray.addAll(athleteTeamList);
+        // 返回JSON数据
+        JSONObject msg = new JSONObject();
+        if (null != athleteTeamList) {
+            msg.put("result", athleteTeamList);
+            msg.put("status", 1);
+            msg.put("msg", "查询成功");
+        } else {
+            msg.put("status", 0);
+            msg.put("msg", "查询失败");
+        }
+
 
         PrintWriter out = response.getWriter();
         // 返回字符串
-        out.write(jsonArray.toString());
+        out.write(msg.toString());
 
     }
 }

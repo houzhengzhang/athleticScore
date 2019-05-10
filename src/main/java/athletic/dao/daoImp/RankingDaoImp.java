@@ -8,6 +8,7 @@ import athletic.utils.JDBCUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -49,5 +50,13 @@ public class RankingDaoImp implements RankingDao {
             ranking.setCompetition(competition);
         }
         return rankingList;
+    }
+
+    @Override
+    public int insert(Ranking ranking, Connection connection) throws SQLException {
+        String sql = "insert into ranking values(?,?,?,?)";
+        QueryRunner queryRunner = new QueryRunner();
+        Object[] params = {ranking.getRankingId(),ranking.getCompetitonId(), ranking.getAthleteId(), ranking.getScore()};
+        return queryRunner.update(connection, sql, params);
     }
 }

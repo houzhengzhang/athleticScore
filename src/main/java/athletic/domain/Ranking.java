@@ -11,10 +11,19 @@ public class Ranking {
     private String rankingId;
     private String competitonId;
     private String athleteId;
+    private int score;
 
     // 外键
     private Competition competition;
     private Athlete athlete;
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
 
     public Competition getCompetition() {
         return competition;
