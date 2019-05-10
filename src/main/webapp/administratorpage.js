@@ -37,21 +37,36 @@ var Popconfirm =antd.Popconfirm;
 var RangePicker = antd.DatePicker.RangePicker;
 const token = JSON.parse(localStorage.getItem("token"));
 const EditableContext = React.createContext();
+var fielddata_global=[];
+const comStage=[{id:'B47507AE6987430E98BBE646D17350A8',name:'初赛'},{id:'BA28BA6C1D7D421796C39C2BF3F397F8',name:'决赛'}];
+function fetch_get(url) {
+  return encodeURI(encodeURI(url));
+}
 class EditableCell extends React.Component {
   getInput(){
-    if (this.props.dataIndex === "state") {
+    if (this.props.title === "项目场地地址") {
       return <Select >
-            <Option value="空闲">空闲</Option>
-            <Option value="占有">占有</Option>
+            {fielddata_global.map(field => <Option value={field.fieldId}>{field.name}</Option>)}
             </Select>;
+    }
+    if (this.props.title === "项目阶段") {
+      return <Select disabled>
+                <Option value='B47507AE6987430E98BBE646D17350A8'>初赛</Option>
+                <Option value='BA28BA6C1D7D421796C39C2BF3F397F8'>决赛</Option>
+             </Select>;
+    }
+    if(this.props.title === "场地状态")
+    {
+      return <Select >
+              <Option value='空闲'>空闲</Option>
+              <Option value='占有'>占有</Option>
+            </Select>
     }
     return <Input />;
   }
-
   render() {
     const {
       editing,
-      dataIndex,
       title,
       inputType,
       record,
@@ -66,14 +81,14 @@ class EditableCell extends React.Component {
             <td {...restProps}>
               {editing ? (
                 <FormItem style={{ margin: 0 }}>
-                  {getFieldDecorator(dataIndex, {
+                  {getFieldDecorator(this.props.dataIndex, {
                     rules: [
                       {
                         required: true,
                         message: `Please Input ${title}!`
                       }
                     ],
-                    initialValue: record[dataIndex]
+                    initialValue: record[this.props.name]
                   })(this.getInput())}
                 </FormItem>
               ) : (
@@ -85,7 +100,7 @@ class EditableCell extends React.Component {
       </EditableContext.Consumer>
     );
   }
-} 
+}
 class EditableTable extends React.Component {
   constructor(props) {
     super(props);
@@ -96,18 +111,21 @@ class EditableTable extends React.Component {
       {
         title: "场地名",
         dataIndex: "name",
+        name:"name",
         width: "30%",
         editable: true
       },
       {
         title: "场地地址",
         dataIndex: "address",
+        name:"address",
         width: "40%",
         editable: true
       },
       {
         title: "场地状态",
         dataIndex: "state",
+        name:"state",
         width: "10%",
         editable: true
       },
@@ -158,29 +176,34 @@ class EditableTable extends React.Component {
           title: "项目名",
           dataIndex: "name",
           width: "20%",
+          name:"name",
           editable: true
         },
         {
           title: "项目场地地址",
-          dataIndex: "address",
+          dataIndex: "competitionField.name",
+          name:"fieldId",
           width: "20%",
           editable: true
         },
         {
           title: "开始时间",
           dataIndex:'startTime',
+          name:"startTime",
           width: "20%",
           editable: true
         },
         {
           title: "结束时间",
           dataIndex:'endTime',
+          name:"endTime",
           width: "20%",
           editable: true
         },
         {
           title: "项目阶段",
-          dataIndex: "state",
+          dataIndex: "competitionStage.state",
+          name:"competitionStageId",
           width: "10%",
           editable: true
         },
@@ -228,33 +251,47 @@ class EditableTable extends React.Component {
     }
     this.isEditing = record => record.key === this.state.editingKey;
   }
-  componentWillReceiveProps() {
-      //this.setState({data:this.props.data});
-  }
-
   cancel () {
     this.setState({ editingKey: "" });
   };
   save(form, key) {
-    form.validateFields((error, row) => {
+      form.validateFields((error, row) => {
       if (error) {
         return;
       }
-      this.props.update(row,key);
-      const newData = [...this.state.data];
-      const index = newData.findIndex(item => key === item.key);
-      if (index > -1) {
-        const item = newData[index];
-        newData.splice(index, 1, {
-          ...item,
-          ...row
-        });
-        this.setState({ data: newData, editingKey: "" });
-      } else {
-        newData.push(row);
-        this.setState({ data: newData, editingKey: "" });
+      if(this.props.columns==='place'){
+        this.props.update(row,key);
+        const newData = [...this.state.data];
+        const index = newData.findIndex(item => key === item.key);
+        if (index > -1) {
+          const item = newData[index];
+          newData.splice(index, 1, {
+            ...item,
+            ...row
+          });
+          this.setState({ data: newData, editingKey: "" });
+        } else {
+          newData.push(row);
+          this.setState({ data: newData, editingKey: "" });
+        }
+
       }
-    });
+      else{
+        const newData = [...this.state.data];
+        const index = newData.findIndex(item => key === item.key);
+        if (index > -1) {
+          newData[index].competitionField=fielddata_global[fielddata_global.findIndex(item => row.competitionField.name === item.fieldId)];
+          newData[index].name=row.name;
+          newData[index].endTime=row.endTime;
+          newData[index].startTime=row.startTime;
+          this.setState({ data: newData, editingKey: "" });
+          this.props.update(newData[index])
+        } else {
+          newData.push(row);
+          this.setState({ data: newData, editingKey: "" });
+        }
+      }
+      });
   }
 
   edit(key) {
@@ -276,6 +313,7 @@ class EditableTable extends React.Component {
           record,
           dataIndex: col.dataIndex,
           title: col.title,
+          name: col.name,
           editing: this.isEditing(record)
         })
       };
@@ -308,21 +346,26 @@ class CreateComForm extends React.Component {
           let endTime=rangeTimeValue[1].format('YYYY-MM-DD HH:mm:ss');
           let url='/athletic/CompetitionServlet?method=addCompetition&name='
            +values.name+'&fieldId='+values.address+'&startTime='+startTime+'&endTime='+endTime;
-          fetch(encodeURI(encodeURI(url)))
-                         .then(
-                            (res) => {
-                                return res.json()
-                            }
-                        ).then(
-                        (data) => {
-                            if(data.status==1){
-                                message.success(data.msg);
+          fetch(fetch_get(url))
+              .then(
+                  (res) => {
+                    return res.json()
+                  }
+              ).then(
+              (data) => {
+                console.log(data.result);
+                if(data.status===1){
+                  message.success(data.msg);
+                  this.props.form.setFieldsValue({
+                    name: '',
+                    address:''
+                  });
+                }else{
+                  message.error(data.msg);
+                }
+              });
 
-                            }else{
-                                message.error(data.msg);
-                            }
-                            
-                        });
+
         }
       });
     }
@@ -383,29 +426,9 @@ class CreateCom extends React.Component {
   constructor(props){
     super(props);
     this.state={
-      fieldData: [],
+      fieldData: fielddata_global,
     };
 
-  }
-  componentDidMount(){
-    fetch('/athletic/CompetitionFieldServlet?method=getAllCompetitionField')
-        .then(
-            (res) => {
-              return res.json()
-            }
-        ).then(
-        (data) => {
-          if(data.status===1){
-            message.success(data.msg);
-            this.datas=data.result;
-            this.setState({
-              fieldData:this.datas,
-            });
-          }else{
-            message.error(data.msg);
-            this.datas=[];
-          }
-        });
   }
   render() {
     const CreateComFormPage =Form.create()(CreateComForm);
@@ -428,48 +451,50 @@ class ChangeCom extends React.Component{
       data: []
     };
   }
-    componentWillMount(){
-        fetch('/athletic/CompetitionServlet?method=getAllCompetition')
-            .then(
-                (res) => {
-                    return res.json()
-                }
-            ).then(
-            (data) => {
-                console.log(data.result);
-                if(data.status===1){
-                    message.success(data.msg);
-                    let datas=data.result;
-                    for(let i=0;i<datas.length;i++){
-                        datas[i].key=datas[i].fieldId;
-                    }
-                    this.setState({
-                        data:datas
-                    });
-                }else{
-                    message.error(data.msg);
-
-                }
+  componentWillMount(){
+    let url = '/athletic/CompetitionServlet?method=getAllCompetition';
+    fetch(fetch_get(url))
+        .then(
+            (res) => {
+              return res.json()
+            }
+        ).then(
+        (data) => {
+          console.log(data.result);
+          if(data.status===1){
+            let datas=data.result;
+            for(let i=0;i<datas.length;i++){
+              datas[i].key=datas[i].competitionId;
+            }
+            this.setState({
+              data:datas
             });
+          }else {
+            message.error(data.msg);
+          }
+        });
+
   }
-
-  update(row,key){
+  update(row){
       console.log(row);
-      let url='/athletic/CompetitionServlet?method=updateCompetition&fieldId='+key+'&address='+row.address+'&name='+row.name+'&state='+row.state;
-      fetch(encodeURI(encodeURI(url)))
-          .then(
-              (res) => {
-                  return res.json()
-              }
-          ).then(
-          (data) => {
-              if(data.status===1){
-                  message.success(data.msg);
-              }else{
-                  message.error(data.msg);
+      let url='/athletic/CompetitionServlet?method=updateCompetition&competitionId'+row.competitionId+
+          '&competitionStageId='+row.competitionStageId+'&endTime='+row.endTime+'&fieldId='+row.fieldId+'&name='
+          +row.name+'&startTime='+row.startTime;
+      fetch(fetch_get(url))
+        .then(
+            (res) => {
+              return res.json()
+            }
+        ).then(
+        (data) => {
+          console.log(data.result);
+          if(data.status===1){
+            message.success(data.msg);
+          }else {
+            message.error(data.msg);
+          }
+        });
 
-              }
-          });
   }
   render(){
     const EditableFormTable = Form.create()(EditableTable);
@@ -497,27 +522,25 @@ class AddAthleteTeamForm extends React.Component {
       this.props.form.validateFields((err, values) => {
         if (!err) {
           console.log('Received values of form: ', values);
-          /*fetch('/athletic/addFliedServlet?method=addFlied&name=' + values.name+ "&address="+
-                         values.address )
-                         .then(
-                            (res) => {
-                                return res.json()
-                            }
-                        ).then(
-                        (data) => {
-                              console.log(this.data);
-                            if(data.status==1){
-                                message.success(data.msg);
-                                this.props.form.setFieldsValue({
-                                  name: '',
-                                  address:''
-                                });
+          let url = '';
+          fetch(fetch_get(teamUrl))
+              .then(
+                  (res) => {
+                    return res.json()
+                  }
+              ).then(
+              (data) => {
+                if(data.status===1){
+                  message.success(data.msg);
+                  this.props.form.setFieldsValue({
+                    name: '',
+                    address:''
+                  });
 
-                            }else{
-                                message.error(data.msg);
-                            }
-                            
-                        });*/
+                }else{
+                  message.error(data.msg);
+                }
+              });
         }
       });
     }
@@ -582,43 +605,30 @@ class AddAthleteTeam extends React.Component {
 class AddAthleteForm extends React.Component {
   constructor(props){
     super(props);
-    this.competitionData = [];
-    for (let i = 0; i < 5; i++) {
-      this.competitionData.push({
-        id: i.toString(),
-        name: `sport ${i}`,
-      });
-    }
-    this.state = {
-      teamData:this.competitionData,
-      competitionData:this.competitionData,
-    };
     this.handleSubmit = (e) => {
       e.preventDefault();
       this.props.form.validateFields((err, values) => {
         if (!err) {
           console.log('Received values of form: ', values);
-          /*fetch('/athletic/addFliedServlet?method=addFlied&name=' + values.name+ "&address="+
-                         values.address )
-                         .then(
-                            (res) => {
-                                return res.json()
-                            }
-                        ).then(
-                        (data) => {
-                              console.log(this.data);
-                            if(data.status==1){
-                                message.success(data.msg);
-                                this.props.form.setFieldsValue({
-                                  name: '',
-                                  address:''
-                                });
+          let url='';
+          fetch(fetch_get(url))
+              .then(
+                  (res) => {
+                    return res.json()
+                  }
+              ).then(
+              (data) => {
+                if(data.status===1){
+                  message.success(data.msg);
+                  this.props.form.setFieldsValue({
+                    name: '',
+                    address:''
+                  });
 
-                            }else{
-                                message.error(data.msg);
-                            }
-                            
-                        });*/
+                }else{
+                  message.error(data.msg);
+                }
+              });
         }
       });
     }
@@ -686,7 +696,7 @@ class AddAthleteForm extends React.Component {
             ],
           })(
             <Select>
-               {this.state.teamData.map(team => <Option key={team.id}>{team.name}</Option>)}
+               {this.props.teamData.map(team => <Option key={team.id}>{team.name}</Option>)}
             </Select>
           )}
         </Form.Item>
@@ -700,7 +710,7 @@ class AddAthleteForm extends React.Component {
           })(
             <Select mode="multiple"
              >
-              {this.state.competitionData.map(item => (
+              {this.props.competitionData.map(item => (
                   <Select.Option key={item} value={item.id}>
                   {item.name}
                   </Select.Option>
@@ -723,7 +733,48 @@ class AddAthleteForm extends React.Component {
 class AddAthlete extends React.Component {
   constructor(props){
     super(props);
+    this.state={
+      teamData: [],
+      competitionData:[],
+    };
+    this.initData();
   }
+  initData() {
+    let teamUrl = '';
+    let comUrl = '';
+    fetch(fetch_get(teamUrl))
+        .then(
+            (res) => {
+              return res.json()
+            }
+        ).then(
+        (data) => {
+          if(data.status===1){
+            this.setState({
+              teamData:data.result,
+            });
+          }else{
+            message.error(data.msg);
+          }
+        });
+    fetch(fetch_get(comUrl))
+        .then(
+            (res) => {
+              return res.json()
+            }
+        ).then(
+        (data) => {
+          if(data.status===1){
+            this.setState({
+              competitionData:data.result,
+            });
+          }else{
+            message.error(data.msg);
+          }
+        });
+  }
+
+
   render() {
     const AddAthleteFormPage =Form.create()(AddAthleteForm);
     return (
@@ -731,7 +782,7 @@ class AddAthlete extends React.Component {
         margin: '16px 16px', padding: '6%', background: '#fff',maxHeight: '65%',width:'45%'
         }}
       >
-         <AddAthleteFormPage />
+         <AddAthleteFormPage teamData={this.state.teamData} competitionData={this.state.competitionData}/>
       </Content>
      
     
@@ -747,33 +798,18 @@ class ChangePlace extends React.Component{
 
   }
     componentWillMount(){
-    fetch('/athletic/CompetitionFieldServlet?method=getAllCompetitionField')
-          .then(
-            (res) => {
-                return res.json()
-            }
-        ).then(
-        (data) => {
-            console.log(data.result);
-            if(data.status===1){
-                message.success(data.msg);
-                let datas=data.result;
-                for(let i=0;i<datas.length;i++){
-                  datas[i].key=datas[i].fieldId;
-                }
-                this.setState({
-                  data:datas
-                });
-            }else{
-                message.error(data.msg);
-
-            }
-        });
+    var datas = fielddata_global;
+    for(let i=0;i<datas.length;i++){
+      datas[i].key=datas[i].fieldId;
+    }
+    this.setState({
+      data:datas
+    });
   }
   update(row,key){
       console.log(row);
       let url='/athletic/CompetitionFieldServlet?method=updateCompetitionField&fieldId='+key+'&address='+row.address+'&name='+row.name+'&state='+row.state;
-      fetch(encodeURI(encodeURI(url)))
+      fetch(fetch_get(url))
           .then(
             (res) => {
                 return res.json()
@@ -813,27 +849,27 @@ class AddPlaceForm extends React.Component {
       this.props.form.validateFields((err, values) => {
         if (!err) {
           console.log('Received values of form: ', values);
-          fetch('/athletic/CompetitionFieldServlet?method=addCompetitionField&name=' + encodeURI(encodeURI(values.name)) + "&address="+
-          encodeURI(encodeURI(values.address)) )
-                         .then(
-                            (res) => {
-                                return res.json()
-                            }
-                        ).then(
-                        (data) => {
-                              console.log(data);
-                            if(data.status==1){
-                                message.success(data.msg);
-                                this.props.form.setFieldsValue({
-                                  name: '',
-                                  address:''
-                                });
+          let url = '/athletic/CompetitionFieldServlet?method=addCompetitionField&name=' + values.name + "&address=" + values.address;
+          fetch(fetch_get(url))
+              .then(
+                  (res) => {
+                    return res.json()
+                  }
+              ).then(
+              (data) => {
+                console.log(data);
+                if(data.status===1){
+                  message.success(data.msg);
+                  this.props.form.setFieldsValue({
+                    name: '',
+                    address:''
+                  });
+                  this.props.update();
+                }else{
+                  message.error(data.msg);
+                }
+              });
 
-                            }else{
-                                message.error(data.msg);
-                            }
-                            
-                        });
         }
       });
     }
@@ -881,6 +917,23 @@ class AddPlace extends React.Component {
   constructor(props){
     super(props);
   }
+  update(){
+    let url = '/athletic/CompetitionFieldServlet?method=getAllCompetitionField';
+    fetch(fetch_get(url))
+        .then(
+            (res) => {
+              return res.json()
+            }
+        ).then(
+        (data) => {
+          console.log(data);
+          if(data.status===1){
+            fielddata_global=data.result;
+          }else{
+            message.error("初始化场地信息失败");
+          }
+        });
+  }
   render() {
     const AddPlaceFormPage =Form.create()(AddPlaceForm);
     return (
@@ -888,7 +941,7 @@ class AddPlace extends React.Component {
         margin: '16px 16px', padding: '6%', background: '#fff',maxHeight: '45%',width:'45%'
         }}
       >
-         <AddPlaceFormPage />
+         <AddPlaceFormPage update = { this.update.bind(this) }/>
       </Content>
      
     
@@ -907,6 +960,26 @@ class SiderDemo extends React.Component {
             current: e.key,
           });
         }
+        this.update();
+  }
+  update(){
+          let url = '/athletic/CompetitionFieldServlet?method=getAllCompetitionField';
+          fetch(fetch_get(url))
+              .then(
+                  (res) => {
+                    return res.json()
+                  }
+              ).then(
+              (data) => {
+                console.log(data);
+                if(data.status===1){
+                  fielddata_global=data.result;
+                }else{
+                  message.error("初始化场地信息失败");
+                }
+              });
+
+
   }
   render() {
       const { current } = this.state;
