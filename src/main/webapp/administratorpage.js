@@ -35,9 +35,11 @@ var PageHeader=antd.PageHeader;
 var Table=antd.Table;
 var Popconfirm =antd.Popconfirm;
 var RangePicker = antd.DatePicker.RangePicker;
+var Radio = antd.Radio;
 const token = JSON.parse(localStorage.getItem("token"));
 const EditableContext = React.createContext();
 var fielddata_global=[];
+var competition_global=[];
 const comStage=[{id:'B47507AE6987430E98BBE646D17350A8',name:'初赛'},{id:'BA28BA6C1D7D421796C39C2BF3F397F8',name:'决赛'}];
 function fetch_get(url) {
   return encodeURI(encodeURI(url));
@@ -360,6 +362,7 @@ class CreateComForm extends React.Component {
                 console.log(data.result);
                 if(data.status===1){
                   message.success(data.msg);
+                  this.props.update();
                   this.props.form.setFieldsValue({
                     name: '',
                     address:''
@@ -434,6 +437,23 @@ class CreateCom extends React.Component {
     };
 
   }
+  update(){
+    let url = '/athletic/CompetitionServlet?method=getAllCompetition';
+    fetch(fetch_get(url))
+        .then(
+            (res) => {
+              return res.json()
+            }
+        ).then(
+        (data) => {
+          console.log(data);
+          if(data.status===1){
+            competition_global=data.result;
+          }else{
+            message.error("初始化项目信息失败");
+          }
+        });
+  }
   render() {
     const CreateComFormPage =Form.create()(CreateComForm);
     return (
@@ -441,7 +461,7 @@ class CreateCom extends React.Component {
         margin: '16px 16px', padding: '6%', background: '#fff',maxHeight: '50%',width:'50%'
         }}
       >
-        <CreateComFormPage fieldData={this.state.fieldData}/>
+        <CreateComFormPage fieldData={this.state.fieldData} update={this.update.bind(this)}/>
       </Content>
      
     
@@ -456,28 +476,13 @@ class ChangeCom extends React.Component{
     };
   }
   componentWillMount(){
-    let url = '/athletic/CompetitionServlet?method=getAllCompetition';
-    fetch(fetch_get(url))
-        .then(
-            (res) => {
-              return res.json()
-            }
-        ).then(
-        (data) => {
-          console.log(data.result);
-          if(data.status===1){
-            let datas=data.result;
-            for(let i=0;i<datas.length;i++){
-              datas[i].key=datas[i].competitionId;
-            }
-            this.setState({
-              data:datas
-            });
-          }else {
-            message.error(data.msg);
+          var datas=competition_global;
+          for(let i=0;i<datas.length;i++){
+            datas[i].key=datas[i].competitionId;
           }
-        });
-
+          this.setState({
+            data: datas
+          });
   }
   update(row){
       console.log(row);
@@ -613,10 +618,17 @@ class AddAthleteForm extends React.Component {
       e.preventDefault();
       this.props.form.validateFields((err, values) => {
         if (!err) {
+          values.roleId='2';
           console.log('Received values of form: ', values);
-          let url='';
-          fetch(fetch_get(url))
-              .then(
+
+          let url='/athletic/AthleteServlet?method=addAthlete';
+          fetch(url , {
+            method: 'POST',
+            headers: new Headers({
+              'Content-Type': 'application/json'
+            }),
+            body:JSON.stringify(values),
+          }).then(
                   (res) => {
                     return res.json()
                   }
@@ -676,38 +688,37 @@ class AddAthleteForm extends React.Component {
           </Form.Item>
           <Form.Item
           label="性别"
-          hasFeedback
-          wrapperCol={{ span:5}}
+
         >
           {getFieldDecorator('sex', {
             rules: [
               { required: true, message: 'Please select your sex!' },
-            ],
+            ],initialValue: '男'
           })(
-            <Select>
-              <Option value="男">男</Option>
-              <Option value="女">女</Option>
-            </Select>
+              <Radio.Group >
+                <Radio value={'男'}>男</Radio>
+                <Radio value={'女'}>女</Radio>
+              </Radio.Group>
           )}
         </Form.Item>
         <Form.Item
           label="运动队"
           hasFeedback
         >
-          {getFieldDecorator('team', {
+          {getFieldDecorator('athleteTeamId', {
             rules: [
               { required: true, message: 'Please select your team!' },
             ],
           })(
             <Select>
-               {this.props.teamData.map(team => <Option key={team.id}>{team.name}</Option>)}
+               {this.props.teamData.map(team => <Option key={team.athleteTeamId}>{team.name}</Option>)}
             </Select>
           )}
         </Form.Item>
         <Form.Item
           label="参加项目"
         >
-          {getFieldDecorator('competitions', {
+          {getFieldDecorator('competitionIdList', {
             rules: [
               { required: true, message: 'Please select your competitions!', type: 'array' },
             ],
@@ -715,9 +726,9 @@ class AddAthleteForm extends React.Component {
             <Select mode="multiple"
              >
               {this.props.competitionData.map(item => (
-                  <Select.Option key={item} value={item.id}>
+                  <Option  key={item.competitionId}>
                   {item.name}
-                  </Select.Option>
+                  </Option>
               ))}
             </Select>
           )}
@@ -737,15 +748,15 @@ class AddAthleteForm extends React.Component {
 class AddAthlete extends React.Component {
   constructor(props){
     super(props);
+
     this.state={
       teamData: [],
       competitionData:[],
     };
-    this.initData();
+
   }
-  initData() {
-    let teamUrl = '';
-    let comUrl = '';
+  componentWillMount() {
+    let teamUrl = '/athletic/AthleteTeamServlet?method=getAllAthleteTeam';
     fetch(fetch_get(teamUrl))
         .then(
             (res) => {
@@ -753,29 +764,19 @@ class AddAthlete extends React.Component {
             }
         ).then(
         (data) => {
+          console.log(data);
           if(data.status===1){
             this.setState({
               teamData:data.result,
+              competitionData:competition_global,
             });
           }else{
             message.error(data.msg);
           }
         });
-    fetch(fetch_get(comUrl))
-        .then(
-            (res) => {
-              return res.json()
-            }
-        ).then(
-        (data) => {
-          if(data.status===1){
-            this.setState({
-              competitionData:data.result,
-            });
-          }else{
-            message.error(data.msg);
-          }
-        });
+
+
+
   }
 
 
@@ -980,6 +981,21 @@ class SiderDemo extends React.Component {
                   fielddata_global=data.result;
                 }else{
                   message.error("初始化场地信息失败");
+                }
+              });
+          url = '/athletic/CompetitionServlet?method=getAllCompetition';
+          fetch(fetch_get(url))
+              .then(
+                  (res) => {
+                    return res.json()
+                  }
+              ).then(
+              (data) => {
+                console.log(data);
+                if(data.status===1){
+                  competition_global=data.result;
+                }else{
+                  message.error("初始化项目信息失败");
                 }
               });
 
