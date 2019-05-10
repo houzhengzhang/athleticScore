@@ -42,6 +42,9 @@ const comStage=[{id:'B47507AE6987430E98BBE646D17350A8',name:'初赛'},{id:'BA28B
 function fetch_get(url) {
   return encodeURI(encodeURI(url));
 }
+function changeDate(time) {
+  return time.substr(0,time.length-2);
+}
 class EditableCell extends React.Component {
   getInput(){
     if (this.props.title === "项目场地地址") {
@@ -478,8 +481,8 @@ class ChangeCom extends React.Component{
   update(row){
       console.log(row);
       let url='/athletic/CompetitionServlet?method=updateCompetition&competitionId='+row.competitionId+
-          '&competitionStageId='+row.competitionStageId+'&endTime='+row.endTime+'&fieldId='+row.fieldId+'&name='
-          +row.name+'&startTime='+row.startTime;
+          '&competitionStageId='+row.competitionStageId+'&endTime='+changeDate(row.endTime)+'&fieldId='+row.fieldId+'&name='
+          +row.name+'&startTime='+changeDate(row.startTime);
       fetch(fetch_get(url))
         .then(
             (res) => {
@@ -500,7 +503,7 @@ class ChangeCom extends React.Component{
     const EditableFormTable = Form.create()(EditableTable);
     return(
       <Content style={{
-        margin: '16px 16px', padding: '4%', background: '#fff',maxHeight: '60%',width:'70%'
+        margin: '16px 16px', padding: '4%', background: '#fff',maxHeight: '60%',width:'95%'
         }}
       >
       <EditableFormTable 
