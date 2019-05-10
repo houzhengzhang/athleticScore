@@ -284,6 +284,7 @@ class EditableTable extends React.Component {
         const index = newData.findIndex(item => key === item.key);
         if (index > -1) {
           newData[index].competitionField=fielddata_global[fielddata_global.findIndex(item => row.competitionField.name === item.fieldId)];
+          newData[index].fieldId= row.competitionField.name;
           newData[index].name=row.name;
           newData[index].endTime=row.endTime;
           newData[index].startTime=row.startTime;
@@ -525,8 +526,8 @@ class AddAthleteTeamForm extends React.Component {
       this.props.form.validateFields((err, values) => {
         if (!err) {
           console.log('Received values of form: ', values);
-          let url = '';
-          fetch(fetch_get(teamUrl))
+          let url = '/athletic/AthleteTeamServlet?method=addAthleteTeam&name='+values.name+'&school='+values.school;
+          fetch(fetch_get(url))
               .then(
                   (res) => {
                     return res.json()

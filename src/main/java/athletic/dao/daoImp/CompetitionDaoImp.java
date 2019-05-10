@@ -28,7 +28,7 @@ public class CompetitionDaoImp implements CompetitionDao {
 
     @Override
     public int update(Competition competition) throws SQLException {
-        String sql = "update competition set competitionstageId=?,name=?,fieldId=?,startTime=?,endTime=? where competitionId=?";
+        String sql = "update competition set competitionStageId=?,name=?,fieldId=?,startTime=?,endTime=? where competitionId=?";
         Object[] params = {competition.getCompetitionStageId(), competition.getName(),
                 competition.getFieldId(), competition.getStartTime(), competition.getEndTime(), competition.getCompetitionId()};
         QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
