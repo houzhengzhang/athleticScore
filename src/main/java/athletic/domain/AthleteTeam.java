@@ -10,6 +10,7 @@ import org.json.JSONObject;
 public class AthleteTeam {
     private String athleteTeamId;
     private String name;
+    private String school;
     private int totalPoint;
 
     public void setAthleteTeamId(String athleteTeamId) {
@@ -18,6 +19,14 @@ public class AthleteTeam {
 
     public String getAthleteTeamId() {
         return athleteTeamId;
+    }
+
+    public String getSchool() {
+        return school;
+    }
+
+    public void setSchool(String school) {
+        this.school = school;
     }
 
     public void setName(String name) {

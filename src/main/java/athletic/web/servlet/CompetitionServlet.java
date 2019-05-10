@@ -103,7 +103,6 @@ public class CompetitionServlet extends BaseServlet {
         Competition competition = new Competition();
         MyBeanUtils.populate(competition, request.getParameterMap());
 
-        System.out.println("competition:  " + competition);
         int num = 0;
         CompetitionServiceImp competitionServiceImp = new CompetitionServiceImp();
         try {

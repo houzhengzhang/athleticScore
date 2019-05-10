@@ -38,6 +38,8 @@ public class AthleteTeamServlet extends BaseServlet {
         MyBeanUtils.populate(athleteTeam, request.getParameterMap());
         // 设置运动队ID
         athleteTeam.setAthleteTeamId(UUIDUtils.getId());
+        // 设置分数为0
+        athleteTeam.setTotalPoint(0);
 
         int num = 0;
         // 调用业务层

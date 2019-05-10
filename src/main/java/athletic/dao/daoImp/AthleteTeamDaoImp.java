@@ -17,9 +17,9 @@ import java.util.List;
 public class AthleteTeamDaoImp implements AthleteTeamDao {
     @Override
     public int insert(AthleteTeam athleteTeam) throws SQLException {
-        String sql = "insert into athleteteam values(?,?,?)";
+        String sql = "insert into athleteteam values(?,?,?,?)";
         QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
-        return queryRunner.update(sql, athleteTeam.getAthleteTeamId(), athleteTeam.getName(), athleteTeam.getTotalPoint());
+        return queryRunner.update(sql, athleteTeam.getAthleteTeamId(), athleteTeam.getName(), athleteTeam.getSchool(), athleteTeam.getTotalPoint());
     }
 
     @Override
