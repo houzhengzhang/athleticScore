@@ -57,7 +57,6 @@ public class AthleteServlet extends BaseServlet {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println(msg.toString());
         PrintWriter out = response.getWriter();
         out.write(msg.toString());
     }
@@ -76,10 +75,8 @@ public class AthleteServlet extends BaseServlet {
         MyBeanUtils.populate(athlete, request.getParameterMap());
         // 设置运动员ID
         athlete.setAthleteId(UUIDUtils.getId());
-
         // 获取参赛项目信息
         String[] competitionIdList = request.getParameterValues("competitionIdList");
-
         int num = 0;
         // 调用业务层插入数据
         AthleteServiceImp athleteServiceImp = new AthleteServiceImp();

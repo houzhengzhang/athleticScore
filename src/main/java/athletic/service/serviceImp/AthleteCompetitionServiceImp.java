@@ -17,7 +17,7 @@ public class AthleteCompetitionServiceImp implements AthleteCompetitionService {
 
     @Override
     public List<AthleteCompetition> queryAthleteScore(String athleteId) throws SQLException {
-        return athleteCompetitionDaoImp.queryAthleteScore(athleteId);
+        return athleteCompetitionDaoImp.queryAthleteScoreById(athleteId);
     }
 
     @Override

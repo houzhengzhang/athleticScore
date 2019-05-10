@@ -138,7 +138,6 @@ public class CompetitionFieldServlet extends BaseServlet {
         msg.put("result", competitionFieldList);
         msg.put("status", 1);
         msg.put("msg", "查询成功");
-        System.out.println(msg);
 
         // 返回json数据
         PrintWriter out = response.getWriter();

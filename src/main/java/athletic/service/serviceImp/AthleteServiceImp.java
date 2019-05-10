@@ -45,6 +45,7 @@ public class AthleteServiceImp implements AthleteService {
                 athleteCompetition.setCompetitonId(competitionId);
                 athleteCompetition.setAthleteId(athlete.getAthleteId());
                 athleteCompetition.setCompetitionStageId(competition.getCompetitionStageId());
+                athleteCompetition.setScore(0.0);
 
                 // 插入记录
                 athleteCompetitionDaoImp.insert(athleteCompetition, connection);

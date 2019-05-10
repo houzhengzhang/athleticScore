@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class AthleteCompetitionDaoImp implements AthleteCompetitionDao {
     @Override
-    public List<AthleteCompetition> queryAthleteScore(String athleteId) throws SQLException {
+    public List<AthleteCompetition> queryAthleteScoreById(String athleteId) throws SQLException {
         String sql = "select * from athletecompetition where athleteId=?";
         QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
 
@@ -64,5 +64,12 @@ public class AthleteCompetitionDaoImp implements AthleteCompetitionDao {
         Object[] params = {athleteCompetition.getAthleteId(), athleteCompetition.getCompetitonId(),
                 athleteCompetition.getCompetitionStageId(), athleteCompetition.getScore()};
         return queryRunner.update(sql, params);
+    }
+
+    @Override
+    public List<AthleteCompetition> queryAthleteScoreByCond(String competitionId) throws SQLException {
+        String sql = "select * from athletecompetition where competitionId=? and score!=0 order by score desc";
+        QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
+        return queryRunner.query(sql, new BeanListHandler<>(AthleteCompetition.class), competitionId);
     }
 }

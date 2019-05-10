@@ -56,7 +56,7 @@ public class RankingDaoImp implements RankingDao {
     public int insert(Ranking ranking, Connection connection) throws SQLException {
         String sql = "insert into ranking values(?,?,?,?)";
         QueryRunner queryRunner = new QueryRunner();
-        Object[] params = {ranking.getRankingId(),ranking.getCompetitonId(), ranking.getAthleteId(), ranking.getScore()};
+        Object[] params = {ranking.getRankingId(),ranking.getCompetitonId(), ranking.getAthleteId(), ranking.getRanking()};
         return queryRunner.update(connection, sql, params);
     }
 }

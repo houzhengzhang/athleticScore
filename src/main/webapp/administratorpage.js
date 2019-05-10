@@ -618,16 +618,24 @@ class AddAthleteForm extends React.Component {
       e.preventDefault();
       this.props.form.validateFields((err, values) => {
         if (!err) {
-          values.roleId='2';
+          values.roleId='4E495D120C40434EAF8B103DA6195E7F';
           console.log('Received values of form: ', values);
-
+          const formData = new FormData();
+          for(var key in values){
+            if(key==='competitionIdList')
+              for(var id in values[key]){
+                formData.append(key,values[key][id]);
+              }
+            else formData.append(key,values[key]);
+          }
           let url='/athletic/AthleteServlet?method=addAthlete';
           fetch(url , {
-            method: 'POST',
-            headers: new Headers({
-              'Content-Type': 'application/json'
-            }),
-            body:JSON.stringify(values),
+              method:"POST",
+              mode:'no-cors',
+              // headers: {
+              //     "Content-Type": "application/x-www-form-urlencoded",
+              // },
+             body:new URLSearchParams(formData),
           }).then(
                   (res) => {
                     return res.json()
@@ -696,8 +704,8 @@ class AddAthleteForm extends React.Component {
             ],initialValue: '男'
           })(
               <Radio.Group >
-                <Radio value={'男'}>男</Radio>
-                <Radio value={'女'}>女</Radio>
+                <Radio value={0}>男</Radio>
+                <Radio value={1}>女</Radio>
               </Radio.Group>
           )}
         </Form.Item>
