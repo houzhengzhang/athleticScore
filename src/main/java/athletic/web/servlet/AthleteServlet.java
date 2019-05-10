@@ -77,11 +77,14 @@ public class AthleteServlet extends BaseServlet {
         // 设置运动员ID
         athlete.setAthleteId(UUIDUtils.getId());
 
+        // 获取参赛项目信息
+        String[] competitionIdList = request.getParameterValues("competitionIdList");
+
         int num = 0;
         // 调用业务层插入数据
         AthleteServiceImp athleteServiceImp = new AthleteServiceImp();
         try {
-            num = athleteServiceImp.insert(athlete);
+            num = athleteServiceImp.insert(athlete, competitionIdList);
         } catch (SQLException e) {
             e.printStackTrace();
         }

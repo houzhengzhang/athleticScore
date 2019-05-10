@@ -7,8 +7,8 @@ import athletic.utils.JDBCUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
-import org.w3c.dom.ls.LSException;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -31,12 +31,12 @@ public class AthleteDaoImp implements AthleteDao {
     }
 
     @Override
-    public int insert(Athlete athlete) throws SQLException {
+    public int insert(Athlete athlete, Connection connection) throws SQLException {
         String sql = "insert into athlete values(?,?,?,?,?,?,?)";
-        QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
+        QueryRunner queryRunner = new QueryRunner();
         Object[] params = {athlete.getAthleteId(), athlete.getEmail(), athlete.getPassword(), athlete.getName(), athlete.getSex(),
                 athlete.getRoleId(), athlete.getAthleteTeamId()};
-        return queryRunner.update(sql, params);
+        return queryRunner.update(connection, sql, params);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class AthleteDaoImp implements AthleteDao {
         List<Athlete> athleteList = queryRunner.query(sql, new BeanListHandler<>(Athlete.class), athleteTeamId);
         // 填充外键
         RoleDaoImp roleDaoImp = new RoleDaoImp();
-        for(Athlete athlete:athleteList){
+        for (Athlete athlete : athleteList) {
             Role role = roleDaoImp.getRoleById(athlete.getRoleId());
             athlete.setRole(role);
         }

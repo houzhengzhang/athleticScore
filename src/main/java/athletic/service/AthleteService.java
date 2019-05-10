@@ -10,5 +10,5 @@ import java.sql.SQLException;
  */
 public interface AthleteService {
     Athlete athleteLogin(Athlete athlete) throws SQLException;
-    int insert(Athlete athlete) throws SQLException;
+    int insert(Athlete athlete, String[] competitionIdList) throws SQLException;
 }

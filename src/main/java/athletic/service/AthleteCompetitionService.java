@@ -2,6 +2,7 @@ package athletic.service;
 
 import athletic.domain.AthleteCompetition;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -11,6 +12,8 @@ import java.util.List;
  */
 public interface AthleteCompetitionService {
     List<AthleteCompetition> queryAthleteScore(String athleteId) throws SQLException;
+
+    int insert(AthleteCompetition athleteCompetition, Connection connection) throws SQLException;
 
     int insert(AthleteCompetition athleteCompetition) throws SQLException;
 }

@@ -2,6 +2,7 @@ package athletic.dao;
 
 import athletic.domain.Athlete;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
 public interface AthleteDao {
     Athlete athleteLogin(Athlete athlete) throws SQLException;
 
-    int insert(Athlete athlete) throws SQLException;
+    int insert(Athlete athlete, Connection connection) throws SQLException;
 
     Athlete getAthleteById(String athleteId) throws SQLException;
 
