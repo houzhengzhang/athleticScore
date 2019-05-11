@@ -98,7 +98,7 @@ class AthleticList extends React.Component{
         const index = newData.findIndex(item => athleteId === item.athleteId);
         let row=newData[index];
         let url = '/athletic/ScoringStaffServlet?method=updateAthleteScore&athleteId='+athleteId+'&competitionId='
-            +row.competitionId+'&competitionStageId='+row.competitionStageId+'&score='+row.score;
+            +row.competitionId+'&competitionStageId='+row.competitionStageId+'&score='+value;
         fetch(fetch_get(url))
             .then(
                 (res) => {

@@ -40,7 +40,6 @@ const token = JSON.parse(localStorage.getItem("token"));
 const EditableContext = React.createContext();
 var fielddata_global=[];
 var competition_global=[];
-const comStage=[{id:'B47507AE6987430E98BBE646D17350A8',name:'初赛'},{id:'BA28BA6C1D7D421796C39C2BF3F397F8',name:'决赛'}];
 function fetch_get(url) {
   return encodeURI(encodeURI(url));
 }
