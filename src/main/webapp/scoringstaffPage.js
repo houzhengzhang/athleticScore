@@ -51,7 +51,7 @@ class CardForm extends React.Component{
         });
     }
     update(){
-        this.props.update(this.props.data.key,this.state.InputValue);
+        this.props.update(this.props.data.athleteId,this.state.InputValue);
     }
     render(){
         return(
@@ -63,8 +63,8 @@ class CardForm extends React.Component{
                 <Meta style={{height: 90}}
                       avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
                       title={<Row>
-                          <Col span={8}>{this.props.data.name}</Col>
-                          <Col span={5} offset={11}><antd.Tag color="blue">{this.props.data.stage}</antd.Tag></Col>
+                          <Col span={8}>{this.props.data.athlete.name}</Col>
+                          <Col span={5} offset={11}><antd.Tag color="blue">{this.props.data.competition.competitionStage.state}</antd.Tag></Col>
                       </Row>}
                       description={
                           <div>
@@ -83,19 +83,42 @@ class AthleticList extends React.Component{
         super(props);
         this.state = {
             InputValue : "",
-            data:this.props.data
+            data:[]
         };
 
     }
-
-    update(key,value){
-        console.log(key,value);
-        const newData = this.state.data;
-        const index = newData.findIndex(item => key === item.key);
-        newData[index].score=value;
+    initData(data){
+        console.log(data);
         this.setState({
-            data:newData
+           data
         });
+    }
+    update(athleteId,value){
+        const newData = this.state.data;
+        const index = newData.findIndex(item => athleteId === item.athleteId);
+        let row=newData[index];
+        let url = '/athletic/ScoringStaffServlet?method=updateAthleteScore&athleteId='+athleteId+'&competitionId='
+            +row.competitionId+'&competitionStageId='+row.competitionStageId+'&score='+row.score;
+        fetch(fetch_get(url))
+            .then(
+                (res) => {
+                    return res.json()
+                }
+            ).then(
+            (data) => {
+
+                if(data.status===1){
+                    message.success(data.msg);
+                    newData[index].score=value;
+                    this.setState({
+                        data:newData
+                    });
+                }else{
+                    message.error(data.msg);
+                }
+            });
+
+
     }
     getCard(item){
         if(item.score==0){
@@ -111,8 +134,8 @@ class AthleticList extends React.Component{
                     style={{height: 90}}
                     avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
                     title={<Row>
-                        <Col span={8}>{item.name}</Col>
-                        <Col span={5} offset={11}><antd.Tag color="blue">{item.stage}</antd.Tag></Col>
+                        <Col span={8}>{item.athlete.name}</Col>
+                        <Col span={5} offset={11}><antd.Tag color="blue">{item.competition.competitionStage.state}</antd.Tag></Col>
                     </Row>}
                     description={
                         <antd.Statistic
@@ -129,6 +152,11 @@ class AthleticList extends React.Component{
     }
     render(){
         return(
+            <Content style={{
+                margin: '0px 16px', padding: 10, minHeight: 280,
+            }}
+            >
+
             <List
                 grid={{
                     gutter: 16, column: 4,
@@ -140,23 +168,6 @@ class AthleticList extends React.Component{
                     </List.Item>
                 )}
             />
-        );
-    }
-}
-class StaffScorePage extends React.Component{
-    constructor(props){
-        super(props);
-        this.state={
-            data:this.props.data
-        };
-    }
-    render(){
-        return(
-            <Content style={{
-                margin: '0px 16px', padding: 10, minHeight: 280,
-            }}
-            >
-                <AthleticList />
             </Content>
         );
     }
@@ -165,9 +176,7 @@ class SiderDemo extends React.Component {
     constructor() {
         super();
         this.state = {
-            current: '1',
             comdata: [],
-            data:[],
         };
         this.handleClick = (e) => {
             this.setState({
@@ -184,7 +193,7 @@ class SiderDemo extends React.Component {
                 }
             ).then(
             (data) => {
-                console.log(data.result);
+
                 if(data.status===1){
                     this.setState({
                         comdata:data.result,
@@ -205,19 +214,15 @@ class SiderDemo extends React.Component {
                 }
             ).then(
             (data) => {
-                console.log(data.result);
                 if(data.status===1){
-                    console.log(data);
-                    this.setState({
-                        data:data.result
-                    });
+                    this.refs["child"].initData(data.result);
                 }else{
                     message.error("获取项目失败");
                 }
             });
     }
     render() {
-        const { current } = this.state;
+        const {athleteData } = this.state;
         const routes = [
             {
 
@@ -256,7 +261,7 @@ class SiderDemo extends React.Component {
                                 <Avatar style={{marginLeft:'17%'}} size={45} icon="user" />
                                 <span style={{fontSize:'16px'}}>&nbsp;&nbsp;&nbsp;username <antd.Divider type="vertical" />
                         <span style={{fontSize:'15px',color:'#6AAFE6'}}>scoring staff&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                </span>
+                        </span>
                             </Col>
                         </Row>
                     </Header>
@@ -276,9 +281,7 @@ class SiderDemo extends React.Component {
                             {this.state.comdata.map(com => <Option key={com.competitionId}>{com.name}</Option>)}
                         </Select>
                     </antd.PageHeader>
-                    {
-                        current==='2'&&<StaffScorePage data={this.state.data}/>
-                    }
+                    <AthleticList ref="child"/>
                 </Layout>
             </Layout>
         );
