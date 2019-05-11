@@ -89,7 +89,6 @@ public class ScoringStaffServlet extends BaseServlet {
             msg.put("msg", "查询失败");
         }
 
-        System.out.println(msg);
         PrintWriter out = response.getWriter();
         out.write(msg.toString());
     }
@@ -106,7 +105,7 @@ public class ScoringStaffServlet extends BaseServlet {
         // 获取运动员打分信息
         AthleteCompetition athleteCompetition = new AthleteCompetition();
         MyBeanUtils.populate(athleteCompetition, request.getParameterMap());
-
+        System.out.println(athleteCompetition);
         int num = 0;
         // 调用业务层
         AthleteCompetitionServiceImp athleteCompetitionServiceImp = new AthleteCompetitionServiceImp();

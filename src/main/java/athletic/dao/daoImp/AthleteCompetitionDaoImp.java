@@ -52,10 +52,10 @@ public class AthleteCompetitionDaoImp implements AthleteCompetitionDao {
 
     @Override
     public int update(AthleteCompetition athleteCompetition, Connection connection) throws SQLException {
-        String sql = "update athletecompetition set competitonId=?,competitionStageId=?,score=? where athleteId=?";
+        String sql = "update athletecompetition set score=? where athleteId=? && competitionId=? && competitionStageId=?";
         QueryRunner queryRunner = new QueryRunner();
-        Object[] params = {athleteCompetition.getCompetitionId(), athleteCompetition.getCompetitionStageId(),
-                athleteCompetition.getScore(), athleteCompetition.getAthleteId()};
+        Object[] params = {athleteCompetition.getScore(),athleteCompetition.getAthleteId(),
+                athleteCompetition.getCompetitionId(), athleteCompetition.getCompetitionStageId()                 };
         return queryRunner.update(connection, sql, params);
     }
 
@@ -109,8 +109,8 @@ public class AthleteCompetitionDaoImp implements AthleteCompetitionDao {
         String sqlScored = "select count(*) from athletecompetition where competitionId=? and competitionStageId=? and score!=0";
         QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
 
-        Long allNum = (Long) queryRunner.query(sqlAll, new ScalarHandler<>());
-        Long scoredNum = (Long) queryRunner.query(sqlScored, new ScalarHandler<>());
+        Long allNum = (Long) queryRunner.query(sqlAll, new ScalarHandler<>(), competitionId, competitionStageId);
+        Long scoredNum = (Long) queryRunner.query(sqlScored, new ScalarHandler<>(), competitionId, competitionStageId);
         return allNum.intValue() == scoredNum.intValue();
     }
 }

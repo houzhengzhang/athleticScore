@@ -2,14 +2,17 @@ package athletic.service.serviceImp;
 
 import athletic.dao.RankingDao;
 import athletic.dao.daoImp.AthleteCompetitionDaoImp;
+import athletic.dao.daoImp.CompetitionDaoImp;
 import athletic.dao.daoImp.CompetitionStageDaoImp;
 import athletic.dao.daoImp.RankingDaoImp;
 import athletic.domain.AthleteCompetition;
+import athletic.domain.Competition;
 import athletic.domain.CompetitionStage;
 import athletic.domain.Ranking;
 import athletic.service.AthleteCompetitionService;
 import athletic.utils.JDBCUtils;
 import athletic.utils.UUIDUtils;
+import com.sun.xml.internal.bind.v2.TODO;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -51,7 +54,7 @@ public class AthleteCompetitionServiceImp implements AthleteCompetitionService {
     @Override
     public int updateAthleteScore(AthleteCompetition athleteCompetition) throws SQLException {
         AthleteCompetitionDaoImp athleteCompetitionDaoImp = new AthleteCompetitionDaoImp();
-        CompetitionStageDaoImp competitionStageDaoImp = new CompetitionStageDaoImp();
+        CompetitionDaoImp competitionDaoImp = new CompetitionDaoImp();
         RankingDaoImp rankingDaoImp = new RankingDaoImp();
         Connection connection = null;
 
@@ -62,19 +65,21 @@ public class AthleteCompetitionServiceImp implements AthleteCompetitionService {
             connection.setAutoCommit(false);
 
             // 更新运动员-项目表 分数
-            athleteCompetitionDaoImp.update(athleteCompetition, connection);
+            int num = athleteCompetitionDaoImp.update(athleteCompetition, connection);
 
-            String competitionId = athleteCompetition.getCompetitionId();
-            // 查询更新的比赛阶段信息
-            CompetitionStage competitionStage = competitionStageDaoImp.getCompetitionStageById(competitionId);
+            Competition competition =  competitionDaoImp.getCompetionById(athleteCompetition.getCompetitionId());
+            // 获取比赛阶段信息
 
+            CompetitionStage competitionStage = competition.getCompetitionStage();
             // 如果更新决赛成绩且所有运动员的分数都已给出，则生成排名表信息
-            boolean flag = athleteCompetitionDaoImp.isAthleteScoredById(competitionId,
+            boolean flag = athleteCompetitionDaoImp.isAthleteScoredById(competition.getCompetitionId(),
                     competitionStage.getCompetitionStageId());
+            System.out.println(flag);
             if ("决赛".equals(competitionStage.getState()) && flag) {
+                System.out.println(competitionStage.getState());
                 // 按照成绩降序查询该项目所有运动员成绩
                 List<AthleteCompetition> rankAthleteCompetitionList = athleteCompetitionDaoImp.queryAthleteScoreByCond(
-                        competitionId, competitionStage.getCompetitionStageId());
+                        competition.getCompetitionId(), competitionStage.getCompetitionStageId());
                 int i = 1;
                 // 生成排名表数据
                 for (AthleteCompetition rankAthleteCompetition : rankAthleteCompetitionList) {
@@ -86,14 +91,13 @@ public class AthleteCompetitionServiceImp implements AthleteCompetitionService {
                     // 插入数据
                     rankingDaoImp.insert(ranking, connection);
                 }
-
-                // TODO 更新运动队total Point
+               //  TODO 更新运动队total Point
             }
-            // 提交事务
+             //提交事务
             connection.commit();
             return 1;
         } catch (Exception e) {
-            // 回滚
+            // 回滚 
             connection.rollback();
             e.printStackTrace();
             return 0;
