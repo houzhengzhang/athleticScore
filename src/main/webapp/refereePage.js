@@ -39,6 +39,9 @@ const comStage=[{competitionStageId:'B47507AE6987430E98BBE646D17350A8',state:'åˆ
 function fetch_get(url) {
     return encodeURI(encodeURI(url));
 }
+function changeDate(time) {
+    return time.substr(0,time.length-2);
+}
 const EditableContext = React.createContext();
 class EditableCell extends React.Component {
     getInput(){
@@ -266,7 +269,7 @@ class ChangeState extends React.Component{
     }
     update(row){
         console.log(row);
-        /*let url='/athletic/CompetitionServlet?method=updateCompetition&competitionId='+row.competitionId+
+        let url='/athletic/RefereeServlet?method=updateCompetitionState&competitionId='+row.competitionId+
             '&competitionStageId='+row.competitionStageId+'&endTime='+changeDate(row.endTime)+'&fieldId='+row.fieldId+'&name='
             +row.name+'&startTime='+changeDate(row.startTime);
         fetch(fetch_get(url))
@@ -282,7 +285,7 @@ class ChangeState extends React.Component{
                 }else {
                     message.error(data.msg);
                 }
-            });*/
+            });
     }
     render(){
         const EditableFormTable = Form.create()(EditableTable);
