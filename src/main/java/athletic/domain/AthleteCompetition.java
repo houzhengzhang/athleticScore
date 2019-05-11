@@ -12,8 +12,19 @@ public class AthleteCompetition {
     private String competitionId;
     private String competitionStageId;
     private double score;
+
+    // 外键
     private Competition competition;
     private CompetitionStage competitionStage;
+    private Athlete athlete;
+
+    public Athlete getAthlete() {
+        return athlete;
+    }
+
+    public void setAthlete(Athlete athlete) {
+        this.athlete = athlete;
+    }
 
     public Competition getCompetition() {
         return competition;

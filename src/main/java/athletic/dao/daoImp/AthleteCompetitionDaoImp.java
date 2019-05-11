@@ -1,6 +1,7 @@
 package athletic.dao.daoImp;
 
 import athletic.dao.AthleteCompetitionDao;
+import athletic.domain.Athlete;
 import athletic.domain.AthleteCompetition;
 import athletic.domain.Competition;
 import athletic.domain.CompetitionStage;
@@ -79,6 +80,7 @@ public class AthleteCompetitionDaoImp implements AthleteCompetitionDao {
         String sql = "select * from athletecompetition where competitionId=? and score=0";
         QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
 
+        AthleteDaoImp athleteDaoImp = new AthleteDaoImp();
         CompetitionDaoImp competitionDaoImp = new CompetitionDaoImp();
         CompetitionStageDaoImp competitionStageDaoImp = new CompetitionStageDaoImp();
         // 查询运动员项目信息
@@ -93,6 +95,10 @@ public class AthleteCompetitionDaoImp implements AthleteCompetitionDao {
             // 查询项目的阶段信息
             CompetitionStage competitionStage = competitionStageDaoImp.getCompetitionStageById(athleteCompetition.getCompetitionId());
             athleteCompetition.setCompetitionStage(competitionStage);
+
+            // 查询运动员信息
+            Athlete athlete = athleteDaoImp.getAthleteById(athleteCompetition.getAthleteId());
+            athleteCompetition.setAthlete(athlete);
         }
         return athleteCompetitionList;
     }
