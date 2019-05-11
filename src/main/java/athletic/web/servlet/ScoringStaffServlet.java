@@ -63,7 +63,7 @@ public class ScoringStaffServlet extends BaseServlet {
     }
 
     /**
-     * 获取所有未打分的运动员-项目信息
+     * 获取所有competitionId未打分的运动员-项目信息
      * @param request
      * @param response
      * @throws ServletException
@@ -73,7 +73,7 @@ public class ScoringStaffServlet extends BaseServlet {
         String copetitionId = request.getParameter("competitionId");
         List<AthleteCompetition> athleteCompetitionList = null;
         AthleteCompetitionServiceImp athleteCompetitionServiceImp = new AthleteCompetitionServiceImp();
-
+        System.out.println("competitionId:  " + copetitionId);
         try {
             athleteCompetitionList=athleteCompetitionServiceImp.getAllAthleteScore(copetitionId);
         } catch (SQLException e) {
@@ -89,6 +89,7 @@ public class ScoringStaffServlet extends BaseServlet {
             msg.put("status", 0);
             msg.put("msg", "查询失败");
         }
+
 
         PrintWriter out = response.getWriter();
         out.write(msg.toString());
