@@ -156,7 +156,7 @@ class StaffScorePage extends React.Component{
                 margin: '0px 16px', padding: 10, minHeight: 280,
             }}
             >
-                <AthleticList data={this.state.data}/>
+                <AthleticList />
             </Content>
         );
     }
@@ -188,16 +188,33 @@ class SiderDemo extends React.Component {
                 if(data.status===1){
                     this.setState({
                         comdata:data.result,
-                        data:[]
                     });
                 }else{
                     message.error("获取项目失败");
                 }
             });
 
+
     }
     update(value){
-        console.log(value);
+        let url = '/athletic/ScoringStaffServlet?method=getAllAthleteScore'+'&competitionId='+value;
+        fetch(fetch_get(url))
+            .then(
+                (res) => {
+                    return res.json()
+                }
+            ).then(
+            (data) => {
+                console.log(data.result);
+                if(data.status===1){
+                    console.log(data);
+                    this.setState({
+                        data:data.result
+                    });
+                }else{
+                    message.error("获取项目失败");
+                }
+            });
     }
     render() {
         const { current } = this.state;
@@ -256,7 +273,7 @@ class SiderDemo extends React.Component {
                             size='large'
                             onChange={this.update.bind(this)}
                         >
-
+                            {this.state.comdata.map(com => <Option key={com.competitionId}>{com.name}</Option>)}
                         </Select>
                     </antd.PageHeader>
                     {
