@@ -28,8 +28,8 @@ public class AthleteCompetitionServiceImp implements AthleteCompetitionService {
     }
 
     @Override
-    public List<AthleteCompetition> getAllAthleteScore() throws SQLException {
-        return athleteCompetitionDaoImp.getAllAthleteScore();
+    public List<AthleteCompetition> getAllAthleteScore(String copetitionId) throws SQLException {
+        return athleteCompetitionDaoImp.getAllAthleteScore(copetitionId);
     }
 
     @Override

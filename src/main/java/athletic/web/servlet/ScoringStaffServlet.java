@@ -70,11 +70,12 @@ public class ScoringStaffServlet extends BaseServlet {
      * @throws IOException
      */
     public void getAllAthleteScore(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String copetitionId = request.getParameter("competitionId");
         List<AthleteCompetition> athleteCompetitionList = null;
         AthleteCompetitionServiceImp athleteCompetitionServiceImp = new AthleteCompetitionServiceImp();
 
         try {
-            athleteCompetitionList=athleteCompetitionServiceImp.getAllAthleteScore();
+            athleteCompetitionList=athleteCompetitionServiceImp.getAllAthleteScore(copetitionId);
         } catch (SQLException e) {
             e.printStackTrace();
         }

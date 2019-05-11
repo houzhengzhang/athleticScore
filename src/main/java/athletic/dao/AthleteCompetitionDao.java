@@ -21,7 +21,7 @@ public interface AthleteCompetitionDao {
 
     List<AthleteCompetition> queryAthleteScoreByCond(String competitionId, String competitionStageId) throws SQLException;
 
-    List<AthleteCompetition> getAllAthleteScore() throws SQLException;
+    List<AthleteCompetition> getAllAthleteScore(String copetitionId) throws SQLException;
 
     boolean isAthleteScoredById(String competitionId, String competitionStageId) throws SQLException;
 }

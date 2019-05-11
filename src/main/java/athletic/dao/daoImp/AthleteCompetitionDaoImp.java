@@ -75,14 +75,15 @@ public class AthleteCompetitionDaoImp implements AthleteCompetitionDao {
     }
 
     @Override
-    public List<AthleteCompetition> getAllAthleteScore() throws SQLException {
-        String sql = "select * from athletecompetition where score!=0";
+    public List<AthleteCompetition> getAllAthleteScore(String copetitionId) throws SQLException {
+        String sql = "select * from athletecompetition where competitionId=? and score!=0";
         QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
 
         CompetitionDaoImp competitionDaoImp = new CompetitionDaoImp();
         CompetitionStageDaoImp competitionStageDaoImp = new CompetitionStageDaoImp();
         // 查询运动员项目信息
-        List<AthleteCompetition> athleteCompetitionList = queryRunner.query(sql, new BeanListHandler<>(AthleteCompetition.class));
+        List<AthleteCompetition> athleteCompetitionList = queryRunner.query(sql,
+                new BeanListHandler<>(AthleteCompetition.class), copetitionId);
 
         // 查询补充外键信息
         for (AthleteCompetition athleteCompetition : athleteCompetitionList) {
