@@ -40,7 +40,6 @@ public class CompetitionStageServlet extends BaseServlet {
         JSONObject msg = new JSONObject();
         msg.put("result", competitionStageList);
 
-        System.out.println("CompetitionStageServlet:  " + msg);
         out.write(msg.toString());
     }
 

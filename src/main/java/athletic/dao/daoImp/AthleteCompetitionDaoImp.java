@@ -60,6 +60,15 @@ public class AthleteCompetitionDaoImp implements AthleteCompetitionDao {
     }
 
     @Override
+    public int update(AthleteCompetition athleteCompetition) throws SQLException {
+        String sql = "update athletecompetition set score=? where athleteId=? && competitionId=? && competitionStageId=?";
+        QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
+        Object[] params = {athleteCompetition.getScore(),athleteCompetition.getAthleteId(),
+                athleteCompetition.getCompetitionId(), athleteCompetition.getCompetitionStageId()                 };
+        return queryRunner.update(sql, params);
+    }
+
+    @Override
     public int insert(AthleteCompetition athleteCompetition) throws SQLException {
         String sql = "insert into athletecompetition values (?,?,?,?)";
         QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
@@ -70,7 +79,7 @@ public class AthleteCompetitionDaoImp implements AthleteCompetitionDao {
 
     @Override
     public List<AthleteCompetition> queryAthleteScoreByCond(String competitionId, String competitionStageId) throws SQLException {
-        String sql = "select * from athletecompetition where competitionId=? and competitionStageId=? and score!=0 order by score desc";
+        String sql = "select * from athletecompetition where competitionId=? && competitionStageId=? and score!=0 order by score desc";
         QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
         return queryRunner.query(sql, new BeanListHandler<>(AthleteCompetition.class), competitionId, competitionStageId);
     }
@@ -105,12 +114,13 @@ public class AthleteCompetitionDaoImp implements AthleteCompetitionDao {
 
     @Override
     public boolean isAthleteScoredById(String competitionId, String competitionStageId) throws SQLException {
-        String sqlAll = "select count(*) from athletecompetition where competitionId=? and competitionStageId=?";
-        String sqlScored = "select count(*) from athletecompetition where competitionId=? and competitionStageId=? and score!=0";
+//        String sqlAll = "select count(*) from athletecompetition where competitionId=? and competitionStageId=?";
+        String sql = "select count(*) from athletecompetition where competitionId=? && competitionStageId=? and score=0";
         QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
 
-        Long allNum = (Long) queryRunner.query(sqlAll, new ScalarHandler<>(), competitionId, competitionStageId);
-        Long scoredNum = (Long) queryRunner.query(sqlScored, new ScalarHandler<>(), competitionId, competitionStageId);
-        return allNum.intValue() == scoredNum.intValue();
+        Long num = (Long) queryRunner.query(sql, new ScalarHandler<>(), competitionId, competitionStageId);
+//        Long scoredNum = (Long) queryRunner.query(sqlScored, new ScalarHandler<>(), competitionId, competitionStageId);
+//        return allNum.intValue() == scoredNum.intValue();
+        return num.intValue()==0;
     }
 }

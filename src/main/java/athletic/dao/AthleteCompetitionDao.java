@@ -17,6 +17,8 @@ public interface AthleteCompetitionDao {
 
     int update(AthleteCompetition athleteCompetition, Connection connection) throws SQLException;
 
+    int update(AthleteCompetition athleteCompetition) throws SQLException;
+
     int insert(AthleteCompetition athleteCompetition) throws SQLException;
 
     List<AthleteCompetition> queryAthleteScoreByCond(String competitionId, String competitionStageId) throws SQLException;

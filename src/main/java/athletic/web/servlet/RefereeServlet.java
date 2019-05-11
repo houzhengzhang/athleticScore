@@ -51,7 +51,6 @@ public class RefereeServlet extends BaseServlet {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println(msg.toString());
         PrintWriter out = response.getWriter();
         out.write(msg.toString());
     }
@@ -65,19 +64,24 @@ public class RefereeServlet extends BaseServlet {
      * @throws IOException
      */
     public void updateCompetitionState(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        JSONObject msg = new JSONObject();
+        PrintWriter out = response.getWriter();
+
         Competition competition = new Competition();
         // 获取项目信息
         MyBeanUtils.populate(competition, request.getParameterMap());
-
         int num = 0;
         // 调用业务层
         CompetitionServiceImp competitionServiceImp = new CompetitionServiceImp();
         try {
             num = competitionServiceImp.update(competition);
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+//            e.printStackTrace();
+            msg.put("status", 0);
+            msg.put("msg", "计分员尚未录入初赛成绩，无法修改！");
+            out.write(msg.toString());
+            return;
         }
-        JSONObject msg = new JSONObject();
         if (num > 0) {
             msg.put("status", 1);
             msg.put("msg", "修改项目状态成功");
@@ -85,8 +89,6 @@ public class RefereeServlet extends BaseServlet {
             msg.put("status", 0);
             msg.put("msg", "修改项目状态失败");
         }
-
-        PrintWriter out = response.getWriter();
         out.write(msg.toString());
     }
 }

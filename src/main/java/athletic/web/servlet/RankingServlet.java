@@ -41,11 +41,17 @@ public class RankingServlet extends BaseServlet {
         }
         // 返回json数据
         JSONObject msg = new JSONObject();
-        msg.put("result", rankingList);
+        if (null != rankingList) {
+            msg.put("result", rankingList);
+            msg.put("status", 1);
+            msg.put("msg", "查询排名成功");
+        } else {
+            msg.put("status", 0);
+            msg.put("msg", "查询排名失败");
+        }
 
         PrintWriter out = response.getWriter();
         out.write(msg.toString());
-
     }
 
     /**
@@ -62,14 +68,20 @@ public class RankingServlet extends BaseServlet {
         // 调用业务层
         RankingServiceImp rankingServiceImp = new RankingServiceImp();
         try {
-            rankingList = rankingServiceImp.getRankingByAthleteId(competitionId);
+            rankingList = rankingServiceImp.getRankingByCompetitionId(competitionId);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         // 返回json数据
         JSONObject msg = new JSONObject();
-        msg.put("result", rankingList);
-
+        if (null != rankingList) {
+            msg.put("result", rankingList);
+            msg.put("status", 1);
+            msg.put("msg", "查询排名成功");
+        } else {
+            msg.put("status", 0);
+            msg.put("msg", "查询排名失败");
+        }
         PrintWriter out = response.getWriter();
         out.write(msg.toString());
     }

@@ -6,7 +6,6 @@ import athletic.utils.MyBeanUtils;
 import athletic.utils.UUIDUtils;
 import athletic.web.base.BaseServlet;
 import org.json.JSONObject;
-import org.json.JSONArray;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -116,7 +115,6 @@ public class CompetitionServlet extends BaseServlet {
         } else {
             msg.put("status", 0);
             msg.put("msg", "更新项目失败");
-
         }
 
         PrintWriter out = response.getWriter();

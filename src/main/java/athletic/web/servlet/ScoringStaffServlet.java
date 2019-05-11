@@ -1,9 +1,7 @@
 package athletic.web.servlet;
 
 import athletic.domain.AthleteCompetition;
-import athletic.domain.AthleteTeam;
 import athletic.domain.ScoringStaff;
-import athletic.service.AthleteCompetitionService;
 import athletic.service.serviceImp.AthleteCompetitionServiceImp;
 import athletic.service.serviceImp.ScoringStaffServiceImp;
 import athletic.utils.MyBeanUtils;
@@ -17,10 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @ Date: 2019/5/5 20:01
@@ -64,6 +59,7 @@ public class ScoringStaffServlet extends BaseServlet {
 
     /**
      * 获取所有competitionId未打分的运动员-项目信息
+     *
      * @param request
      * @param response
      * @throws ServletException
@@ -74,7 +70,7 @@ public class ScoringStaffServlet extends BaseServlet {
         List<AthleteCompetition> athleteCompetitionList = null;
         AthleteCompetitionServiceImp athleteCompetitionServiceImp = new AthleteCompetitionServiceImp();
         try {
-            athleteCompetitionList=athleteCompetitionServiceImp.getAllAthleteScore(copetitionId);
+            athleteCompetitionList = athleteCompetitionServiceImp.getAllAthleteScore(copetitionId);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -93,19 +89,18 @@ public class ScoringStaffServlet extends BaseServlet {
         out.write(msg.toString());
     }
 
-        /**
-         * 录入运动员分数
-         *
-         * @param request
-         * @param response
-         * @throws ServletException
-         * @throws IOException
-         */
+    /**
+     * 录入运动员分数
+     *
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     public void updateAthleteScore(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // 获取运动员打分信息
         AthleteCompetition athleteCompetition = new AthleteCompetition();
         MyBeanUtils.populate(athleteCompetition, request.getParameterMap());
-        System.out.println(athleteCompetition);
         int num = 0;
         // 调用业务层
         AthleteCompetitionServiceImp athleteCompetitionServiceImp = new AthleteCompetitionServiceImp();

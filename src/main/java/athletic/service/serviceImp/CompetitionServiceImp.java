@@ -37,6 +37,16 @@ public class CompetitionServiceImp implements CompetitionService {
         AthleteCompetitionDaoImp athleteCompetitionDaoImp = new AthleteCompetitionDaoImp();
         CompetitionStageDaoImp competitionStageDaoImp = new CompetitionStageDaoImp();
         Connection connection = null;
+
+        // 查询初赛的项目阶段Id
+        CompetitionStage competitionStage=competitionStageDaoImp.getCompetitionStageByState("初赛");
+        // 更新项目状态前首先判断计分员是否录入初赛的分数
+        boolean flag = athleteCompetitionDaoImp.isAthleteScoredById(competition.getCompetitionId(),
+                competitionStage.getCompetitionStageId());
+        if(!flag){
+            throw new RuntimeException("修改失败！");
+        }
+
         try {
             // 获取连接
             connection = JDBCUtils.getConnection();
@@ -44,9 +54,6 @@ public class CompetitionServiceImp implements CompetitionService {
             connection.setAutoCommit(false);
             // 更新项目状态
             competitionDaoImp.update(competition, connection);
-            // 查询初赛的项目阶段Id
-            CompetitionStage competitionStage = competitionStageDaoImp.getCompetitionStageByState("初赛");
-
             // 查询进入决赛的运动员-项目信息
             List<AthleteCompetition> athleteCompetitionList = athleteCompetitionDaoImp.queryAthleteScoreByCond(
                     competition.getCompetitionId(), competitionStage.getCompetitionStageId());
@@ -61,6 +68,9 @@ public class CompetitionServiceImp implements CompetitionService {
                 athleteCompetition.setScore(0);
                 // 插入数据
                 athleteCompetitionDaoImp.insert(athleteCompetition, connection);
+                ++i;
+                if(i>4)
+                    break;
             }
             // 提交
             connection.commit();

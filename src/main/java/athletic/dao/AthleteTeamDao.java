@@ -15,4 +15,6 @@ public interface AthleteTeamDao {
     List<AthleteTeam> getAllAthleteTeam() throws SQLException;
 
     AthleteTeam getAthleteTeamById(String athleteTeamId) throws SQLException;
+
+    int updateTotalPoint(String athleteTeamId, int totalPoint) throws SQLException;
 }

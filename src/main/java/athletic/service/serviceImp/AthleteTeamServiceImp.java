@@ -22,4 +22,5 @@ public class AthleteTeamServiceImp implements AthleteTeamService {
     public List<AthleteTeam> getAllAthleteTeam() throws SQLException {
         return athleteTeamDaoImp.getAllAthleteTeam();
     }
+
 }

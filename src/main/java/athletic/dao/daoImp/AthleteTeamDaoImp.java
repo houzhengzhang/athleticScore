@@ -6,6 +6,7 @@ import athletic.utils.JDBCUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -24,7 +25,7 @@ public class AthleteTeamDaoImp implements AthleteTeamDao {
 
     @Override
     public List<AthleteTeam> getAllAthleteTeam() throws SQLException {
-        String sql = "select * from athleteteam";
+        String sql = "select * from athleteteam order by totalPoint";
         QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
         return queryRunner.query(sql, new BeanListHandler<>(AthleteTeam.class));
     }
@@ -34,5 +35,15 @@ public class AthleteTeamDaoImp implements AthleteTeamDao {
         String sql = "select * from athleteteam where athleteTeamId=?";
         QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
         return queryRunner.query(sql, new BeanHandler<>(AthleteTeam.class), athleteTeamId);
+    }
+
+    @Override
+    public int updateTotalPoint(String athleteTeamId, int totalPoint) throws SQLException {
+        String selectSql = "select totalPoint from athleteteam where athleteTeamId=?";
+        QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
+        int num = (int) queryRunner.query(selectSql, new ScalarHandler<>(), athleteTeamId);
+
+        String updateSql = "update athleteteam set totalPoint=? where athleteTeamId=?";
+        return queryRunner.update(updateSql, num+totalPoint, athleteTeamId);
     }
 }

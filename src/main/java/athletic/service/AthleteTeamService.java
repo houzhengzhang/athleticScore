@@ -11,5 +11,7 @@ import java.util.List;
  */
 public interface AthleteTeamService {
     int insert(AthleteTeam athleteTeam) throws SQLException;
+
     List<AthleteTeam> getAllAthleteTeam() throws SQLException;
+
 }

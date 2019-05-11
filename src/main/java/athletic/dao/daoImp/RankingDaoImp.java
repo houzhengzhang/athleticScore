@@ -22,7 +22,7 @@ public class RankingDaoImp implements RankingDao {
 
     @Override
     public List<Ranking> getRankingByAthleteId(String athleteId) throws SQLException {
-        String sql = "selece * from ranking where athleteId=?";
+        String sql = "selece * from ranking where athleteId=? order by ranking";
         QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
         List<Ranking> rankingList = queryRunner.query(sql, new BeanListHandler<>(Ranking.class), athleteId);
 
@@ -38,7 +38,7 @@ public class RankingDaoImp implements RankingDao {
 
     @Override
     public List<Ranking> getRankingByCompetitionId(String competitionId) throws SQLException {
-        String sql = "selece * from ranking where competitionId=?";
+        String sql = "selece * from ranking where competitionId=? order by ranking";
         QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
         List<Ranking> rankingList = queryRunner.query(sql, new BeanListHandler<>(Ranking.class), competitionId);
 

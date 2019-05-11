@@ -41,7 +41,6 @@ public class CompetitionDaoImp implements CompetitionDao {
         String sql = "select * from competition where competitionId=?";
         QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
         Competition competition = queryRunner.query(sql, new BeanHandler<>(Competition.class), competionId);
-        System.out.println(competionId  + competition);
         // 查询外键对象
         CompetitionFieldDaoImp competitionFieldDaoImp = new CompetitionFieldDaoImp();
         CompetitionStageDaoImp competitionStageDaoImp = new CompetitionStageDaoImp();

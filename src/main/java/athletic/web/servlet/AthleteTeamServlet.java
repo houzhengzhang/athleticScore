@@ -62,7 +62,13 @@ public class AthleteTeamServlet extends BaseServlet {
         out.write(msg.toString());
     }
 
-    // TODO 运动队排名
+    /**
+     * 查询所有运动队排名
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     public void getAllAthleteTeam(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<AthleteTeam> athleteTeamList = null;
         // 调用业务层
@@ -83,11 +89,8 @@ public class AthleteTeamServlet extends BaseServlet {
             msg.put("status", 0);
             msg.put("msg", "查询失败");
         }
-
-
         PrintWriter out = response.getWriter();
         // 返回字符串
         out.write(msg.toString());
-
     }
 }
