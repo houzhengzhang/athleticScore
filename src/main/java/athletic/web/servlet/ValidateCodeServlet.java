@@ -16,8 +16,6 @@ import java.io.IOException;
  */
 @WebServlet(name = "ValidateCodeServlet", urlPatterns = "/ValidateCodeServlet")
 public class ValidateCodeServlet extends BaseServlet {
-    private static final long serialVersionUID = -7952895445913967317L;
-    // src ValidateCodeServlet?method=getValidateCode
     public void getValidateCode(HttpServletRequest request,
                                   HttpServletResponse response) throws ServletException, IOException {
         response.setHeader("Pragma", "No-cache");
@@ -29,6 +27,7 @@ public class ValidateCodeServlet extends BaseServlet {
         String verifyCode = CodeUtil.generateVerifyCode(4);
         //存入会话session
         HttpSession session = request.getSession(true);
+        System.out.println("verifyCode session id: " + session.getId());
         //删除以前的
         session.removeAttribute("verifyCode");
         session.setAttribute("verifyCode", verifyCode.toLowerCase());

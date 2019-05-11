@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -24,18 +25,20 @@ public class UserServlet extends BaseServlet {
         JSONObject msg = new JSONObject();
         // 获取验证码
         String code = request.getParameter("code");
-        System.out.println("code:  " + code);
-        System.out.println("session: " + request.getSession().getAttribute("verifyCode"));
-        if (null == code || "".equals(code) || !code.equals(request.getSession().getAttribute("verifyCode"))) {
-            // 验证码错误
-            msg.put("status", 0);
-            msg.put("msg", "验证码错误！");
-
-            // 返回错误信息
-            PrintWriter out = response.getWriter();
-            out.write(msg.toString());
-            return;
-        }
+        // false 若存在则返回该会话，否则返回null
+//        HttpSession session = request.getSession();
+//        System.out.println("login session id: " + session.getId());
+//        System.out.println("session: " + session.getAttribute("verifyCode"));
+//        if (null == code || "".equals(code) || !code.equals(session.getAttribute("verifyCode"))) {
+//            // 验证码错误
+//            msg.put("status", 0);
+//            msg.put("msg", "验证码错误！");
+//
+//            // 返回错误信息
+//            PrintWriter out = response.getWriter();
+//            out.write(msg.toString());
+//            return;
+//        }
         // 根据用户选择角色进行请求分发
         int authority = Integer.parseInt(request.getParameter("authority"));
         request.getRequestDispatcher(dispUrl[authority]).forward(request, response);
