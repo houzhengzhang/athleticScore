@@ -31,6 +31,11 @@ var Input=antd.Input;
 var message =antd.message;
 var Alert=antd.Alert;
 var InputNumber=antd.InputNumber;
+
+function fetch_get(url) {
+    return encodeURI(encodeURI(url));
+}
+
 class CardForm extends React.Component{
     constructor(props){
         super(props);
@@ -141,32 +146,9 @@ class AthleticList extends React.Component{
 class StaffScorePage extends React.Component{
     constructor(props){
         super(props);
-        this.data = [
-            {
-                key:'1',
-                name: 'yangdongce1',
-                score: 0,
-                stage:'初赛',
-            },
-            {
-                key:'2',
-                name: 'yangdongce2',
-                score: 0,
-                stage:'初赛',
-            },
-            {
-                key:'3',
-                name: 'yangdongce3',
-                score: 0,
-                stage:'初赛',
-            },
-            {
-                key:'4',
-                name: 'yangdongce4',
-                score: 98,
-                stage:'初赛',
-            },
-        ];
+        this.state={
+            data:this.props.data
+        };
     }
     render(){
         return(
@@ -174,7 +156,7 @@ class StaffScorePage extends React.Component{
                 margin: '0px 16px', padding: 10, minHeight: 280,
             }}
             >
-                <AthleticList data={this.data}/>
+                <AthleticList data={this.state.data}/>
             </Content>
         );
     }
@@ -184,16 +166,38 @@ class SiderDemo extends React.Component {
         super();
         this.state = {
             current: '1',
-        }
+            comdata: [],
+            data:[],
+        };
         this.handleClick = (e) => {
-            console.log('click ', e.key);
             this.setState({
                 current: e.key,
             });
         }
     }
-    changeNav(){
-        console.log('sss');
+    componentWillMount(){
+        let url = '/athletic/CompetitionServlet?method=getAllCompetition';
+        fetch(fetch_get(url))
+            .then(
+                (res) => {
+                    return res.json()
+                }
+            ).then(
+            (data) => {
+                console.log(data.result);
+                if(data.status===1){
+                    this.setState({
+                        comdata:data.result,
+                        data:[]
+                    });
+                }else{
+                    message.error("获取项目失败");
+                }
+            });
+
+    }
+    update(value){
+        console.log(value);
     }
     render() {
         const { current } = this.state;
@@ -213,7 +217,7 @@ class SiderDemo extends React.Component {
                 <Sider
                     trigger={null}
                     collapsible
-                    style={{}}
+
                 >
                     <div style={{marginLeft:'10%',marginRight:'10%'}}>
                         <img src = 'static/score.png' style={{ height: '100px',margin: '16px'}}/>
@@ -249,16 +253,14 @@ class SiderDemo extends React.Component {
                             suffixIcon={<Icon type="search"/>}
                             style={{ width:300 }}
                             placeholder="选择一个项目"
-                            optionFilterProp="children"
                             size='large'
+                            onChange={this.update.bind(this)}
                         >
-                            <Option value="jack">Jack</Option>
-                            <Option value="lucy">Lucy</Option>
-                            <Option value="tom">Tom</Option>
+
                         </Select>
                     </antd.PageHeader>
                     {
-                        current=='1'&&<StaffScorePage />
+                        current==='2'&&<StaffScorePage data={this.state.data}/>
                     }
                 </Layout>
             </Layout>
