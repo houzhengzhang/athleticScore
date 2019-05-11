@@ -88,6 +88,9 @@ public class ScoringStaffServlet extends BaseServlet {
             msg.put("status", 0);
             msg.put("msg", "查询失败");
         }
+
+        PrintWriter out = response.getWriter();
+        out.write(msg.toString());
     }
 
         /**
