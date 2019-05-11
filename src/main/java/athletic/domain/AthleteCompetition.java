@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 public class AthleteCompetition {
     private String athleteId;
-    private String competitonId;
+    private String competitionId;
     private String competitionStageId;
     private double score;
     private Competition competition;
@@ -39,12 +39,12 @@ public class AthleteCompetition {
         return athleteId;
     }
 
-    public void setCompetitonId(String competitonId) {
-        this.competitonId = competitonId;
+    public String getCompetitionId() {
+        return competitionId;
     }
 
-    public String getCompetitonId() {
-        return competitonId;
+    public void setCompetitionId(String competitionId) {
+        this.competitionId = competitionId;
     }
 
     public void setCompetitionStageId(String competitionStageId) {

@@ -31,10 +31,10 @@ public class AthleteCompetitionDaoImp implements AthleteCompetitionDao {
         // 查询补充外键信息
         for (AthleteCompetition athleteCompetition : athleteCompetitionList) {
             // 查询对应的项目信息
-            Competition competition = competitionDaoImp.getCompetionById(athleteCompetition.getCompetitonId());
+            Competition competition = competitionDaoImp.getCompetionById(athleteCompetition.getCompetitionId());
             athleteCompetition.setCompetition(competition);
             // 查询项目的阶段信息
-            CompetitionStage competitionStage = competitionStageDaoImp.getCompetitionStageById(athleteCompetition.getCompetitonId());
+            CompetitionStage competitionStage = competitionStageDaoImp.getCompetitionStageById(athleteCompetition.getCompetitionId());
             athleteCompetition.setCompetitionStage(competitionStage);
         }
         return athleteCompetitionList;
@@ -44,7 +44,7 @@ public class AthleteCompetitionDaoImp implements AthleteCompetitionDao {
     public int insert(AthleteCompetition athleteCompetition, Connection connection) throws SQLException {
         String sql = "insert into athletecompetition values (?,?,?,?)";
         QueryRunner queryRunner = new QueryRunner();
-        Object[] params = {athleteCompetition.getAthleteId(), athleteCompetition.getCompetitonId(),
+        Object[] params = {athleteCompetition.getAthleteId(), athleteCompetition.getCompetitionId(),
                 athleteCompetition.getCompetitionStageId(), athleteCompetition.getScore()};
         return queryRunner.update(connection, sql, params);
     }
@@ -53,7 +53,7 @@ public class AthleteCompetitionDaoImp implements AthleteCompetitionDao {
     public int update(AthleteCompetition athleteCompetition, Connection connection) throws SQLException {
         String sql = "update athletecompetition set competitonId=?,competitionStageId=?,score=? where athleteId=?";
         QueryRunner queryRunner = new QueryRunner();
-        Object[] params = {athleteCompetition.getCompetitonId(), athleteCompetition.getCompetitionStageId(),
+        Object[] params = {athleteCompetition.getCompetitionId(), athleteCompetition.getCompetitionStageId(),
                 athleteCompetition.getScore(), athleteCompetition.getAthleteId()};
         return queryRunner.update(connection, sql, params);
     }
@@ -62,7 +62,7 @@ public class AthleteCompetitionDaoImp implements AthleteCompetitionDao {
     public int insert(AthleteCompetition athleteCompetition) throws SQLException {
         String sql = "insert into athletecompetition values (?,?,?,?)";
         QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
-        Object[] params = {athleteCompetition.getAthleteId(), athleteCompetition.getCompetitonId(),
+        Object[] params = {athleteCompetition.getAthleteId(), athleteCompetition.getCompetitionId(),
                 athleteCompetition.getCompetitionStageId(), athleteCompetition.getScore()};
         return queryRunner.update(sql, params);
     }
@@ -76,7 +76,7 @@ public class AthleteCompetitionDaoImp implements AthleteCompetitionDao {
 
     @Override
     public List<AthleteCompetition> getAllAthleteScore(String copetitionId) throws SQLException {
-        String sql = "select * from athletecompetition where competitionId=? and score!=0";
+        String sql = "select * from athletecompetition where competitionId=? and score=0";
         QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
 
         CompetitionDaoImp competitionDaoImp = new CompetitionDaoImp();
@@ -88,10 +88,10 @@ public class AthleteCompetitionDaoImp implements AthleteCompetitionDao {
         // 查询补充外键信息
         for (AthleteCompetition athleteCompetition : athleteCompetitionList) {
             // 查询对应的项目信息
-            Competition competition = competitionDaoImp.getCompetionById(athleteCompetition.getCompetitonId());
+            Competition competition = competitionDaoImp.getCompetionById(athleteCompetition.getCompetitionId());
             athleteCompetition.setCompetition(competition);
             // 查询项目的阶段信息
-            CompetitionStage competitionStage = competitionStageDaoImp.getCompetitionStageById(athleteCompetition.getCompetitonId());
+            CompetitionStage competitionStage = competitionStageDaoImp.getCompetitionStageById(athleteCompetition.getCompetitionId());
             athleteCompetition.setCompetitionStage(competitionStage);
         }
         return athleteCompetitionList;

@@ -56,7 +56,7 @@ public class CompetitionServiceImp implements CompetitionService {
             for(AthleteCompetition athleteCompetitionRecord:athleteCompetitionList){
                 AthleteCompetition athleteCompetition = new AthleteCompetition();
                 athleteCompetition.setAthleteId(athleteCompetitionRecord.getAthleteId());
-                athleteCompetition.setCompetitonId(competition.getCompetitionId());
+                athleteCompetition.setCompetitionId(competition.getCompetitionId());
                 athleteCompetition.setCompetitionStageId(competition.getCompetitionStageId());
                 athleteCompetition.setScore(0);
                 // 插入数据

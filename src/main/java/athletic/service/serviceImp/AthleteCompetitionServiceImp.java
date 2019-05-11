@@ -64,7 +64,7 @@ public class AthleteCompetitionServiceImp implements AthleteCompetitionService {
             // 更新运动员-项目表 分数
             athleteCompetitionDaoImp.update(athleteCompetition, connection);
 
-            String competitionId = athleteCompetition.getCompetitonId();
+            String competitionId = athleteCompetition.getCompetitionId();
             // 查询更新的比赛阶段信息
             CompetitionStage competitionStage = competitionStageDaoImp.getCompetitionStageById(competitionId);
 
@@ -81,7 +81,7 @@ public class AthleteCompetitionServiceImp implements AthleteCompetitionService {
                     Ranking ranking = new Ranking();
                     ranking.setRankingId(UUIDUtils.getId());
                     ranking.setAthleteId(rankAthleteCompetition.getAthleteId());
-                    ranking.setCompetitonId(rankAthleteCompetition.getCompetitonId());
+                    ranking.setCompetitonId(rankAthleteCompetition.getCompetitionId());
                     ranking.setRanking(i++);
                     // 插入数据
                     rankingDaoImp.insert(ranking, connection);

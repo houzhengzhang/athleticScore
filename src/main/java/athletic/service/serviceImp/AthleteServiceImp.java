@@ -42,7 +42,7 @@ public class AthleteServiceImp implements AthleteService {
                 Competition competition = competitionDaoImp.getCompetionById(competitionId);
                 // 生成运动员-项目记录
                 AthleteCompetition athleteCompetition = new AthleteCompetition();
-                athleteCompetition.setCompetitonId(competitionId);
+                athleteCompetition.setCompetitionId(competitionId);
                 athleteCompetition.setAthleteId(athlete.getAthleteId());
                 athleteCompetition.setCompetitionStageId(competition.getCompetitionStageId());
                 athleteCompetition.setScore(0.0);
