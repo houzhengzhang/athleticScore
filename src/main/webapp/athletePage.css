@@ -1,0 +1,40 @@
+
+.wrap {
+    display: flex;
+}
+.content {
+    flex: 1;
+}
+.extraContent {
+    min-width: 240px;
+    text-align: right;
+    margin-right: 100px;
+}
+.content.padding {
+    padding-left: 40px;
+}
+.content .description {
+    display: table;
+    font-size: 15px;
+    margin-top: 1px;
+}
+.description .term {
+    display: table-cell;
+    margin-right: 10px;
+    padding-bottom: 8px;
+    white-space: nowrap;
+    line-height: 20px;
+
+}
+.description .term:after {
+    position: relative;
+    top: -0.5px;
+    margin: 0 8px 0 2px;
+    content: ": "
+}
+.description .detail {
+    display: table-cell;
+    padding-bottom: 8px;
+    width: 100%;
+    line-height: 20px;
+}

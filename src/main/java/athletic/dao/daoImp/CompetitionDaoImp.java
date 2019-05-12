@@ -49,8 +49,10 @@ public class CompetitionDaoImp implements CompetitionDao {
         CompetitionField competitionField = competitionFieldDaoImp.getCompetitionFieldById(competition.getFieldId());
         competition.setCompetitionField(competitionField);
         // 查询项目阶段
+
         CompetitionStage competitionStage = competitionStageDaoImp.getCompetitionStageById(competition.getCompetitionStageId());
         competition.setCompetitionStage(competitionStage);
+        System.out.println( "getCompetionById    "+competition.getCompetitionStageId());
         return competition;
     }
 

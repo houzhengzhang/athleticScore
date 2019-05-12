@@ -2,6 +2,7 @@ package athletic.dao.daoImp;
 
 import athletic.dao.AthleteDao;
 import athletic.domain.Athlete;
+import athletic.domain.AthleteTeam;
 import athletic.domain.Role;
 import athletic.utils.JDBCUtils;
 import org.apache.commons.dbutils.QueryRunner;
@@ -27,9 +28,15 @@ public class AthleteDaoImp implements AthleteDao {
             return null;
         // 填充角色外键信息
         RoleDaoImp roleDaoImp = new RoleDaoImp();
+        AthleteTeamDaoImp athleteTeamDaoImp = new AthleteTeamDaoImp();
 
         Role role = roleDaoImp.getRoleById(ath.getRoleId());
         ath.setRole(role);
+
+        AthleteTeam athleteTeam = athleteTeamDaoImp.getAthleteTeamById(ath.getAthleteTeamId()) ;
+        ath.setAthleteTeam(athleteTeam);
+
+        System.out.println(athleteTeam);
         return ath;
     }
 

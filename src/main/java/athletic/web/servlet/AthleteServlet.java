@@ -57,6 +57,7 @@ public class AthleteServlet extends BaseServlet {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        System.out.println(msg);
         PrintWriter out = response.getWriter();
         out.write(msg.toString());
     }
@@ -120,10 +121,18 @@ public class AthleteServlet extends BaseServlet {
             e.printStackTrace();
         }
         // 返回JSON数据
-        JSONArray jsonArray = new JSONArray();
-        jsonArray.put(athleteCompetitionList);
+        JSONObject msg = new JSONObject();
+        if (null!=athleteCompetitionList) {
+            msg.put("status", 1);
+            msg.put("result",  athleteCompetitionList);
+            msg.put("msg", "查询成功");
+        } else {
+            msg.put("status", 0);
+            msg.put("msg", "查询失败");
+        }
+
 
         PrintWriter out = response.getWriter();
-        out.write(jsonArray.toString());
+        out.write(msg.toString());
     }
 }

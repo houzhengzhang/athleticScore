@@ -34,9 +34,11 @@ public class AthleteCompetitionDaoImp implements AthleteCompetitionDao {
             // 查询对应的项目信息
             Competition competition = competitionDaoImp.getCompetionById(athleteCompetition.getCompetitionId());
             athleteCompetition.setCompetition(competition);
+            System.out.println(competition);
             // 查询项目的阶段信息
-            CompetitionStage competitionStage = competitionStageDaoImp.getCompetitionStageById(athleteCompetition.getCompetitionId());
+            CompetitionStage competitionStage = competitionStageDaoImp.getCompetitionStageById(athleteCompetition.getCompetitionStageId());
             athleteCompetition.setCompetitionStage(competitionStage);
+
         }
         return athleteCompetitionList;
     }

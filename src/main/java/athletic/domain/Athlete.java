@@ -18,6 +18,8 @@ public class Athlete {
 
     // 外键
     private Role role;
+    private AthleteTeam athleteTeam;
+
 
     public Role getRole() {
         return role;
@@ -34,8 +36,6 @@ public class Athlete {
     public void setAthleteTeam(AthleteTeam athleteTeam) {
         this.athleteTeam = athleteTeam;
     }
-
-    private AthleteTeam athleteTeam;
 
     public void setAthleteId(String athleteId) {
         this.athleteId = athleteId;

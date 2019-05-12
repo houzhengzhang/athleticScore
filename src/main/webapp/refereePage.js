@@ -34,7 +34,6 @@ var InputNumber=antd.InputNumber;
 var Table=antd.Table;
 var  Popconfirm=antd.Popconfirm;
 const token = JSON.parse(localStorage.getItem("token"));
-
 const comStage=[{competitionStageId:'B47507AE6987430E98BBE646D17350A8',state:'初赛'},{competitionStageId:'BA28BA6C1D7D421796C39C2BF3F397F8',state:'决赛'}];
 function fetch_get(url) {
     return encodeURI(encodeURI(url));

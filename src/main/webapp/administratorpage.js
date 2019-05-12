@@ -965,13 +965,13 @@ class SiderDemo extends React.Component {
     super();
     this.state = {
       current: '1',
-    }
+    };
     this.handleClick = (e) => {
       console.log('click ', e.key);
       this.setState({
         current: e.key,
       });
-    }
+    };
     this.update();
   }
   update(){
