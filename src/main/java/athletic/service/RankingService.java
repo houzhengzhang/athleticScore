@@ -10,7 +10,7 @@ import java.util.List;
  * @ Description:
  */
 public interface RankingService {
-    List<Ranking> getRankingByAthleteId(String athleteId) throws SQLException;
+    List<Ranking> getRankingByAthleteId(String athleteId, String competitionStageId) throws SQLException;
 
-    List<Ranking> getRankingByCompetitionId(String competitionId) throws SQLException;
+    List<Ranking> getRankingByCompetitionId(String competitionId, String competitionStageId) throws SQLException;
 }

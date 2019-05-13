@@ -21,10 +21,10 @@ public class RankingDaoImp implements RankingDao {
     private CompetitionDaoImp competitionDaoImp = new CompetitionDaoImp();
 
     @Override
-    public List<Ranking> getRankingByAthleteId(String athleteId) throws SQLException {
-        String sql = "selece * from ranking where athleteId=? order by ranking";
+    public List<Ranking> getRankingByAthleteId(String athleteId, String competitionStageId) throws SQLException {
+        String sql = "selece * from ranking where athleteId=? and competitionStageId=?";
         QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
-        List<Ranking> rankingList = queryRunner.query(sql, new BeanListHandler<>(Ranking.class), athleteId);
+        List<Ranking> rankingList = queryRunner.query(sql, new BeanListHandler<>(Ranking.class), athleteId, competitionStageId);
 
         // 填充外键信息
         Athlete athlete = athleteDaoImp.getAthleteById(athleteId);
@@ -37,10 +37,10 @@ public class RankingDaoImp implements RankingDao {
     }
 
     @Override
-    public List<Ranking> getRankingByCompetitionId(String competitionId) throws SQLException {
-        String sql = "selece * from ranking where competitionId=? order by ranking";
+    public List<Ranking> getRankingByCompetitionId(String competitionId, String competitionStageId) throws SQLException {
+        String sql = "selece * from ranking where competitionId=? and competitionStageId=?";
         QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
-        List<Ranking> rankingList = queryRunner.query(sql, new BeanListHandler<>(Ranking.class), competitionId);
+        List<Ranking> rankingList = queryRunner.query(sql, new BeanListHandler<>(Ranking.class), competitionId, competitionStageId);
 
         // 填充外键信息
         Competition competition = competitionDaoImp.getCompetionById(competitionId);

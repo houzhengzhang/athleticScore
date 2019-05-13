@@ -15,12 +15,12 @@ public class RankingServiceImp implements RankingService {
     private RankingDaoImp rankingDaoImp = new RankingDaoImp();
 
     @Override
-    public List<Ranking> getRankingByAthleteId(String athleteId) throws SQLException {
-        return rankingDaoImp.getRankingByAthleteId(athleteId);
+    public List<Ranking> getRankingByAthleteId(String athleteId, String competitionStageId) throws SQLException {
+        return rankingDaoImp.getRankingByAthleteId(athleteId, competitionStageId);
     }
 
     @Override
-    public List<Ranking> getRankingByCompetitionId(String competitionId) throws SQLException {
-        return rankingDaoImp.getRankingByCompetitionId(competitionId);
+    public List<Ranking> getRankingByCompetitionId(String competitionId, String competitionStageId) throws SQLException {
+        return rankingDaoImp.getRankingByCompetitionId(competitionId, competitionStageId);
     }
 }

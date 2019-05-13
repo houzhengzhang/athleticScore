@@ -31,11 +31,13 @@ public class RankingServlet extends BaseServlet {
      */
     public void getRankingByAthleteId(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String athleteId = request.getParameter("athleteId");
+        // 项目阶段id
+        String competitionStageId= request.getParameter("competitionStageId");
         List<Ranking> rankingList = null;
         // 调用业务层
         RankingServiceImp rankingServiceImp = new RankingServiceImp();
         try {
-            rankingList = rankingServiceImp.getRankingByAthleteId(athleteId);
+            rankingList = rankingServiceImp.getRankingByAthleteId(athleteId, competitionStageId);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -64,11 +66,13 @@ public class RankingServlet extends BaseServlet {
      */
     public void getRankingByCompetitionId(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String competitionId = request.getParameter("competitionId");
+        // 项目阶段id
+        String competitionStageId= request.getParameter("competitionStageId");
         List<Ranking> rankingList = null;
         // 调用业务层
         RankingServiceImp rankingServiceImp = new RankingServiceImp();
         try {
-            rankingList = rankingServiceImp.getRankingByCompetitionId(competitionId);
+            rankingList = rankingServiceImp.getRankingByCompetitionId(competitionId, competitionStageId);
         } catch (SQLException e) {
             e.printStackTrace();
         }
