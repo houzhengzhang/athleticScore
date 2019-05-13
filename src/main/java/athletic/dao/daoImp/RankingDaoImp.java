@@ -38,7 +38,7 @@ public class RankingDaoImp implements RankingDao {
 
     @Override
     public List<Ranking> getRankingByCompetitionId(String competitionId, String competitionStageId) throws SQLException {
-        String sql = "selece * from ranking where competitionId=? and competitionStageId=?";
+        String sql = "select * from ranking where competitionId=? and competitionStageId=?";
         QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
         List<Ranking> rankingList = queryRunner.query(sql, new BeanListHandler<>(Ranking.class), competitionId, competitionStageId);
 

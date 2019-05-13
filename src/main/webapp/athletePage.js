@@ -1,5 +1,4 @@
 
-
 var Button = antd.Button;
 var Layout = antd.Layout;
 var Menu = antd.Menu;
@@ -41,61 +40,109 @@ function fetch_get(url) {
     return encodeURI(encodeURI(url));
 }
 const token = JSON.parse(localStorage.getItem("token"));
-class ComRankPage extends React.Component{
-    constructor(){
-        super();
-        this.data = [
-            {
-                key:'1',
-                name: 'yangdongce1',
-                com:'羽毛球',
-                score: 100,
-                stage:'初赛',
-                rank:1,
-            },
-            {
-                key:'2',
-                name: 'yangdongce2',
-                score: 98,
-                stage:'初赛',
-                com:'羽毛球',
-                rank:2,
-            },
-            {
-                key:'3',
-                name: 'yangdongce3',
-                score: 95,
-                stage:'初赛',
-                com:'羽毛球',
-                rank:3,
-            },
-            {
-                key:'4',
-                name: 'yangdongce4',
-                score: 87,
-                stage:'初赛',
-                com:'羽毛球',
-                rank:4,
-            },
-        ];
+class TeamRankPage extends React.Component{
+    constructor(props){
+        super(props);
+        this.state={
+            data:[]
+        };
+    }
+    componentWillMount(){
+        let url = '/athletic/RankingServlet?method=getRankingByCompetitionId';
+        fetch(fetch_get(url))
+            .then(
+                (res) => {
+                    return res.json()
+                }
+            ).then(
+            (data) => {
+                console.log(data);
+                if(data.status===1){
+                    this.setState({
+                        data:data.result,
+                        comData:this.getTags(data.result)
+                    });
+                }else{
+                    message.error(data.msg);
+                }
+            });
     }
     render(){
-        const columns = [{
-            title:'rank',
-            dataIndex:'rank',
-        },
-            {
-                title: 'Name',
-                dataIndex: 'name',
-                render: text => <a href="javascript:;">{text}</a>,
-            },{
-                title: 'score',
-                dataIndex: 'score',
-            }, {
-                title: 'state',
-                dataIndex: 'state',
-            }];
-        const data=[];
+        return(
+            <Content style={{
+                margin: '30px 30px', padding: 20, minHeight: 280
+            }}
+            >
+                <List
+                    itemLayout="horizontal"
+                    style={{marginLeft:'7%',marginRight:'7%',marginTop:'30px'}}
+                    dataSource={this.data}
+                    renderItem={item => (
+                        <List.Item
+                            extra={<Tag color="blue">blue</Tag>}
+                        >
+                            <List.Item.Meta
+                                avatar={<Avatar shape="square" size={49}  style={{ color: '#fff', backgroundColor: '#1890ff',fontSize:'20px' }}>{item.rank}</Avatar>}
+                                title={<a href="https://ant.design">{item.name}</a>}
+                                description="队伍: 内蒙古大学"
+                            />
+                            <div style={{marginRight:"10px"}}><antd.Statistic
+                                value={item.score}
+                                precision={1}
+                                valueStyle={{ color: '#1890ff' }}
+                            /></div>
+                        </List.Item>
+                    )}
+                />
+
+            </Content>
+        );
+    }
+}
+class ComRankPage extends React.Component{
+    constructor(props){
+        super(props);
+        this.state={
+            data:[],
+            radioInput:this.props.comdata[0].competitionId,
+            selectInput:'B47507AE6987430E98BBE646D17350A8',
+        };
+        this.update();
+    }
+    update(){
+        let url = '/athletic/RankingServlet?method=getRankingByCompetitionId&competitionId='+this.state.radioInput
+            +"&competitionStageId="+this.state.selectInput;
+        fetch(fetch_get(url))
+            .then(
+                (res) => {
+                    return res.json()
+                }
+            ).then(
+            (data) => {
+                console.log(data);
+                if(data.status===1){
+                    this.setState({
+                        data:data.result,
+                        comData:this.getTags(data.result)
+                    });
+                }else{
+                    message.error(data.msg);
+                }
+            });
+    }
+    radioUpdate(value) {
+        this.setState({
+            radioInput:value
+        });
+        this.update();
+    }
+    selectUpdate(value) {
+        this.setState({
+            selectInput:value
+        });
+        this.update();
+    }
+    render(){
         return(
             <Content style={{
                 margin: '30px 30px', padding: 20, minHeight: 280,background:'#fff'
@@ -104,16 +151,36 @@ class ComRankPage extends React.Component{
                 <antd.PageHeader
                     title="项目排名"
                     extra={[
-                        <Radio.Group defaultValue="a" >
-                            <Radio.Button value="a">初赛</Radio.Button>
-                            <Radio.Button value="b">决赛</Radio.Button>
+                        <Radio.Group defaultValue="B47507AE6987430E98BBE646D17350A8" onChange={this.radioUpdate.bind(this)}>
+                            <Radio.Button value="B47507AE6987430E98BBE646D17350A8">初赛</Radio.Button>
+                            <Radio.Button value="BA28BA6C1D7D421796C39C2BF3F397F8">决赛</Radio.Button>
                         </Radio.Group>,
-                        <Select defaultValue="lucy" style={{ width: 300 }} >
-                            <Option value="lucy">Lucy</Option>
+                        <Select defaultValue={this.props.comdata} style={{ width: 300 }} onChange={this.selectUpdate.bind(this)}>
+                            {this.props.comdata.map(item => <Option key={item.competitionId}>{item.name}</Option>)}
                         </Select>,
                     ]}
                 />
-                <Table columns={columns} dataSource={this.data} />
+                <List
+                    itemLayout="horizontal"
+                    style={{marginLeft:'7%',marginRight:'7%',marginTop:'30px'}}
+                    dataSource={this.data}
+                    renderItem={item => (
+                        <List.Item
+                            extra={<Tag color="blue">blue</Tag>}
+                        >
+                            <List.Item.Meta
+                                avatar={<Avatar shape="square" size={49}  style={{ color: '#fff', backgroundColor: '#1890ff',fontSize:'20px' }}>{item.rank}</Avatar>}
+                                title={<a href="https://ant.design">{item.name}</a>}
+                                description="队伍: 内蒙古大学"
+                            />
+                                    <div style={{marginRight:"10px"}}><antd.Statistic
+                                        value={item.score}
+                                        precision={1}
+                                        valueStyle={{ color: '#1890ff' }}
+                                        /></div>
+                        </List.Item>
+                    )}
+                />
 
             </Content>
         );
@@ -161,7 +228,7 @@ class ScorePage extends React.Component{
                                             <Col span={12}>
                                                 <antd.Statistic
                                                     title="排名:"
-                                                    value={1}
+                                                    value={item.rank}
                                                     precision={0}
                                                     valueStyle={{ color: '#F68657' }}
                                                     style={{marginTop:20}}
@@ -217,7 +284,8 @@ class SiderDemo extends React.Component {
         this.state = {
             current: '1',
             data:[],
-            comData:[]
+            comData:[],
+            competitions:[],
         };
         this.handleClick = (e) => {
             console.log('click ', e.key);
@@ -245,7 +313,6 @@ class SiderDemo extends React.Component {
             (data) => {
                 console.log(data);
                 if(data.status===1){
-                    message.success(data.msg);
                     this.setState({
                        data:data.result,
                        comData:this.getTags(data.result)
@@ -254,9 +321,27 @@ class SiderDemo extends React.Component {
                     message.error(data.msg);
                 }
             });
+        url = '/athletic/CompetitionServlet?method=getAllCompetition';
+        fetch(fetch_get(url))
+            .then(
+                (res) => {
+                    return res.json()
+                }
+            ).then(
+            (data) => {
+                console.log(data);
+                if(data.status===1){
+                    this.setState({
+                        competitions:data.result,
+                    });
+                }else{
+                    message.error("初始化项目信息失败");
+                }
+            });
+
     }
     render() {
-        const { current,data,comData } = this.state;
+        const { current,data,comData,competitions } = this.state;
         const extraContent = (
             <img
                 src="https://gw.alipayobjects.com/zos/rmsportal/RzwpdLnhmvDJToTdfDPe.png"
@@ -313,10 +398,13 @@ class SiderDemo extends React.Component {
                         </div>
                     </antd.PageHeader>
                     {
-                        current==='1'&&<ScorePage data={data}/>
+                        current==='1'&&<ScorePage data={data} comdata={comData}/>
                     }
                     {
-                        current==='2'&&<ComRankPage />
+                        current==='2'&&<ComRankPage comdata={competitions}/>
+                    }
+                    {
+                        current==='3'&&<TeamRankPage/>
                     }
                 </Layout>
             </Layout>
