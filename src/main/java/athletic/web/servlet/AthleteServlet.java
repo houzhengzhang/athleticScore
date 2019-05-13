@@ -114,23 +114,32 @@ public class AthleteServlet extends BaseServlet {
         String athleteId = request.getParameter("athleteId");
         // 调用业务层
         AthleteCompetitionServiceImp athleteCompetitionServiceImp = new AthleteCompetitionServiceImp();
+        // 返回JSON数据
+        JSONObject msg = new JSONObject();
 
         try {
             athleteCompetitionList = athleteCompetitionServiceImp.queryAthleteScore(athleteId);
+
+            if (null != athleteCompetitionList) {
+                msg.put("result", athleteCompetitionList);
+                // 添加运动员rank
+                JSONArray jsonArray = msg.getJSONArray("result");
+
+                for (int i = 0; i < jsonArray.length(); ++i) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    int rank = athleteCompetitionServiceImp.getAthleteRanking(jsonObject.getString("athleteId"),
+                            jsonObject.getString("competitionId"), jsonObject.getString("competitionStageId"));
+                    jsonObject.put("rank", rank);
+                }
+                msg.put("status", 1);
+                msg.put("msg", "查询成功");
+            } else {
+                msg.put("status", 0);
+                msg.put("msg", "查询失败");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        // 返回JSON数据
-        JSONObject msg = new JSONObject();
-        if (null!=athleteCompetitionList) {
-            msg.put("status", 1);
-            msg.put("result",  athleteCompetitionList);
-            msg.put("msg", "查询成功");
-        } else {
-            msg.put("status", 0);
-            msg.put("msg", "查询失败");
-        }
-
 
         PrintWriter out = response.getWriter();
         out.write(msg.toString());

@@ -17,6 +17,8 @@ public interface AthleteCompetitionService {
 
     int insert(AthleteCompetition athleteCompetition, Connection connection) throws SQLException;
 
+    int getAthleteRanking(String athleteId, String competitionId, String competitionStageId) throws SQLException;
+
     int insert(AthleteCompetition athleteCompetition) throws SQLException;
 
     int updateAthleteScore(AthleteCompetition athleteCompetition) throws SQLException;

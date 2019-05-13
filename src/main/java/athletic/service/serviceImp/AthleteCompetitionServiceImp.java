@@ -44,6 +44,11 @@ public class AthleteCompetitionServiceImp implements AthleteCompetitionService {
     }
 
     @Override
+    public int getAthleteRanking(String athleteId, String competitionId, String competitionStageId) throws SQLException {
+        return athleteCompetitionDaoImp.getAthleteRanking(athleteId, competitionId, competitionStageId);
+    }
+
+    @Override
     public int insert(AthleteCompetition athleteCompetition) throws SQLException {
         return athleteCompetitionDaoImp.insert(athleteCompetition);
     }

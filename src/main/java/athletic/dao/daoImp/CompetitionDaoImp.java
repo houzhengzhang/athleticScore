@@ -52,7 +52,6 @@ public class CompetitionDaoImp implements CompetitionDao {
 
         CompetitionStage competitionStage = competitionStageDaoImp.getCompetitionStageById(competition.getCompetitionStageId());
         competition.setCompetitionStage(competitionStage);
-        System.out.println( "getCompetionById    "+competition.getCompetitionStageId());
         return competition;
     }
 
