@@ -28,4 +28,6 @@ public interface AthleteCompetitionDao {
     int getAthleteRanking(String athleteId, String competitionId, String competitionStageId) throws SQLException;
 
     boolean isAthleteScoredById(String competitionId, String competitionStageId) throws SQLException;
+
+    List<AthleteCompetition> getRankingByCompetitionId(String competitionId, String competitionStageId) throws SQLException;
 }

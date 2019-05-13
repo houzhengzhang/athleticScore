@@ -21,7 +21,7 @@ import java.util.List;
 public class AthleteCompetitionDaoImp implements AthleteCompetitionDao {
     @Override
     public List<AthleteCompetition> queryAthleteScoreById(String athleteId) throws SQLException {
-        String sql = "select * from athletecompetition where athleteId=?";
+        String sql = "select * from athletecompetition where athleteId=? and score!=0";
         QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
 
         CompetitionDaoImp competitionDaoImp = new CompetitionDaoImp();
@@ -123,13 +123,18 @@ public class AthleteCompetitionDaoImp implements AthleteCompetitionDao {
 
     @Override
     public boolean isAthleteScoredById(String competitionId, String competitionStageId) throws SQLException {
-//        String sqlAll = "select count(*) from athletecompetition where competitionId=? and competitionStageId=?";
         String sql = "select count(*) from athletecompetition where competitionId=? && competitionStageId=? and score=0";
         QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
 
         Long num = (Long) queryRunner.query(sql, new ScalarHandler<>(), competitionId, competitionStageId);
-//        Long scoredNum = (Long) queryRunner.query(sqlScored, new ScalarHandler<>(), competitionId, competitionStageId);
-//        return allNum.intValue() == scoredNum.intValue();
         return num.intValue() == 0;
+    }
+
+    @Override
+    public List<AthleteCompetition> getRankingByCompetitionId(String competitionId, String competitionStageId) throws SQLException {
+        String sql = "SELECT *,(@i:=@i + 1) AS ranking FROM athletecompetition,(SELECT @i:= 0 init) AS it " +
+                "where competitionId=? && competitionStageId =? ORDER BY score desc";
+        QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
+        return queryRunner.query(sql, new BeanListHandler<>(AthleteCompetition.class), competitionId, competitionStageId);
     }
 }

@@ -48,7 +48,7 @@ class TeamRankPage extends React.Component{
         };
     }
     componentWillMount(){
-        let url = '/athletic/RankingServlet?method=getRankingByCompetitionId';
+        let url = '/athletic/AthleteCompetitionServlet?method=getRankingByCompetitionId';
         fetch(fetch_get(url))
             .then(
                 (res) => {
@@ -110,7 +110,7 @@ class ComRankPage extends React.Component{
         this.update();
     }
     update(){
-        let url = '/athletic/RankingServlet?method=getRankingByCompetitionId&competitionId='+this.state.radioInput
+        let url = '/athletic/AthleteCompetitionServlet?method=getRankingByCompetitionId&competitionId='+this.state.radioInput
             +"&competitionStageId="+this.state.selectInput;
         fetch(fetch_get(url))
             .then(

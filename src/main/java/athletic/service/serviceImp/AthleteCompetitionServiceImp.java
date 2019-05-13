@@ -1,11 +1,9 @@
 package athletic.service.serviceImp;
 
-import athletic.dao.RankingDao;
 import athletic.dao.daoImp.AthleteCompetitionDaoImp;
 import athletic.dao.daoImp.AthleteDaoImp;
 import athletic.dao.daoImp.AthleteTeamDaoImp;
 import athletic.dao.daoImp.CompetitionDaoImp;
-import athletic.dao.daoImp.CompetitionStageDaoImp;
 import athletic.dao.daoImp.RankingDaoImp;
 import athletic.domain.Athlete;
 import athletic.domain.AthleteCompetition;
@@ -15,7 +13,6 @@ import athletic.domain.Ranking;
 import athletic.service.AthleteCompetitionService;
 import athletic.utils.JDBCUtils;
 import athletic.utils.UUIDUtils;
-import com.sun.xml.internal.bind.v2.TODO;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -55,6 +52,7 @@ public class AthleteCompetitionServiceImp implements AthleteCompetitionService {
 
     /**
      * 计分员录入分数
+     *
      * @param athleteCompetition
      * @return
      * @throws SQLException
@@ -76,7 +74,7 @@ public class AthleteCompetitionServiceImp implements AthleteCompetitionService {
             // 开启事务
             connection.setAutoCommit(false);
 
-            Competition competition =  competitionDaoImp.getCompetionById(athleteCompetition.getCompetitionId());
+            Competition competition = competitionDaoImp.getCompetionById(athleteCompetition.getCompetitionId());
             // 获取比赛阶段信息
             CompetitionStage competitionStage = competition.getCompetitionStage();
             // 如果更新决赛成绩且所有运动员的分数都已给出，则生成排名表信息
@@ -99,16 +97,16 @@ public class AthleteCompetitionServiceImp implements AthleteCompetitionService {
                     rankingDaoImp.insert(ranking, connection);
 
                     // 只记录前三名到运动队总分榜
-                    if(i<4){
+                    if (i < 4) {
                         // 查询该运动员信息，按照名次更新运动队总分
                         Athlete athlete = athleteDaoImp.getAthleteById(rankAthleteCompetition.getAthleteId());
                         // TODO 添加事务-更新运动队总分
-                        athleteTeamDaoImp.updateTotalPoint(athlete.getAthleteTeamId(), 4-i);
+                        athleteTeamDaoImp.updateTotalPoint(athlete.getAthleteTeamId(), 4 - i);
                     }
                     i++;
                 }
             }
-             //提交事务
+            //提交事务
             connection.commit();
             return 1;
         } catch (Exception e) {
@@ -117,5 +115,10 @@ public class AthleteCompetitionServiceImp implements AthleteCompetitionService {
             e.printStackTrace();
             return 0;
         }
+    }
+
+    @Override
+    public List<AthleteCompetition> getRankingByCompetitionId(String competitionId, String competitionStageId) throws SQLException {
+        return athleteCompetitionDaoImp.getRankingByCompetitionId(competitionId, competitionStageId);
     }
 }

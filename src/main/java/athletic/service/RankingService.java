@@ -1,6 +1,7 @@
 package athletic.service;
 
 import athletic.domain.Ranking;
+import org.json.JSONArray;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
  * @ Description:
  */
 public interface RankingService {
-    List<Ranking> getRankingByAthleteId(String athleteId, String competitionStageId) throws SQLException;
-
     List<Ranking> getRankingByCompetitionId(String competitionId, String competitionStageId) throws SQLException;
+
+    JSONArray getRankingById(String competitionId) throws SQLException;
 }

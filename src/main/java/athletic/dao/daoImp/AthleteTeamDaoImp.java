@@ -1,6 +1,7 @@
 package athletic.dao.daoImp;
 
 import athletic.dao.AthleteTeamDao;
+import athletic.domain.Athlete;
 import athletic.domain.AthleteTeam;
 import athletic.utils.JDBCUtils;
 import org.apache.commons.dbutils.QueryRunner;

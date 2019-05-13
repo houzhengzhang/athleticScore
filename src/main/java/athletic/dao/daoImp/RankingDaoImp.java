@@ -7,6 +7,7 @@ import athletic.domain.Ranking;
 import athletic.utils.JDBCUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -21,19 +22,10 @@ public class RankingDaoImp implements RankingDao {
     private CompetitionDaoImp competitionDaoImp = new CompetitionDaoImp();
 
     @Override
-    public List<Ranking> getRankingByAthleteId(String athleteId, String competitionStageId) throws SQLException {
-        String sql = "selece * from ranking where athleteId=? and competitionStageId=?";
+    public int getRankingById(String athleteId, String competitionId) throws SQLException {
+        String sql = "selece ranking from ranking where athleteId=? and competitionId=?";
         QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
-        List<Ranking> rankingList = queryRunner.query(sql, new BeanListHandler<>(Ranking.class), athleteId, competitionStageId);
-
-        // 填充外键信息
-        Athlete athlete = athleteDaoImp.getAthleteById(athleteId);
-        for (Ranking ranking : rankingList) {
-            ranking.setAthlete(athlete);
-            Competition competition = competitionDaoImp.getCompetionById(ranking.getCompetitonId());
-            ranking.setCompetition(competition);
-        }
-        return rankingList;
+        return (int) queryRunner.query(sql, new ScalarHandler<>(), athleteId, competitionId);
     }
 
     @Override
@@ -56,7 +48,7 @@ public class RankingDaoImp implements RankingDao {
     public int insert(Ranking ranking, Connection connection) throws SQLException {
         String sql = "insert into ranking values(?,?,?,?)";
         QueryRunner queryRunner = new QueryRunner();
-        Object[] params = {ranking.getRankingId(),ranking.getCompetitonId(), ranking.getAthleteId(), ranking.getRanking()};
+        Object[] params = {ranking.getRankingId(), ranking.getCompetitonId(), ranking.getAthleteId(), ranking.getRanking()};
         return queryRunner.update(connection, sql, params);
     }
 }

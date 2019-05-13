@@ -17,6 +17,16 @@ public class AthleteCompetition {
     private Competition competition;
     private CompetitionStage competitionStage;
     private Athlete athlete;
+    // 记录排名
+    private int ranking;
+
+    public int getRanking() {
+        return ranking;
+    }
+
+    public void setRanking(int ranking) {
+        this.ranking = ranking;
+    }
 
     public Athlete getAthlete() {
         return athlete;

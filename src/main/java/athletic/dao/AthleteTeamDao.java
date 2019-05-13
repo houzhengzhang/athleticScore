@@ -1,5 +1,6 @@
 package athletic.dao;
 
+import athletic.domain.Athlete;
 import athletic.domain.AthleteTeam;
 
 import java.sql.SQLException;
