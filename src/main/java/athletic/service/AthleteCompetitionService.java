@@ -1,6 +1,7 @@
 package athletic.service;
 
 import athletic.domain.AthleteCompetition;
+import org.json.JSONArray;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -23,5 +24,5 @@ public interface AthleteCompetitionService {
 
     int updateAthleteScore(AthleteCompetition athleteCompetition) throws SQLException;
 
-    List<AthleteCompetition> getRankingByCompetitionId(String competitionId, String competitionStageId) throws SQLException;
+    JSONArray getRankingByCompetitionId(String competitionId, String competitionStageId) throws SQLException;
 }

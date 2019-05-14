@@ -9,7 +9,9 @@ import athletic.domain.*;
 import athletic.service.AthleteCompetitionService;
 import athletic.utils.JDBCUtils;
 import athletic.utils.UUIDUtils;
-
+import jdk.nashorn.internal.scripts.JS;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -114,17 +116,21 @@ public class AthleteCompetitionServiceImp implements AthleteCompetitionService {
     }
 
     @Override
-    public List<AthleteCompetition> getRankingByCompetitionId(String competitionId, String competitionStageId) throws SQLException {
+    public JSONArray getRankingByCompetitionId(String competitionId, String competitionStageId) throws SQLException {
         List<AthleteCompetition> athleteCompetitionList=athleteCompetitionDaoImp.getRankingByCompetitionId(competitionId, competitionStageId);
         AthleteDaoImp athleteDaoImp=new AthleteDaoImp();
         AthleteTeamDaoImp athleteTeamDaoImp = new AthleteTeamDaoImp();
+        JSONArray jsonArray = new JSONArray();
         for(AthleteCompetition athleteCompetition:athleteCompetitionList){
             Athlete athlete = athleteDaoImp.getAthleteById(athleteCompetition.getAthleteId());
             athleteCompetition.setAthlete(athlete);
-            // TODO add athlete team
             AthleteTeam athleteTeam = athleteTeamDaoImp.getAthleteTeamById(athlete.getAthleteTeamId());
 
+            JSONObject jsonObject = new JSONObject(athleteCompetition);
+            jsonObject.put("athleteTeam", athleteTeam);
+
+            jsonArray.put(jsonObject);
         }
-        return athleteCompetitionList;
+        return jsonArray;
     }
 }

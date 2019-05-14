@@ -36,7 +36,6 @@ public class AthleteDaoImp implements AthleteDao {
         AthleteTeam athleteTeam = athleteTeamDaoImp.getAthleteTeamById(ath.getAthleteTeamId()) ;
         ath.setAthleteTeam(athleteTeam);
 
-        System.out.println(athleteTeam);
         return ath;
     }
 
