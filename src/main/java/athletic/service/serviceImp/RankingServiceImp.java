@@ -26,7 +26,7 @@ public class RankingServiceImp implements RankingService {
     }
 
     @Override
-    public JSONArray getRankingById(String competitionId) throws SQLException {
+    public JSONArray getRankingById() throws SQLException {
         AthleteDaoImp athleteDaoImp = new AthleteDaoImp();
         JSONArray jsonArray = new JSONArray();
         // 获取所有运动队
@@ -38,17 +38,19 @@ public class RankingServiceImp implements RankingService {
             // 获取该运动队的所有运动员
             List<Athlete> athleteList = athleteDaoImp.getAthleteByTeamId(athleteTeam.getAthleteTeamId());
             for (Athlete athlete : athleteList) {
-                int rank = rankingDaoImp.getRankingById(athlete.getAthleteId(), competitionId);
-                switch (rank) {
-                    case 1:
-                        gold++;
-                        break;
-                    case 2:
-                        sliver++;
-                        break;
-                    case 3:
-                        bronze++;
-                        break;
+                int[] ranking = rankingDaoImp.getRankingById(athlete.getAthleteId());
+                for (int rank : ranking) {
+                    switch (rank) {
+                        case 1:
+                            gold++;
+                            break;
+                        case 2:
+                            sliver++;
+                            break;
+                        case 3:
+                            bronze++;
+                            break;
+                    }
                 }
             }
             jsonObject.put("gold", gold);

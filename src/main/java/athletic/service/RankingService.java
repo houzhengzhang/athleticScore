@@ -13,5 +13,5 @@ import java.util.List;
 public interface RankingService {
     List<Ranking> getRankingByCompetitionId(String competitionId, String competitionStageId) throws SQLException;
 
-    JSONArray getRankingById(String competitionId) throws SQLException;
+    JSONArray getRankingById() throws SQLException;
 }

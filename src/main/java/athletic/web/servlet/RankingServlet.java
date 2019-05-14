@@ -31,13 +31,11 @@ public class RankingServlet extends BaseServlet {
      * @throws IOException
      */
     public void getRankingOfAthleteTeam(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // 项目id
-        String competitionId = request.getParameter("competitionId");
         RankingServiceImp rankingServiceImp = new RankingServiceImp();
 
         org.json.JSONArray jsonArray = null;
         try {
-            jsonArray = rankingServiceImp.getRankingById(competitionId);
+            jsonArray = rankingServiceImp.getRankingById();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -52,7 +50,7 @@ public class RankingServlet extends BaseServlet {
             msg.put("status", 0);
             msg.put("msg", "查询排名失败");
         }
-
+        System.out.println(msg);
         PrintWriter out = response.getWriter();
         out.write(msg.toString());
     }
