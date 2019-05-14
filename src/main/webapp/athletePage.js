@@ -130,7 +130,7 @@ class TeamRankPage extends React.Component{
                                 />
 
                             </div>
-                            <Divider type="vertical" style={{height:30}}/>
+
                             <div style={{marginRight:30,marginLeft:30}}>
                                 <antd.Statistic style={{width:80}}
                                     prefix={<img style={{marginRight:'20px'}} src='static/银牌%20(2).svg' height={'30px'}/>}
@@ -140,7 +140,6 @@ class TeamRankPage extends React.Component{
                                 />
 
                             </div>
-                            <Divider type="vertical" style={{height:30}}/>
                             <div style={{marginRight:30,marginLeft:30}}>
                                 <antd.Statistic style={{width:80}}
                                     prefix={<img style={{marginRight:'20px'}} src='static/铜牌%20(2).svg' height={'30px'}/>}
@@ -168,13 +167,13 @@ class ComRankPage extends React.Component{
             radioInput:'B47507AE6987430E98BBE646D17350A8',
             selectInput:this.props.comdata[0].competitionId,
         };
-        console.log(this.props.comdata);
-        this.update();
+        this.update(this.props.comdata[0].competitionId,'B47507AE6987430E98BBE646D17350A8');
     }
-    update(){
-        console.log(this.state.radioInput);
-        let url = '/athletic/AthleteCompetitionServlet?method=getRankingByCompetitionId&competitionId='+this.state.selectInput
-            +"&competitionStageId="+this.state.radioInput;
+    update(com,stage){
+        console.log('stage',com);
+        console.log('com',stage);
+        let url = '/athletic/AthleteCompetitionServlet?method=getRankingByCompetitionId&competitionId='+com
+            +"&competitionStageId="+stage;
         fetch(fetch_get(url))
             .then(
                 (res) => {
@@ -182,7 +181,6 @@ class ComRankPage extends React.Component{
                 }
             ).then(
             (data) => {
-                console.log(data);
                 if(data.status===1){
                     console.log(data.result);
                     this.setState({
@@ -197,14 +195,14 @@ class ComRankPage extends React.Component{
         this.setState({
             radioInput:e.target.value
         });
-        this.update();
+        this.update(this.state.selectInput,e.target.value);
     }
     selectUpdate(value) {
         console.log(value);
         this.setState({
             selectInput:value
         });
-        this.update();
+        this.update(value,this.state.radioInput);
     }
     render(){
         return(
@@ -215,11 +213,11 @@ class ComRankPage extends React.Component{
                 <antd.PageHeader
                     title="项目排名"
                     extra={[
-                        <Radio.Group defaultValue="B47507AE6987430E98BBE646D17350A8" onChange={this.radioUpdate.bind(this)}>
+                        <Radio.Group  value={this.state.radioInput} onChange={this.radioUpdate.bind(this)}>
                             <Radio.Button value="B47507AE6987430E98BBE646D17350A8">初赛</Radio.Button>
                             <Radio.Button value="BA28BA6C1D7D421796C39C2BF3F397F8">决赛</Radio.Button>
                         </Radio.Group>,
-                        <Select defaultValue={this.props.comdata[0].competitionId} style={{ width: 300 }} onChange={this.selectUpdate.bind(this)}>
+                        <Select style={{ width: 300 }} value={this.state.selectInput} onChange={this.selectUpdate.bind(this)}>
                             {this.props.comdata.map(item => <Option key={item.competitionId}>{item.name}</Option>)}
                         </Select>,
                     ]}
@@ -228,6 +226,7 @@ class ComRankPage extends React.Component{
                     itemLayout="horizontal"
                     style={{marginLeft:'7%',marginRight:'7%',marginTop:'30px'}}
                     dataSource={this.state.data}
+                    pagination={{pageSize:5}}
                     renderItem={item => (
                         <List.Item
                             extra={<Tag color="blue">blue</Tag>}
