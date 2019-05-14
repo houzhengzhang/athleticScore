@@ -47,32 +47,6 @@ class TeamRankPage extends React.Component{
         this.state={
             data:[]
         };
-        this.data=[
-            {
-                name:'yangdongce',
-                rank:1,
-                score:190,
-                gold:9,
-                silver:12,
-                bronze:22,
-            },
-            {
-                name:'sdaksdjkas',
-                rank:2,
-                score:180,
-                gold:6,
-                silver:11,
-                bronze:20,
-            },
-            {
-                name:'hgfhjdfijh',
-                rank:3,
-                score:150,
-                gold:2,
-                silver:8,
-                bronze:19,
-            }
-        ];
     }
     componentWillMount(){
         let url = '/athletic/RankingServlet?method=getRankingOfAthleteTeam';
@@ -85,8 +59,12 @@ class TeamRankPage extends React.Component{
             (data) => {
                 console.log(data);
                 if(data.status===1){
+                    let datas=data.result.reverse();
+                    for(let i=0;i<datas.length;i++){
+                        datas[i].rank=i+1;
+                    }
                     this.setState({
-                        data:data.result,
+                        data:datas,
                     });
                 }else{
                     message.error(data.msg);
@@ -105,13 +83,13 @@ class TeamRankPage extends React.Component{
                 <List
                     itemLayout="horizontal"
                     style={{marginLeft:'7%',marginRight:'7%',marginTop:'30px'}}
-                    dataSource={this.data}
+                    dataSource={this.state.data}
                     renderItem={item => (
                         <List.Item
                             extra={<div style={{marginRight:"10px",marginLeft:30}}>
-                                <antd.Statistic
+                                <antd.Statistic style={{width:150}}
                                 prefix={<span style={{fontSize:'18px',marginRight:'10px'}}>总积分:</span>}
-                                value={item.score}
+                                value={item.totalPoint}
                                 precision={1}
                                 valueStyle={{ color: '#1890ff' }}
                             /></div>}
@@ -119,7 +97,7 @@ class TeamRankPage extends React.Component{
                             <List.Item.Meta
                                 avatar={<Avatar shape="square" size={52}  style={{ color: '#1890ff', backgroundColor: '#fff',fontSize:'30px' }}>{item.rank}</Avatar>}
                                 title={<h3>{item.name}</h3>}
-                                description="代表学校: 内蒙古大学"
+                                description={<span>代表学校:{item.school}</span> }
                             />
 
                             <div style={{marginRight:30,marginLeft:30}}>
@@ -135,7 +113,7 @@ class TeamRankPage extends React.Component{
                             <div style={{marginRight:30,marginLeft:30}}>
                                 <antd.Statistic style={{width:80}}
                                     prefix={<img style={{marginRight:'20px'}} src='static/银牌%20(2).svg' height={'30px'}/>}
-                                    value={item.silver}
+                                    value={item.sliver}
                                     precision={0}
                                     valueStyle={{ color: '#566270', fontSize:'20px' ,marginTop:5}}
                                 />
@@ -235,7 +213,7 @@ class ComRankPage extends React.Component{
                             <List.Item.Meta
                                 avatar={<Avatar shape="square" size={49}  style={{ color: '#1890ff', backgroundColor: '#fff',fontSize:'30px' }}>{item.ranking}</Avatar>}
                                 title={<h3>{item.athlete.name}</h3>}
-                                description="队伍: 内蒙古大学"
+                                description={<span>队伍:{item.athleteTeam.name}</span> }
                             />
                                     <div style={{marginRight:"10px"}}>
                                         <antd.Statistic
