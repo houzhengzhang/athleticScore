@@ -75,7 +75,7 @@ class TeamRankPage extends React.Component{
         ];
     }
     componentWillMount(){
-        let url = '/athletic/AthleteCompetitionServlet?method=getRankingByCompetitionId';
+        let url = '/athletic/RankingServlet?method=getRankingOfAthleteTeam';
         fetch(fetch_get(url))
             .then(
                 (res) => {
@@ -96,12 +96,13 @@ class TeamRankPage extends React.Component{
     render(){
         return(
             <Content style={{
-                margin: '30px 100px', padding: 15, minHeight: 280,background:"#fff"
+                margin: '30px 30px', padding: 15, minHeight: 280,background:"#fff"
             }}
             >
+                <antd.PageHeader
+                    title="运动队排名"
+                />
                 <List
-                    header={<h2>运动队排名</h2>}
-                    footer={<div></div>}
                     itemLayout="horizontal"
                     style={{marginLeft:'7%',marginRight:'7%',marginTop:'30px'}}
                     dataSource={this.data}
@@ -116,7 +117,7 @@ class TeamRankPage extends React.Component{
                             /></div>}
                         >
                             <List.Item.Meta
-                                avatar={<Avatar shape="square" size={52}  style={{ color: '#1890ff', backgroundColor: '#fff',fontSize:'40px' }}>{item.rank}</Avatar>}
+                                avatar={<Avatar shape="square" size={52}  style={{ color: '#1890ff', backgroundColor: '#fff',fontSize:'30px' }}>{item.rank}</Avatar>}
                                 title={<h3>{item.name}</h3>}
                                 description="代表学校: 内蒙古大学"
                             />
@@ -229,7 +230,7 @@ class ComRankPage extends React.Component{
                     pagination={{pageSize:5}}
                     renderItem={item => (
                         <List.Item
-                            extra={<Tag color="blue">blue</Tag>}
+
                         >
                             <List.Item.Meta
                                 avatar={<Avatar shape="square" size={49}  style={{ color: '#1890ff', backgroundColor: '#fff',fontSize:'30px' }}>{item.ranking}</Avatar>}
