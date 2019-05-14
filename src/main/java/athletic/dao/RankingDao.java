@@ -11,7 +11,7 @@ import java.util.List;
  * @ Description:
  */
 public interface RankingDao {
-    int[] getRankingById(String athleteId) throws SQLException;
+    List<Ranking> getRankingById(String athleteId) throws SQLException;
 
     List<Ranking> getRankingByCompetitionId(String competitionId, String competitionStageId) throws SQLException;
 

@@ -22,10 +22,10 @@ public class RankingDaoImp implements RankingDao {
     private CompetitionDaoImp competitionDaoImp = new CompetitionDaoImp();
 
     @Override
-    public int[] getRankingById(String athleteId) throws SQLException {
-        String sql = "selece ranking from ranking where athleteId=?";
+    public List<Ranking> getRankingById(String athleteId) throws SQLException {
+        String sql = "select ranking from ranking where athleteId=?";
         QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
-        return  (int[]) queryRunner.query(sql, new ScalarHandler<>(), athleteId);
+        return queryRunner.query(sql, new BeanListHandler<>(Ranking.class), athleteId);
     }
 
     @Override

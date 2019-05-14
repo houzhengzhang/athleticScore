@@ -36,11 +36,12 @@ public class RankingServiceImp implements RankingService {
             int gold = 0, sliver = 0, bronze = 0;
             JSONObject jsonObject = new JSONObject();
             // 获取该运动队的所有运动员
-            List<Athlete> athleteList = athleteDaoImp.getAthleteByTeamId(athleteTeam.getAthleteTeamId());
+            List<Athlete> athleteList = null;
+            athleteList = athleteDaoImp.getAthleteByTeamId(athleteTeam.getAthleteTeamId());
             for (Athlete athlete : athleteList) {
-                int[] ranking = rankingDaoImp.getRankingById(athlete.getAthleteId());
-                for (int rank : ranking) {
-                    switch (rank) {
+                List<Ranking> rankingList = rankingDaoImp.getRankingById(athlete.getAthleteId());
+                for (Ranking rank : rankingList) {
+                    switch (rank.getRanking()) {
                         case 1:
                             gold++;
                             break;
