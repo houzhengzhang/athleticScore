@@ -5,11 +5,7 @@ import athletic.dao.daoImp.AthleteDaoImp;
 import athletic.dao.daoImp.AthleteTeamDaoImp;
 import athletic.dao.daoImp.CompetitionDaoImp;
 import athletic.dao.daoImp.RankingDaoImp;
-import athletic.domain.Athlete;
-import athletic.domain.AthleteCompetition;
-import athletic.domain.Competition;
-import athletic.domain.CompetitionStage;
-import athletic.domain.Ranking;
+import athletic.domain.*;
 import athletic.service.AthleteCompetitionService;
 import athletic.utils.JDBCUtils;
 import athletic.utils.UUIDUtils;
@@ -119,6 +115,16 @@ public class AthleteCompetitionServiceImp implements AthleteCompetitionService {
 
     @Override
     public List<AthleteCompetition> getRankingByCompetitionId(String competitionId, String competitionStageId) throws SQLException {
-        return athleteCompetitionDaoImp.getRankingByCompetitionId(competitionId, competitionStageId);
+        List<AthleteCompetition> athleteCompetitionList=athleteCompetitionDaoImp.getRankingByCompetitionId(competitionId, competitionStageId);
+        AthleteDaoImp athleteDaoImp=new AthleteDaoImp();
+        AthleteTeamDaoImp athleteTeamDaoImp = new AthleteTeamDaoImp();
+        for(AthleteCompetition athleteCompetition:athleteCompetitionList){
+            Athlete athlete = athleteDaoImp.getAthleteById(athleteCompetition.getAthleteId());
+            athleteCompetition.setAthlete(athlete);
+            // TODO add athlete team
+            AthleteTeam athleteTeam = athleteTeamDaoImp.getAthleteTeamById(athlete.getAthleteTeamId());
+
+        }
+        return athleteCompetitionList;
     }
 }

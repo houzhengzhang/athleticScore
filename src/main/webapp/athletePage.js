@@ -36,6 +36,7 @@ var SubMenu=Menu.SubMenu;
 var Tag=antd.Tag;
 var Table=antd.Table;
 var Radio=antd.Radio;
+var Divider=antd.Divider;
 function fetch_get(url) {
     return encodeURI(encodeURI(url));
 }
@@ -46,6 +47,32 @@ class TeamRankPage extends React.Component{
         this.state={
             data:[]
         };
+        this.data=[
+            {
+                name:'yangdongce',
+                rank:1,
+                score:190,
+                gold:9,
+                silver:12,
+                bronze:22,
+            },
+            {
+                name:'sdaksdjkas',
+                rank:2,
+                score:180,
+                gold:6,
+                silver:11,
+                bronze:20,
+            },
+            {
+                name:'hgfhjdfijh',
+                rank:3,
+                score:150,
+                gold:2,
+                silver:8,
+                bronze:19,
+            }
+        ];
     }
     componentWillMount(){
         let url = '/athletic/AthleteCompetitionServlet?method=getRankingByCompetitionId';
@@ -60,7 +87,6 @@ class TeamRankPage extends React.Component{
                 if(data.status===1){
                     this.setState({
                         data:data.result,
-                        comData:this.getTags(data.result)
                     });
                 }else{
                     message.error(data.msg);
@@ -70,27 +96,62 @@ class TeamRankPage extends React.Component{
     render(){
         return(
             <Content style={{
-                margin: '30px 30px', padding: 20, minHeight: 280
+                margin: '30px 100px', padding: 15, minHeight: 280,background:"#fff"
             }}
             >
                 <List
+                    header={<h2>运动队排名</h2>}
+                    footer={<div></div>}
                     itemLayout="horizontal"
                     style={{marginLeft:'7%',marginRight:'7%',marginTop:'30px'}}
                     dataSource={this.data}
                     renderItem={item => (
                         <List.Item
-                            extra={<Tag color="blue">blue</Tag>}
-                        >
-                            <List.Item.Meta
-                                avatar={<Avatar shape="square" size={49}  style={{ color: '#fff', backgroundColor: '#1890ff',fontSize:'20px' }}>{item.rank}</Avatar>}
-                                title={<a href="https://ant.design">{item.name}</a>}
-                                description="队伍: 内蒙古大学"
-                            />
-                            <div style={{marginRight:"10px"}}><antd.Statistic
+                            extra={<div style={{marginRight:"10px",marginLeft:30}}>
+                                <antd.Statistic
+                                prefix={<span style={{fontSize:'18px',marginRight:'10px'}}>总积分:</span>}
                                 value={item.score}
                                 precision={1}
                                 valueStyle={{ color: '#1890ff' }}
-                            /></div>
+                            /></div>}
+                        >
+                            <List.Item.Meta
+                                avatar={<Avatar shape="square" size={52}  style={{ color: '#1890ff', backgroundColor: '#fff',fontSize:'40px' }}>{item.rank}</Avatar>}
+                                title={<h3>{item.name}</h3>}
+                                description="代表学校: 内蒙古大学"
+                            />
+
+                            <div style={{marginRight:30,marginLeft:30}}>
+                                <antd.Statistic style={{width:80}}
+                                    prefix={<img style={{marginRight:'20px'}} src='static/金牌%20(2).svg' height={'30px'}/>}
+                                    value={item.gold}
+                                    precision={0}
+                                    valueStyle={{ color: '#566270', fontSize:'20px' ,marginTop:5}}
+                                />
+
+                            </div>
+                            <Divider type="vertical" style={{height:30}}/>
+                            <div style={{marginRight:30,marginLeft:30}}>
+                                <antd.Statistic style={{width:80}}
+                                    prefix={<img style={{marginRight:'20px'}} src='static/银牌%20(2).svg' height={'30px'}/>}
+                                    value={item.silver}
+                                    precision={0}
+                                    valueStyle={{ color: '#566270', fontSize:'20px' ,marginTop:5}}
+                                />
+
+                            </div>
+                            <Divider type="vertical" style={{height:30}}/>
+                            <div style={{marginRight:30,marginLeft:30}}>
+                                <antd.Statistic style={{width:80}}
+                                    prefix={<img style={{marginRight:'20px'}} src='static/铜牌%20(2).svg' height={'30px'}/>}
+                                    value={item.bronze}
+                                    precision={0}
+                                    valueStyle={{ color: '#566270', fontSize:'20px',marginTop:5 }}
+                                />
+
+                            </div>
+
+
                         </List.Item>
                     )}
                 />
@@ -104,14 +165,16 @@ class ComRankPage extends React.Component{
         super(props);
         this.state={
             data:[],
-            radioInput:this.props.comdata[0].competitionId,
-            selectInput:'B47507AE6987430E98BBE646D17350A8',
+            radioInput:'B47507AE6987430E98BBE646D17350A8',
+            selectInput:this.props.comdata[0].competitionId,
         };
+        console.log(this.props.comdata);
         this.update();
     }
     update(){
-        let url = '/athletic/AthleteCompetitionServlet?method=getRankingByCompetitionId&competitionId='+this.state.radioInput
-            +"&competitionStageId="+this.state.selectInput;
+        console.log(this.state.radioInput);
+        let url = '/athletic/AthleteCompetitionServlet?method=getRankingByCompetitionId&competitionId='+this.state.selectInput
+            +"&competitionStageId="+this.state.radioInput;
         fetch(fetch_get(url))
             .then(
                 (res) => {
@@ -121,22 +184,23 @@ class ComRankPage extends React.Component{
             (data) => {
                 console.log(data);
                 if(data.status===1){
+                    console.log(data.result);
                     this.setState({
-                        data:data.result,
-                        comData:this.getTags(data.result)
+                        data:data.result
                     });
                 }else{
                     message.error(data.msg);
                 }
             });
     }
-    radioUpdate(value) {
+    radioUpdate(e) {
         this.setState({
-            radioInput:value
+            radioInput:e.target.value
         });
         this.update();
     }
     selectUpdate(value) {
+        console.log(value);
         this.setState({
             selectInput:value
         });
@@ -155,7 +219,7 @@ class ComRankPage extends React.Component{
                             <Radio.Button value="B47507AE6987430E98BBE646D17350A8">初赛</Radio.Button>
                             <Radio.Button value="BA28BA6C1D7D421796C39C2BF3F397F8">决赛</Radio.Button>
                         </Radio.Group>,
-                        <Select defaultValue={this.props.comdata} style={{ width: 300 }} onChange={this.selectUpdate.bind(this)}>
+                        <Select defaultValue={this.props.comdata[0].competitionId} style={{ width: 300 }} onChange={this.selectUpdate.bind(this)}>
                             {this.props.comdata.map(item => <Option key={item.competitionId}>{item.name}</Option>)}
                         </Select>,
                     ]}
@@ -163,17 +227,19 @@ class ComRankPage extends React.Component{
                 <List
                     itemLayout="horizontal"
                     style={{marginLeft:'7%',marginRight:'7%',marginTop:'30px'}}
-                    dataSource={this.data}
+                    dataSource={this.state.data}
                     renderItem={item => (
                         <List.Item
                             extra={<Tag color="blue">blue</Tag>}
                         >
                             <List.Item.Meta
-                                avatar={<Avatar shape="square" size={49}  style={{ color: '#fff', backgroundColor: '#1890ff',fontSize:'20px' }}>{item.rank}</Avatar>}
-                                title={<a href="https://ant.design">{item.name}</a>}
+                                avatar={<Avatar shape="square" size={49}  style={{ color: '#1890ff', backgroundColor: '#fff',fontSize:'30px' }}>{item.ranking}</Avatar>}
+                                title={<h3>{item.athlete.name}</h3>}
                                 description="队伍: 内蒙古大学"
                             />
-                                    <div style={{marginRight:"10px"}}><antd.Statistic
+                                    <div style={{marginRight:"10px"}}>
+                                        <antd.Statistic
+                                        prefix={<span style={{fontSize:'18px',marginRight:'10px'}}>得分:</span>}
                                         value={item.score}
                                         precision={1}
                                         valueStyle={{ color: '#1890ff' }}
@@ -329,7 +395,6 @@ class SiderDemo extends React.Component {
                 }
             ).then(
             (data) => {
-                console.log(data);
                 if(data.status===1){
                     this.setState({
                         competitions:data.result,
