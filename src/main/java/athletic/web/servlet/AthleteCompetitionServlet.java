@@ -30,9 +30,6 @@ public class AthleteCompetitionServlet extends BaseServlet {
         String competitionId = request.getParameter("competitionId");
         // 项目阶段id
         String competitionStageId = request.getParameter("competitionStageId");
-
-        System.out.println(competitionId);
-        System.out.println(competitionStageId);
         JSONArray jsonArray = null;
         // 调用业务层
         AthleteCompetitionServiceImp athleteCompetitionServiceImp = new AthleteCompetitionServiceImp();
@@ -50,8 +47,7 @@ public class AthleteCompetitionServlet extends BaseServlet {
         } else {
             msg.put("status", 0);
             msg.put("msg", "查询排名失败");
-        }
-        System.out.println(msg);
+        } 
         PrintWriter out = response.getWriter();
         out.write(msg.toString());
     }

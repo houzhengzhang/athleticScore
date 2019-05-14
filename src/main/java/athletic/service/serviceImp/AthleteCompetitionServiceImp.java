@@ -126,9 +126,14 @@ public class AthleteCompetitionServiceImp implements AthleteCompetitionService {
             athleteCompetition.setAthlete(athlete);
             AthleteTeam athleteTeam = athleteTeamDaoImp.getAthleteTeamById(athlete.getAthleteTeamId());
 
-            JSONObject jsonObject = new JSONObject(athleteCompetition);
-            jsonObject.put("athleteTeam", athleteTeam);
+            JSONObject jsonTeam = new JSONObject();
+            jsonTeam.put("totalPoint", athleteTeam.getTotalPoint());
+            jsonTeam.put("school", athleteTeam.getSchool());
+            jsonTeam.put("name", athleteTeam.getName());
+            jsonTeam.put("athleteTeamId", athleteTeam.getAthleteTeamId());
 
+            JSONObject jsonObject = new JSONObject(athleteCompetition);
+            jsonObject.put("athleteTeam", jsonTeam);
             jsonArray.put(jsonObject);
         }
         return jsonArray;
