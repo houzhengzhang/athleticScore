@@ -258,8 +258,11 @@ class SiderDemo extends React.Component {
                     <Header style={{ background: '#fff', padding: 0 }}>
                         <Row gutter={16} style={{marginLeft:'1%',marginRight:'0%'}} >
                             <Col span={7} offset={17} style={{textAlign:'right',paddingRight:10}}>
-                                <Avatar style={{marginLeft:'17%'}} size={45} icon="user" />
-                                <span style={{fontSize:'16px'}}>&nbsp;&nbsp;&nbsp;username <antd.Divider type="vertical" />
+                                {
+                                    token.sex===0?  <Avatar style={{marginLeft:'17%'}}  shape="square" src='static/man.svg'/>
+                                        : <Avatar style={{marginLeft:'17%'}}  shape="square" src='static/woman.svg'/>
+                                }
+                                <span style={{fontSize:'15px'}}>&nbsp;&nbsp;&nbsp;{token.name} <antd.Divider type="vertical" />
                         <span style={{fontSize:'15px',color:'#6AAFE6'}}>scoring staff&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                         </span>
                             </Col>

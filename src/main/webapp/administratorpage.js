@@ -331,7 +331,7 @@ class EditableTable extends React.Component {
               columns={columns}
               rowClassName="editable-row"
               pagination={{
-                onChange: this.cancel
+                pageSize:5
               }}
           />
         </EditableContext.Provider>
@@ -1052,16 +1052,16 @@ class SiderDemo extends React.Component {
           </Sider>
           <Layout>
             <Header style={{ background: '#fff', padding: 0 }}>
-              <Row gutter={16} style={{marginLeft:'1%',marginRight:'0%'}}>
-                <Col span={1} offset={20} >
-                  <Avatar style={{marginLeft:'17%'}} size={45} icon="user" />
+              <Row gutter={16} style={{marginLeft:'1%',marginRight:'0%'}} >
+                <Col span={7} offset={17} style={{textAlign:'right',paddingRight:10}}>
+                  {
+                    token.sex===0?  <Avatar style={{marginLeft:'17%'}}  shape="square" src='static/man.svg'/>
+                        : <Avatar style={{marginLeft:'17%'}}  shape="square" src='static/woman.svg'/>
+                  }
+                  <span style={{fontSize:'15px'}}>&nbsp;&nbsp;&nbsp;{token.name} <antd.Divider type="vertical" />
+                        <span style={{fontSize:'15px',color:'#6AAFE6'}}>administor&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        </span>
                 </Col>
-                <Col span={3} >
-                  <div style={{fontSize:'16px'}}>{token.name}<antd.Divider type="vertical" />
-                    <span style={{fontSize:'15px',color:'#6AAFE6'}}>administor</span>
-                  </div>
-                </Col>
-
               </Row>
             </Header>
             <Breadcrumb style={{ marginTop:'40px',marginLeft:'16px' }}>

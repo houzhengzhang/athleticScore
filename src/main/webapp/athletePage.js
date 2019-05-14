@@ -71,6 +71,15 @@ class TeamRankPage extends React.Component{
                 }
             });
     }
+    getRank(rank){
+        if(rank===1)
+            return <div style={{height:52,width:52,textAlign:'center'}}><img src={'static/gold.svg'} style={{marginTop:'20%',marginBottom:'20%'}} height="35px"/></div>;
+        else if(rank===2)
+            return <div style={{height:52,width:52,textAlign:'center'}}><img src={'static/silver.svg'} style={{marginTop:'20%',marginBottom:'20%'}} height="35px"/></div>;
+        else if(rank===3)
+            return <div style={{height:52,width:52,textAlign:'center'}}><img src={'static/bronze.svg'} style={{marginTop:'19%',marginBottom:'19%'}} height="35px"/></div>;
+        return <Avatar shape="square" size={52}  style={{ color: '#1890ff', backgroundColor: '#fff',fontSize:'30px' }}>{rank}</Avatar>;
+    }
     render(){
         return(
             <Content style={{
@@ -84,6 +93,7 @@ class TeamRankPage extends React.Component{
                     itemLayout="horizontal"
                     style={{marginLeft:'7%',marginRight:'7%',marginTop:'30px'}}
                     dataSource={this.state.data}
+                    pagination={{pageSize:5}}
                     renderItem={item => (
                         <List.Item
                             extra={<div style={{marginRight:"10px",marginLeft:30}}>
@@ -95,7 +105,7 @@ class TeamRankPage extends React.Component{
                             /></div>}
                         >
                             <List.Item.Meta
-                                avatar={<Avatar shape="square" size={52}  style={{ color: '#1890ff', backgroundColor: '#fff',fontSize:'30px' }}>{item.rank}</Avatar>}
+                                avatar={(this.getRank(item.rank))}
                                 title={<h3>{item.name}</h3>}
                                 description={<span>代表学校:{item.school}</span> }
                             />
@@ -147,6 +157,15 @@ class ComRankPage extends React.Component{
             selectInput:this.props.comdata[0].competitionId,
         };
         this.update(this.props.comdata[0].competitionId,'B47507AE6987430E98BBE646D17350A8');
+    }
+    getRank(rank){
+        if(rank===1)
+            return <div style={{height:49,width:49,textAlign:'center'}}><img src={'static/gold.svg'} style={{marginTop:'20%',marginBottom:'20%'}} height="30px"/></div>;
+        else if(rank===2)
+            return <div style={{height:49,width:49,textAlign:'center'}}><img src={'static/silver.svg'} style={{marginTop:'20%',marginBottom:'20%'}} height="30px"/></div>;
+        else if(rank===3)
+            return <div style={{height:49,width:49,textAlign:'center'}}><img src={'static/bronze.svg'} style={{marginTop:'20%',marginBottom:'20%'}} height="30px"/></div>;
+        return <Avatar shape="square" size={49}  style={{ color: '#1890ff', backgroundColor: '#fff',fontSize:'30px' }}>{rank}</Avatar>;
     }
     update(com,stage){
         console.log('stage',com);
@@ -211,7 +230,7 @@ class ComRankPage extends React.Component{
 
                         >
                             <List.Item.Meta
-                                avatar={<Avatar shape="square" size={49}  style={{ color: '#1890ff', backgroundColor: '#fff',fontSize:'30px' }}>{item.ranking}</Avatar>}
+                                avatar={(this.getRank(item.ranking))}
                                 title={<h3>{item.athlete.name}</h3>}
                                 description={<span>队伍:{item.athleteTeam.name}</span> }
                             />
@@ -256,7 +275,12 @@ class ScorePage extends React.Component{
                                     avatar={<Avatar size="small" style={{ color: '#fff', backgroundColor: '#1890ff' }}>{item.competition.name[0]}</Avatar>}
                                     title={<Row>
                                         <Col span={8}>{item.competition.name}</Col>
-                                        <Col span={8} offset={8} style={{textAlign:'right'}}><antd.Tag color="blue">{item.competitionStage.state}</antd.Tag></Col>
+                                        <Col span={8} offset={8} style={{textAlign:'right'}}>
+                                            {
+                                                item.competitionStage.state==='初赛'? <Tag color="blue">{item.competitionStage.state}</Tag>:<Tag color="volcano">{item.competitionStage.state}</Tag>
+                                            }
+
+                                        </Col>
                                     </Row>}
                                     description={
                                         <Row gutter={16}>
@@ -309,7 +333,11 @@ class AthletePage extends React.Component{
             <Row style={{marginTop:15}}>
                 <Col span={2}>
                     <div>
-                        <Avatar style={{marginTop:0,marginLeft:0}} size={80} shape="square" icon="user"/>
+                        {
+                            token.sex===0?  <Avatar style={{marginTop:0,marginLeft:0}} size={80} shape="square" src='static/man.svg'/>
+                            : <Avatar style={{marginTop:0,marginLeft:0}} size={80} shape="square" src='static/woman.svg'/>
+                        }
+
                     </div>
                 </Col>
                 <Description term="姓名">{token.name}</Description>
@@ -420,10 +448,13 @@ class SiderDemo extends React.Component {
                     <Header style={{ background: '#fff', padding: 0 }}>
                         <Row gutter={16} style={{marginLeft:'1%',marginRight:'0%'}}>
                             <Col span={7} offset={17} style={{textAlign:'right',paddingRight:10}}>
-                                <Avatar style={{marginLeft:'17%'}} size={45} icon="user" />
-                                <span style={{fontSize:'16px'}}>&nbsp;&nbsp;&nbsp;username <antd.Divider type="vertical" />
-                        <span style={{fontSize:'15px',color:'#6AAFE6'}}>athlete&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                </span>
+                                {
+                                    token.sex===0?  <Avatar style={{marginLeft:'17%'}}  shape="square" src='static/man.svg'/>
+                                        : <Avatar style={{marginLeft:'17%'}}  shape="square" src='static/woman.svg'/>
+                                }
+                                <span style={{fontSize:'15px'}}>&nbsp;&nbsp;&nbsp;{token.name} <antd.Divider type="vertical" />
+                                     <span style={{fontSize:'15px',color:'#6AAFE6'}}>athlete&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                </span>
                             </Col>
 
                         </Row>
