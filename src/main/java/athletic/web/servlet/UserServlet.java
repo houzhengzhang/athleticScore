@@ -17,7 +17,7 @@ import java.io.PrintWriter;
  */
 @WebServlet(name = "UserServlet", urlPatterns = "/UserServlet")
 public class UserServlet extends BaseServlet {
-    private String[] dispUrl = {"123", "/AdminServlet?method=login", "/ScoringStaffServlet?method=login",
+    private String[] dispUrl = {"/", "/AdminServlet?method=login", "/ScoringStaffServlet?method=login",
             "/RefereeServlet?method=login", "/AthleteServlet?method=login"};
 
     public void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -26,21 +26,35 @@ public class UserServlet extends BaseServlet {
         // 获取验证码
         String code = request.getParameter("code");
         // false 若存在则返回该会话，否则返回null
-//        HttpSession session = request.getSession();
-//        System.out.println("login session id: " + session.getId());
-//        System.out.println("session: " + session.getAttribute("verifyCode"));
-//        if (null == code || "".equals(code) || !code.equals(session.getAttribute("verifyCode"))) {
-//            // 验证码错误
-//            msg.put("status", 0);
-//            msg.put("msg", "验证码错误！");
-//
-//            // 返回错误信息
-//            PrintWriter out = response.getWriter();
-//            out.write(msg.toString());
-//            return;
-//        }
+        HttpSession session = request.getSession();
+        System.out.println("login session id: " + session.getId());
+        System.out.println("session: " + session.getAttribute("verifyCode"));
+        if (null == code || "".equals(code) || !code.equals(session.getAttribute("verifyCode"))) {
+            // 验证码错误
+            msg.put("status", 0);
+            msg.put("msg", "验证码错误！");
+
+            // 返回错误信息
+            PrintWriter out = response.getWriter();
+            out.write(msg.toString());
+            return;
+        }
         // 根据用户选择角色进行请求分发
         int authority = Integer.parseInt(request.getParameter("authority"));
         request.getRequestDispatcher(dispUrl[authority]).forward(request, response);
+    }
+
+
+    public void loginout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        JSONObject msg = new JSONObject();
+        msg.put("status", 1);
+        msg.put("msg", "退出成功！");
+        msg.put("url", "http://localhost:8080/athletic");
+
+        PrintWriter out = response.getWriter();
+        out.write(msg.toString());
+        // 删除session中的用户
+        request.getSession().removeAttribute("loginUser");
+
     }
 }

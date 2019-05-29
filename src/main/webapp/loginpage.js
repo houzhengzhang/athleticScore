@@ -36,21 +36,23 @@ class LoginForm extends React.Component {
     constructor(props) {
         super(props);
         this.state={
-            codeUrl: 'http://127.0.0.1:8080/athletic/ValidateCodeServlet?method=getValidateCode'
+            codeUrl: '/athletic/ValidateCodeServlet?method=getValidateCode'
         };
         this.handleSubmit = (e) => {
             e.preventDefault();
             this.props.form.validateFields((err, values) => {
                 if (!err) {
                     fetch('/athletic/UserServlet?method=login&email=' + values.email + "&password="+
-                         values.password + "&code=" + values.code + "&authority=" +values.role)
+                         values.password + "&code=" + values.code + "&authority=" +values.role,
+                        {
+                            credentials: "include"
+                        })
                          .then(
                             (res) => {
                                 return res.json()
                             }
                         ).then(
                         (data) => {
-                            
                             console.log(data);
                             if(data.status==1){
                                 message.success(data.msg);
@@ -67,9 +69,8 @@ class LoginForm extends React.Component {
         }
         this.updateCode = (e) =>{
             e.preventDefault();
-            console.log('sss0');
             this.setState({
-                codeUrl: 'http://127.0.0.1:8080/athletic/ValidateCodeServlet?method=getValidateCode'+'&date='+Math.random(),
+                codeUrl: '/athletic/ValidateCodeServlet?method=getValidateCode'+'&date='+Math.random(),
               });
         }
     }
@@ -139,18 +140,17 @@ class LoginForm extends React.Component {
   const WrappedNormalLoginForm = Form.create({ name: 'normal_login' })(LoginForm);
 
 ReactDOM.render(
-    <Row gutter={16}  justify={'center'} style={{ marginTop: 100,textAlign:'center'}}>
-        <Col span={9} />
-        <Col span={6} >
-        <Card style={{ marginLeft:'5%',marginRight:'5%',paddingTop: 17,paddingBottom: 30}}>
+    <Row gutter={16}  justify={'center'} style={{ paddingTop: 20,textAlign:'center',heigth:'100%',width:'100%'}}>
+        <Col span={8} />
+        <Col span={8} >
+        <Card style={{ marginLeft:'10%',marginRight:'10%',paddingBottom: 20}}>
             <img src = 'static/score.png' height="100" width="100"/>
-
             <div style={{fontSize: "32px",color: '#3E4348',marginTop:10}}>雲计
-            <h3 style={{fontSize: "18px",color: '#7C7877'}}>运动会积分系统</h3></div>
-            <div style={{marginTop:'40px',marginLeft:'7%',marginRight:'7%'}}><WrappedNormalLoginForm /></div>
+            <h3 style={{fontSize: "18px",color: '#7C7877'}}>运动会计分系统</h3></div>
+            <div style={{marginTop:'20px',marginLeft:'7%',marginRight:'7%'}}><WrappedNormalLoginForm /></div>
         </Card>
     </Col>
-        <Col span={9} />
+        <Col span={8} />
     </Row>
     ,
     document.body

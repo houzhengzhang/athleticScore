@@ -4,6 +4,7 @@ import athletic.domain.Competition;
 import athletic.domain.Referee;
 import athletic.service.serviceImp.CompetitionServiceImp;
 import athletic.service.serviceImp.RefereeServiceImp;
+import athletic.utils.MD5Util;
 import athletic.utils.MyBeanUtils;
 import athletic.web.base.BaseServlet;
 import org.json.JSONObject;
@@ -35,6 +36,10 @@ public class RefereeServlet extends BaseServlet {
         Referee referee = new Referee();
         // 获取用户数据
         MyBeanUtils.populate(referee, request.getParameterMap());
+
+        // md5 加密密码
+        referee.setPassword(MD5Util.convertToMd5(referee.getPassword()));
+
         RefereeServiceImp refereeServiceImp = new RefereeServiceImp();
         try {
             referee = refereeServiceImp.refereeLogin(referee);
@@ -46,6 +51,8 @@ public class RefereeServlet extends BaseServlet {
                 msg.put("msg", "登录成功！");
                 msg.put("result", new JSONObject(referee));
                 msg.put("url", "http://localhost:8080/athletic/refereePage.html");
+                // 用户登录成功将信息放入sessionzhong
+                request.getSession().setAttribute("loginUser", referee);
             }
 
         } catch (SQLException e) {

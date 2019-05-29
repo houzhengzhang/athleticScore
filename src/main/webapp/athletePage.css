@@ -17,6 +17,7 @@
     display: table;
     font-size: 15px;
     margin-top: 1px;
+    margin-left: 40px;
 }
 .description .term {
     display: table-cell;

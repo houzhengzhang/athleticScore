@@ -23,7 +23,7 @@ import java.util.List;
 @WebServlet(name = "CompetitionFieldServlet", urlPatterns = "/CompetitionFieldServlet")
 public class CompetitionFieldServlet extends BaseServlet {
     /**
-     * 添加项目场地
+     * 录入项目场地
      *
      * @param request
      * @param response

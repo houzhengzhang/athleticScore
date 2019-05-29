@@ -457,7 +457,7 @@ class CreateCom extends React.Component {
     const CreateComFormPage =Form.create()(CreateComForm);
     return (
         <Content style={{
-          margin: '16px 16px', padding: '6%', background: '#fff',maxHeight: '50%',width:'50%'
+          margin: '16px 16px', padding: '6%', background: '#fff',maxHeight: '55%',width:'50%'
         }}
         >
           <CreateComFormPage fieldData={this.state.fieldData} update={this.update.bind(this)}/>
@@ -508,7 +508,7 @@ class ChangeCom extends React.Component{
     const EditableFormTable = Form.create()(EditableTable);
     return(
         <Content style={{
-          margin: '16px 16px', padding: '4%', background: '#fff',maxHeight: '60%',width:'95%'
+          margin: '16px 16px', padding: '4%', background: '#fff',maxHeight: '70%',width:'95%'
         }}
         >
           <EditableFormTable
@@ -781,17 +781,12 @@ class AddAthlete extends React.Component {
             message.error(data.msg);
           }
         });
-
-
-
   }
-
-
   render() {
     const AddAthleteFormPage =Form.create()(AddAthleteForm);
     return (
         <Content style={{
-          margin: '16px 16px', padding: '6%', background: '#fff',maxHeight: '65%',width:'45%'
+          margin: '16px 16px', padding: '3%', background: '#fff',maxHeight: '100%',width:'45%'
         }}
         >
           <AddAthleteFormPage teamData={this.state.teamData} competitionData={this.state.competitionData}/>
@@ -840,7 +835,7 @@ class ChangePlace extends React.Component{
     const EditableFormTable = Form.create()(EditableTable);
     return(
         <Content style={{
-          margin: '16px 16px', padding: '4%', background: '#fff',maxHeight: '60%',width:'95%'
+          margin: '16px 16px', padding: '4%', background: '#fff',maxHeight: '65%',width:'95%'
         }}
         >
           <EditableFormTable
@@ -950,7 +945,7 @@ class AddPlace extends React.Component {
     const AddPlaceFormPage =Form.create()(AddPlaceForm);
     return (
         <Content style={{
-          margin: '16px 16px', padding: '6%', background: '#fff',maxHeight: '45%',width:'45%'
+          margin: '16px 16px', padding: '6%', background: '#fff',maxHeight: '50%',width:'45%'
         }}
         >
           <AddPlaceFormPage update = { this.update.bind(this) }/>
@@ -1005,8 +1000,23 @@ class SiderDemo extends React.Component {
             message.error("初始化项目信息失败");
           }
         });
+  }
+  backIndex(){
+    console.log("backindex");
+      fetch('/athletic/UserServlet?method=loginout')
+          .then(
+              (res) => {
+                  return res.json()
+              }
+          ).then(
+          (data) => {
+              if(data.status===1){
+                  window.location=data.url;
+              }else{
+                  message.error(data.msg);
+              }
 
-
+          });
   }
   render() {
     const { current } = this.state;
@@ -1059,8 +1069,8 @@ class SiderDemo extends React.Component {
                         : <Avatar style={{marginLeft:'17%'}}  shape="square" src='static/woman.svg'/>
                   }
                   <span style={{fontSize:'15px'}}>&nbsp;&nbsp;&nbsp;{token.name} <antd.Divider type="vertical" />
-                        <span style={{fontSize:'15px',color:'#6AAFE6'}}>administor&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                        </span>
+                      <a onClick={this.backIndex} style={{fontSize:'15px',color:'#6AAFE6'}}>Login out&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                  </span>
                 </Col>
               </Row>
             </Header>

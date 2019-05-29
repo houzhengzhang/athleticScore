@@ -47,7 +47,7 @@ public class AthleteCompetitionServlet extends BaseServlet {
         } else {
             msg.put("status", 0);
             msg.put("msg", "查询排名失败");
-        } 
+        }
         PrintWriter out = response.getWriter();
         out.write(msg.toString());
     }

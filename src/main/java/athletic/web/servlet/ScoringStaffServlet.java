@@ -4,6 +4,7 @@ import athletic.domain.AthleteCompetition;
 import athletic.domain.ScoringStaff;
 import athletic.service.serviceImp.AthleteCompetitionServiceImp;
 import athletic.service.serviceImp.ScoringStaffServiceImp;
+import athletic.utils.MD5Util;
 import athletic.utils.MyBeanUtils;
 import athletic.web.base.BaseServlet;
 import org.json.JSONObject;
@@ -36,6 +37,9 @@ public class ScoringStaffServlet extends BaseServlet {
         ScoringStaff scoringStaff = new ScoringStaff();
         // 获取用户数据
         MyBeanUtils.populate(scoringStaff, request.getParameterMap());
+        // md5 加密密码
+        scoringStaff.setPassword(MD5Util.convertToMd5(scoringStaff.getPassword()));
+
         ScoringStaffServiceImp scoringStaffServiceImp = new ScoringStaffServiceImp();
         try {
             scoringStaff = scoringStaffServiceImp.scoringStaffLogin(scoringStaff);
@@ -47,12 +51,13 @@ public class ScoringStaffServlet extends BaseServlet {
                 msg.put("msg", "登录成功！");
                 msg.put("result", new JSONObject(scoringStaff));
                 msg.put("url", "http://localhost:8080/athletic/scoringstaffPage.html");
+                // 用户登录成功将信息放入sessionzhong
+                request.getSession().setAttribute("loginUser", scoringStaff);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println(msg.toString());
         PrintWriter out = response.getWriter();
         out.write(msg.toString());
     }

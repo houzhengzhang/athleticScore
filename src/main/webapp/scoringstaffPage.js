@@ -31,7 +31,7 @@ var Input=antd.Input;
 var message =antd.message;
 var Alert=antd.Alert;
 var InputNumber=antd.InputNumber;
-
+const token = JSON.parse(localStorage.getItem("token"));
 function fetch_get(url) {
     return encodeURI(encodeURI(url));
 }
@@ -64,12 +64,12 @@ class CardForm extends React.Component{
                       avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
                       title={<Row>
                           <Col span={8}>{this.props.data.athlete.name}</Col>
-                          <Col span={5} offset={11}><antd.Tag color="blue">{this.props.data.competition.competitionStage.state}</antd.Tag></Col>
+                          <Col span={5} offset={10}><antd.Tag color="blue">{this.props.data.competition.competitionStage.state}</antd.Tag></Col>
                       </Row>}
                       description={
                           <div>
                               <h4>录入分数:</h4>
-                              <InputNumber style={{width:'50%'}}   onChange={this.onChange.bind(this)} />
+                              <InputNumber style={{width:'65%'}}   onChange={this.onChange.bind(this)} />
                           </div>
                       }
                 />
@@ -221,6 +221,22 @@ class SiderDemo extends React.Component {
                 }
             });
     }
+    backIndex(){
+        fetch('/athletic/UserServlet?method=loginout')
+            .then(
+                (res) => {
+                    return res.json()
+                }
+            ).then(
+            (data) => {
+                if(data.status===1){
+                    window.location=data.url;
+                }else{
+                    message.error(data.msg);
+                }
+
+            });
+    }
     render() {
         const {athleteData } = this.state;
         const routes = [
@@ -263,7 +279,7 @@ class SiderDemo extends React.Component {
                                         : <Avatar style={{marginLeft:'17%'}}  shape="square" src='static/woman.svg'/>
                                 }
                                 <span style={{fontSize:'15px'}}>&nbsp;&nbsp;&nbsp;{token.name} <antd.Divider type="vertical" />
-                        <span style={{fontSize:'15px',color:'#6AAFE6'}}>scoring staff&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                         <a onClick={this.backIndex} style={{fontSize:'15px',color:'#6AAFE6'}}>Login out&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
                         </span>
                             </Col>
                         </Row>

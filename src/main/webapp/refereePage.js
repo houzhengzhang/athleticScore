@@ -289,7 +289,7 @@ class ChangeState extends React.Component{
         const EditableFormTable = Form.create()(EditableTable);
         return(
             <Content style={{
-                margin: '16px 16px', padding: '4%', background: '#fff',maxHeight: '60%',width:'70%'
+                margin: '16px 16px', padding: '3%', background: '#fff',maxHeight: '73%',width:'80%'
             }}
             >
                 <EditableFormTable
@@ -313,6 +313,22 @@ class SiderDemo extends React.Component {
                 current: e.key,
             });
         }
+    }
+    backIndex(){
+        fetch('/athletic/UserServlet?method=loginout')
+            .then(
+                (res) => {
+                    return res.json()
+                }
+            ).then(
+            (data) => {
+                if(data.status===1){
+                    window.location=data.url;
+                }else{
+                    message.error(data.msg);
+                }
+
+            });
     }
     render() {
         const { current } = this.state;
@@ -345,7 +361,7 @@ class SiderDemo extends React.Component {
                                         : <Avatar style={{marginLeft:'17%'}}  shape="square" src='static/woman.svg'/>
                                 }
                                 <span style={{fontSize:'15px'}}>&nbsp;&nbsp;&nbsp;{token.name} <antd.Divider type="vertical" />
-                        <span style={{fontSize:'15px',color:'#6AAFE6'}}>referee&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                       <a onClick={this.backIndex} style={{fontSize:'15px',color:'#6AAFE6'}}>Login out&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
                         </span>
                             </Col>
                         </Row>

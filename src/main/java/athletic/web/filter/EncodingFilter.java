@@ -31,6 +31,7 @@ public class EncodingFilter implements Filter {
         //1.强转
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
+        response.setHeader("Access-Control-Allow-Credentials","true");
         //System.out.println("@@@@@@@@@@@@@@@@@@");
         //2.放行
         chain.doFilter(new MyRequest(request), response);

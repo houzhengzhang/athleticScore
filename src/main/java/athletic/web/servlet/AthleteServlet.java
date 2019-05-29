@@ -4,6 +4,7 @@ import athletic.domain.Athlete;
 import athletic.domain.AthleteCompetition;
 import athletic.service.serviceImp.AthleteCompetitionServiceImp;
 import athletic.service.serviceImp.AthleteServiceImp;
+import athletic.utils.MD5Util;
 import athletic.utils.MyBeanUtils;
 import athletic.utils.UUIDUtils;
 import athletic.web.base.BaseServlet;
@@ -38,7 +39,8 @@ public class AthleteServlet extends BaseServlet {
         Athlete athlete = new Athlete();
         // 获取用户数据
         MyBeanUtils.populate(athlete, request.getParameterMap());
-
+        // md5 加密密码
+        athlete.setPassword(MD5Util.convertToMd5(athlete.getPassword()));
         // 调用业务层
         AthleteServiceImp athleteServiceImp = new AthleteServiceImp();
 
@@ -52,12 +54,13 @@ public class AthleteServlet extends BaseServlet {
                 msg.put("msg", "登录成功！");
                 msg.put("result", new org.json.JSONObject(athlete));
                 msg.put("url", "http://localhost:8080/athletic/athletePage.html");
+                // 用户登录成功将信息放入sessionzhong
+                request.getSession().setAttribute("loginUser", athlete);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println(msg);
         PrintWriter out = response.getWriter();
         out.write(msg.toString());
     }

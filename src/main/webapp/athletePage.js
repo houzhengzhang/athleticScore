@@ -83,7 +83,7 @@ class TeamRankPage extends React.Component{
     render(){
         return(
             <Content style={{
-                margin: '30px 30px', padding: 15, minHeight: 280,background:"#fff"
+                margin: '30px 30px', padding: 15, minHeight: 580,background:"#fff"
             }}
             >
                 <antd.PageHeader
@@ -205,7 +205,7 @@ class ComRankPage extends React.Component{
     render(){
         return(
             <Content style={{
-                margin: '30px 30px', padding: 20, minHeight: 280,background:'#fff'
+                margin: '30px 30px', padding: 20, minHeight: 590,background:'#fff'
             }}
             >
                 <antd.PageHeader
@@ -374,6 +374,22 @@ class SiderDemo extends React.Component {
         }
         return Array.from(new Set(array));
     }
+    backIndex(){
+        fetch('/athletic/UserServlet?method=loginout')
+            .then(
+                (res) => {
+                    return res.json()
+                }
+            ).then(
+            (data) => {
+                if(data.status===1){
+                    window.location=data.url;
+                }else{
+                    message.error(data.msg);
+                }
+
+            });
+    }
     componentWillMount(){
         let url = '/athletic/AthleteServlet?method=getAthleteScore&athleteId='+token.athleteId;
         fetch(fetch_get(url))
@@ -453,7 +469,7 @@ class SiderDemo extends React.Component {
                                         : <Avatar style={{marginLeft:'17%'}}  shape="square" src='static/woman.svg'/>
                                 }
                                 <span style={{fontSize:'15px'}}>&nbsp;&nbsp;&nbsp;{token.name} <antd.Divider type="vertical" />
-                                     <span style={{fontSize:'15px',color:'#6AAFE6'}}>athlete&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                    <a onClick={this.backIndex} style={{fontSize:'15px',color:'#6AAFE6'}}>Login out&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
                                 </span>
                             </Col>
 

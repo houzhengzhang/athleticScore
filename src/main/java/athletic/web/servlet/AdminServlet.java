@@ -4,6 +4,7 @@ import athletic.dao.daoImp.RoleDaoImp;
 import athletic.domain.Adminstrator;
 import athletic.domain.Role;
 import athletic.service.serviceImp.AdminServiceImp;
+import athletic.utils.MD5Util;
 import athletic.utils.MyBeanUtils;
 import athletic.web.base.BaseServlet;
 import org.json.JSONObject;
@@ -36,6 +37,8 @@ public class AdminServlet extends BaseServlet {
 
         // 获取用户数据
         MyBeanUtils.populate(adminstrator, request.getParameterMap());
+        // md5 加密密码
+        adminstrator.setPassword(MD5Util.convertToMd5(adminstrator.getPassword()));
         AdminServiceImp adminServiceImp = new AdminServiceImp();
 
         try {
@@ -48,12 +51,14 @@ public class AdminServlet extends BaseServlet {
                 msg.put("msg", "登录成功！");
                 msg.put("result", new JSONObject(adminstrator));
                 msg.put("url", "http://localhost:8080/athletic/administratorPage.html");
+
+                // 用户登录成功将信息放入sessionzhong
+                request.getSession().setAttribute("loginUser", adminstrator);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println(msg.toString());
         PrintWriter out = response.getWriter();
         out.write(msg.toString());
     }
