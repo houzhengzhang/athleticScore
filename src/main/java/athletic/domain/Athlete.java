@@ -20,7 +20,6 @@ public class Athlete {
     private Role role;
     private AthleteTeam athleteTeam;
 
-
     public Role getRole() {
         return role;
     }

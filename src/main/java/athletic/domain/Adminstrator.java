@@ -17,7 +17,6 @@ public class Adminstrator {
 
     // 外键
     private Role role;
-
     public String getRoleId() {
         return roleId;
     }

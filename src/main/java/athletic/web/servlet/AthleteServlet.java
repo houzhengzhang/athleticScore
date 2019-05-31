@@ -54,7 +54,7 @@ public class AthleteServlet extends BaseServlet {
                 msg.put("msg", "登录成功！");
                 msg.put("result", new org.json.JSONObject(athlete));
                 msg.put("url", "http://localhost:8080/athletic/athletePage.html");
-                // 用户登录成功将信息放入sessionzhong
+                // 用户登录成功将信息放入session中
                 request.getSession().setAttribute("loginUser", athlete);
             }
 

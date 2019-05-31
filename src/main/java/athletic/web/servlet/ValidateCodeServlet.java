@@ -28,14 +28,11 @@ public class ValidateCodeServlet extends BaseServlet {
         String verifyCode = CodeUtil.generateVerifyCode(4);
         //存入会话session
         HttpSession session = request.getSession();
-        System.out.println("verifyCode session id: " + session.getId());
         //删除以前的
         session.removeAttribute("verifyCode");
         session.setAttribute("verifyCode", verifyCode.toLowerCase());
         //生成图片
         int w = 100, h = 30;
         CodeUtil.outputImage(w, h, response.getOutputStream(), verifyCode);
-
-
     }
 }
