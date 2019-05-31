@@ -36,9 +36,9 @@ public class RefereeServlet extends BaseServlet {
         Referee referee = new Referee();
         // 获取用户数据
         MyBeanUtils.populate(referee, request.getParameterMap());
-
         // md5 加密密码
         referee.setPassword(MD5Util.convertToMd5(referee.getPassword()));
+
 
         RefereeServiceImp refereeServiceImp = new RefereeServiceImp();
         try {

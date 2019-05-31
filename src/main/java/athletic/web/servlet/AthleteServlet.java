@@ -79,6 +79,8 @@ public class AthleteServlet extends BaseServlet {
         MyBeanUtils.populate(athlete, request.getParameterMap());
         // 设置运动员ID
         athlete.setAthleteId(UUIDUtils.getId());
+        // md5 加密密码
+        athlete.setPassword(MD5Util.convertToMd5(athlete.getPassword()));
         // 获取参赛项目信息
         String[] competitionIdList = request.getParameterValues("competitionIdList");
         int num = 0;

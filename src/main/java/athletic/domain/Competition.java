@@ -17,9 +17,6 @@ public class Competition {
     private Date startTime;
     private Date endTime;
 
-    // 外键对象
-    private CompetitionField competitionField;
-    private CompetitionStage competitionStage;
 
     public CompetitionField getCompetitionField() {
         return competitionField;
@@ -89,6 +86,9 @@ public class Competition {
     public String toString() {
         return new JSONObject(this).toString();
     }
+    // 外键对象
+    private CompetitionField competitionField;
+    private CompetitionStage competitionStage;
 
 }
 

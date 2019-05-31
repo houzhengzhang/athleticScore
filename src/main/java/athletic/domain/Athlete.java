@@ -16,10 +16,6 @@ public class Athlete {
     private String roleId;
     private String athleteTeamId;
 
-    // 外键
-    private Role role;
-    private AthleteTeam athleteTeam;
-
     public Role getRole() {
         return role;
     }
@@ -96,5 +92,9 @@ public class Athlete {
     public String toString() {
         return new JSONObject(this).toString();
     }
+    // 外键
+    private Role role;
+    private AthleteTeam athleteTeam;
+
 }
 

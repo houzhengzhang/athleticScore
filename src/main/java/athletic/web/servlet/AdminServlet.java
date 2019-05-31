@@ -40,7 +40,6 @@ public class AdminServlet extends BaseServlet {
         // md5 加密密码
         adminstrator.setPassword(MD5Util.convertToMd5(adminstrator.getPassword()));
         AdminServiceImp adminServiceImp = new AdminServiceImp();
-
         try {
             adminstrator = adminServiceImp.adminstratorLogin(adminstrator);
             if (null == adminstrator) {

@@ -13,10 +13,6 @@ public class Ranking {
     private String athleteId;
     private int ranking;
 
-    // 外键
-    private Competition competition;
-    private Athlete athlete;
-
     public int getRanking() {
         return ranking;
     }
@@ -69,5 +65,9 @@ public class Ranking {
     public String toString() {
         return new JSONObject(this).toString();
     }
+    // 外键
+    private Competition competition;
+    private Athlete athlete;
+
 }
 

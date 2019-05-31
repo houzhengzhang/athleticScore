@@ -54,11 +54,14 @@ class LoginForm extends React.Component {
                         ).then(
                         (data) => {
                             console.log(data);
-                            if(data.status==1){
+                            if(data.status===1){
                                 message.success(data.msg);
                                 localStorage.setItem("token", JSON.stringify(data.result));
                                 window.location=data.url;
                             }else{
+                                this.setState({
+                                    codeUrl: '/athletic/ValidateCodeServlet?method=getValidateCode'+'&date='+Math.random(),
+                                }); 
                                 message.error(data.msg);
                             }
 
@@ -66,7 +69,7 @@ class LoginForm extends React.Component {
                 }
 
             });
-        }
+        };
         this.updateCode = (e) =>{
             e.preventDefault();
             this.setState({

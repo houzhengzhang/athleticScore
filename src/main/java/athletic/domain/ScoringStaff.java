@@ -15,8 +15,6 @@ public class ScoringStaff {
     private int sex;
     private String roleId;
 
-    // 外键
-    private Role role;
 
     public String getsId() {
         return sId;
@@ -86,5 +84,7 @@ public class ScoringStaff {
     public String toString() {
         return new JSONObject(this).toString();
     }
+    // 外键
+    private Role role;
 }
 

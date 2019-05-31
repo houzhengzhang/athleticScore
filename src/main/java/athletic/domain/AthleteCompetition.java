@@ -13,12 +13,6 @@ public class AthleteCompetition {
     private String competitionStageId;
     private double score;
 
-    // 外键
-    private Competition competition;
-    private CompetitionStage competitionStage;
-    private Athlete athlete;
-    // 记录排名
-    private int ranking;
 
     public int getRanking() {
         return ranking;
@@ -88,6 +82,12 @@ public class AthleteCompetition {
     public String toString() {
         return new JSONObject(this).toString();
     }
+    // 外键
+    private Competition competition;
+    private CompetitionStage competitionStage;
+    private Athlete athlete;
+    // 记录排名
+    private int ranking;
 
 }
 

@@ -133,7 +133,7 @@ public class AthleteCompetitionDaoImp implements AthleteCompetitionDao {
     @Override
     public List<AthleteCompetition> getRankingByCompetitionId(String competitionId, String competitionStageId) throws SQLException {
         String sql = "SELECT *,(@i:=@i + 1) AS ranking FROM athletecompetition,(SELECT @i:= 0 init) AS it " +
-                "where competitionId=? && competitionStageId =? ORDER BY score desc";
+                "where competitionId=? && competitionStageId =? && score!=0 ORDER BY score desc";
         QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
         return queryRunner.query(sql, new BeanListHandler<>(AthleteCompetition.class), competitionId, competitionStageId);
     }

@@ -16,7 +16,7 @@ import java.sql.SQLException;
 public class RefereeDaoImp implements RefereeDao {
     @Override
     public Referee refereeLogin(Referee referee) throws SQLException {
-        String sql = "select * from adminstrator where email=? and password=?";
+        String sql = "select * from referee where email=? and password=?";
         QueryRunner queryRunner = new QueryRunner(JDBCUtils.getDataSource());
         return queryRunner.query(sql, new BeanHandler<>(Referee.class), referee.getEmail(), referee.getPassword());
     }

@@ -15,8 +15,6 @@ public class Adminstrator {
     private int sex;
     private String roleId;
 
-    // 外键
-    private Role role;
     public String getRoleId() {
         return roleId;
     }
@@ -77,5 +75,8 @@ public class Adminstrator {
     public String toString() {
         return new JSONObject(this).toString();
     }
+
+    // 外键
+    private Role role;
 }
 

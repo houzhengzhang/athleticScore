@@ -346,7 +346,7 @@ class CreateComForm extends React.Component {
       this.props.form.validateFields((err, values) => {
         if (!err) {
           console.log('Received values of form: ', values);
-          const rangeTimeValue = values['range-time-picker'];
+          const rangeTimeValue = values['rangetimepicker'];
           let startTime=rangeTimeValue[0].format('YYYY-MM-DD HH:mm:ss');
           let endTime=rangeTimeValue[1].format('YYYY-MM-DD HH:mm:ss');
           let url='/athletic/CompetitionServlet?method=addCompetition&name='
@@ -364,7 +364,7 @@ class CreateComForm extends React.Component {
                   this.props.update();
                   this.props.form.setFieldsValue({
                     name: '',
-                    address:''
+                    address:'',
                   });
                 }else{
                   message.error(data.msg);
@@ -412,7 +412,7 @@ class CreateComForm extends React.Component {
           <Form.Item
               label="项目时间"
           >
-            {getFieldDecorator('range-time-picker', rangeConfig)(
+            {getFieldDecorator('rangetimepicker', rangeConfig)(
                 <RangePicker showTime placeholder={['开始时间', '结束时间']} format="YYYY-MM-DD HH:mm:ss" />
             )}
           </Form.Item>
@@ -542,7 +542,7 @@ class AddAthleteTeamForm extends React.Component {
                   message.success(data.msg);
                   this.props.form.setFieldsValue({
                     name: '',
-                    address:''
+                    school:''
                   });
 
                 }else{
@@ -643,11 +643,10 @@ class AddAthleteForm extends React.Component {
               (data) => {
                 if(data.status===1){
                   message.success(data.msg);
-                  this.props.form.setFieldsValue({
-                    name: '',
-                    address:''
-                  });
 
+                  this.props.form.setFieldsValue({
+                    name: '', password:'', email:'',athleteTeamId:'',competitionIdList:[]
+                  });
                 }else{
                   message.error(data.msg);
                 }
